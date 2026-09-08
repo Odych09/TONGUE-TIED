@@ -1,0 +1,147 @@
+[gd_scene format=4 uid="uid://ylo3o6oh0ppb"]
+
+[ext_resource type="Texture2D" uid="uid://ct2wwthco5xm" path="res://ASSETS/TILES/tileset_png.png" id="1_h15md"]
+[ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="2_687ct"]
+[ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="2_k1hc4"]
+[ext_resource type="Script" uid="uid://b7a32g8okciu1" path="res://SCENES/UI/ui.gd" id="3_4pk8d"]
+[ext_resource type="PackedScene" uid="uid://dbdxb7wvjtna1" path="res://SCENES/Player.tscn" id="4_4ydut"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_687ct"]
+texture = ExtResource("1_h15md")
+margins = Vector2i(63, 65)
+separation = Vector2i(64, 0)
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+2:0/0/custom_data_0 = "win"
+3:0/0 = 0
+5:0/0 = 0
+5:0/0/custom_data_0 = "pushable_box"
+6:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+4:2/0/custom_data_0 = "frog_hazard"
+5:2/0 = 0
+6:2/0 = 0
+0:3/0 = 0
+0:3/0/custom_data_0 = "tongue_hazard"
+1:3/0 = 0
+4:0/0 = 0
+4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+4:0/0/custom_data_0 = "wall"
+
+[sub_resource type="TileSet" id="TileSet_xrivr"]
+tile_size = Vector2i(128, 128)
+physics_layer_0/collision_layer = 1
+custom_data_layer_0/name = "type"
+custom_data_layer_0/type = 4
+sources/0 = SubResource("TileSetAtlasSource_687ct")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k1hc4"]
+shader = ExtResource("2_k1hc4")
+shader_parameter/base_dark_blue = Color(0.17262742, 0.24754325, 0.50558704, 1)
+shader_parameter/cyan_glow = Color(0, 0.4, 0.8, 1)
+shader_parameter/deep_purple = Color(0.5379149, 0.40068102, 0.9487458, 1)
+shader_parameter/speed = 0.3
+shader_parameter/scale = 4.0
+shader_parameter/wave_intensity = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h15md"]
+shader = ExtResource("2_687ct")
+shader_parameter/brightness = 1.02
+shader_parameter/contrast = 1.08
+shader_parameter/saturation = 2.0
+shader_parameter/gamma = 1.05
+shader_parameter/curvature = 0.0
+shader_parameter/corner_soften = 0.06
+shader_parameter/vignette = 0.0
+shader_parameter/scanline_strength = 0.0
+shader_parameter/scanline_density = 1.15
+shader_parameter/interlace_strength = 0.2
+shader_parameter/mask_strength = 0.22
+shader_parameter/mask_scale = 1.0
+shader_parameter/chroma_offset_px = 0.0
+shader_parameter/luma_smear_px = 2.2
+shader_parameter/jitter_px = 0.0
+shader_parameter/wobble_px = 0.0
+shader_parameter/tape_noise = 0.22
+shader_parameter/tape_lines = 0.0
+shader_parameter/roll_speed = 0.10000000475
+shader_parameter/roll_strength = 0.15
+shader_parameter/glow_strength = 2.0
+shader_parameter/glow_threshold = 0.65
+
+[node name="Main" type="Node2D" unique_id=712370164]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1626986601]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAAAAAEAAAAEAAAAAAAAAAIAAAAEAAAAAAAAAAMAAAAEAAAAAAAAAAQAAAAEAAAAAAABAAQAAAAEAAAAAAACAAQAAAAEAAAAAAADAAQAAAAEAAAAAAABAP//AAAEAAAAAAACAP//AAAEAAAAAAADAP//AAAEAAAAAAAEAP//AAAEAAAAAAAFAP//AAAEAAAAAAAAAP//AAAEAAAAAAAGAP//AAAEAAAAAAAHAP//AAAEAAAAAAAHAAAAAAAEAAAAAAAHAAEAAAAEAAAAAAAIAAEAAAAEAAAAAAAJAAEAAAAEAAAAAAAKAAEAAAAEAAAAAAAKAAIAAAAEAAAAAAAKAAMAAAAEAAAAAAAKAAQAAAAEAAAAAAAJAAQAAAAEAAAAAAAIAAQAAAAEAAAAAAAIAAUAAAAEAAAAAAAHAAUAAAAEAAAAAAAGAAUAAAAEAAAAAAAFAAUAAAAEAAAAAAAFAAYAAAAEAAAAAAAEAAYAAAAEAAAAAAADAAYAAAAEAAAAAAACAAYAAAAEAAAAAAABAAYAAAAEAAAAAAAAAAYAAAAEAAAAAAAAAAUAAAAEAAAAAAABAAUAAAACAAAAAAAEAAMAAAAFAAAAAAAHAAQAAAAEAAIAAAAGAAQAAAAEAAIAAAAFAAQAAAAEAAIAAAACAAEAAAAAAAMAAAAGAAMAAAAAAAMAAAACAAMAAAAAAAMAAAA=")
+tile_set = SubResource("TileSet_xrivr")
+
+[node name="BG" type="CanvasLayer" parent="." unique_id=490837770]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="BG" unique_id=2048912689]
+material = SubResource("ShaderMaterial_k1hc4")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CRT" type="CanvasLayer" parent="." unique_id=229541896]
+layer = 5
+
+[node name="UI" type="Control" parent="CRT" unique_id=329428076 node_paths=PackedStringArray("player")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_4pk8d")
+player = NodePath("../../Player")
+
+[node name="PULLS_LEFT" type="Label" parent="CRT/UI" unique_id=770279447]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -683.0
+offset_top = 18.0
+offset_bottom = 108.0
+grow_horizontal = 0
+theme_override_constants/outline_size = 23
+theme_override_font_sizes/font_size = 49
+text = "PULLS LEFT:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="CRT" unique_id=2035734048]
+material = SubResource("ShaderMaterial_h15md")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1458617723]
+position = Vector2(682, 378)
+
+[node name="Player" parent="." unique_id=515176469 node_paths=PackedStringArray("tilemap_layer", "camera") instance=ExtResource("4_4ydut")]
+position = Vector2(575, 260)
+motion_mode = 1
+tilemap_layer = NodePath("../TileMapLayer")
+camera = NodePath("../Camera2D")

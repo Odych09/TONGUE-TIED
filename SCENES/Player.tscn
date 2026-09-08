@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dbdxb7wvjtna1"]
+
+[ext_resource type="Script" uid="uid://cxh6fr537aie3" path="res://SCRIPTS/player.gd" id="1_667t4"]
+[ext_resource type="Texture2D" uid="uid://bka37dohhrmq8" path="res://ASSETS/CHARACTER/frog.png" id="1_esb2h"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xrivr"]
+radius = 65.03076
+
+[node name="Player" type="CharacterBody2D" unique_id=515176469]
+script = ExtResource("1_667t4")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1340845868]
+texture = ExtResource("1_esb2h")
+
+[node name="Line2D" type="Line2D" parent="." unique_id=553188206]
+default_color = Color(1.6859999, 0.52303547, 1.6757697, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+sharp_limit = 0.0
+round_precision = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=986618843]
+shape = SubResource("CircleShape2D_xrivr")
