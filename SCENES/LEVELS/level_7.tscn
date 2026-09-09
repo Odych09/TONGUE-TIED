@@ -1,14 +1,14 @@
-[gd_scene format=4 uid="uid://ylo3o6oh0ppb"]
+[gd_scene format=4 uid="uid://6p3sgtylm6dn"]
 
-[ext_resource type="Texture2D" uid="uid://ct2wwthco5xm" path="res://ASSETS/TILES/tileset_png.png" id="1_h15md"]
-[ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="2_687ct"]
-[ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="2_k1hc4"]
-[ext_resource type="Script" uid="uid://b7a32g8okciu1" path="res://SCENES/UI/ui.gd" id="3_4pk8d"]
-[ext_resource type="PackedScene" uid="uid://dbdxb7wvjtna1" path="res://SCENES/Player.tscn" id="4_4ydut"]
-[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="4_f021o"]
+[ext_resource type="Texture2D" uid="uid://ct2wwthco5xm" path="res://ASSETS/TILES/tileset_png.png" id="1_rvlx1"]
+[ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="2_tt7mo"]
+[ext_resource type="Script" uid="uid://b7a32g8okciu1" path="res://SCENES/UI/ui.gd" id="3_j4bog"]
+[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="4_wsbyg"]
+[ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="5_r15i5"]
+[ext_resource type="PackedScene" uid="uid://dbdxb7wvjtna1" path="res://SCENES/Player.tscn" id="6_jcf7s"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_687ct"]
-texture = ExtResource("1_h15md")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wvd0d"]
+texture = ExtResource("1_rvlx1")
 margins = Vector2i(63, 65)
 separation = Vector2i(64, 0)
 texture_region_size = Vector2i(128, 128)
@@ -49,10 +49,10 @@ tile_size = Vector2i(128, 128)
 physics_layer_0/collision_layer = 1
 custom_data_layer_0/name = "type"
 custom_data_layer_0/type = 4
-sources/0 = SubResource("TileSetAtlasSource_687ct")
+sources/0 = SubResource("TileSetAtlasSource_wvd0d")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k1hc4"]
-shader = ExtResource("2_k1hc4")
+shader = ExtResource("2_tt7mo")
 shader_parameter/base_dark_blue = Color(0.17262742, 0.24754325, 0.50558704, 1)
 shader_parameter/cyan_glow = Color(0, 0.4, 0.8, 1)
 shader_parameter/deep_purple = Color(0.5379149, 0.40068102, 0.9487458, 1)
@@ -61,7 +61,7 @@ shader_parameter/scale = 4.0
 shader_parameter/wave_intensity = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h15md"]
-shader = ExtResource("2_687ct")
+shader = ExtResource("5_r15i5")
 shader_parameter/brightness = 1.02
 shader_parameter/contrast = 1.08
 shader_parameter/saturation = 2.0
@@ -85,7 +85,7 @@ shader_parameter/roll_strength = 0.15
 shader_parameter/glow_strength = 2.0
 shader_parameter/glow_threshold = 0.65
 
-[node name="Main" type="Node2D" unique_id=712370164]
+[node name="level_7" type="Node2D" unique_id=712370164]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1626986601]
 tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAAAAEAAAAEAAAAAAAAAAIAAAAEAAAAAAAAAAMAAAAEAAAAAAABAAQAAAAEAAAAAAACAAUAAAAEAAAAAAADAAYAAAAEAAAAAAAEAAYAAAAEAAAAAAAFAAYAAAAEAAAAAAAGAAYAAAAEAAAAAAAHAAYAAAAEAAAAAAAIAAYAAAAEAAAAAAAJAAYAAAAEAAAAAAAKAAYAAAAEAAAAAAALAAYAAAAEAAAAAAAMAAYAAAAEAAAAAAANAAYAAAAEAAAAAAAOAAYAAAAEAAAAAAAPAAYAAAAEAAAAAAAQAAUAAAAEAAAAAAARAAQAAAAEAAAAAAARAAMAAAAEAAAAAAARAAIAAAAEAAAAAAASAAEAAAAEAAAAAAASAAAAAAAEAAAAAAASAP//AAAEAAAAAAARAP//AAAEAAAAAAAQAP//AAAEAAAAAAAQAP7/AAAEAAAAAAAPAP7/AAAEAAAAAAAOAP7/AAAEAAAAAAANAP7/AAAEAAAAAAAMAP7/AAAEAAAAAAALAP7/AAAEAAAAAAAKAP7/AAAEAAAAAAAJAP//AAAEAAAAAAASAAIAAAAEAAAAAAARAAUAAAAEAAAAAAAQAAYAAAAEAAAAAAAIAP//AAAEAAAAAAAHAP//AAAEAAAAAAAGAP//AAAEAAAAAAAAAAQAAAAEAAAAAAABAAUAAAAEAAAAAAACAAYAAAAEAAAAAAAHAAIAAAAFAAAAAAAHAAEAAAAFAAAAAAADAAUAAAADAAAAAAAEAAUAAAADAAAAAAAFAAUAAAADAAAAAAAGAAUAAAAAAAMAAAAGAAQAAAAAAAMAAAAFAAQAAAADAAAAAAAEAAQAAAADAAAAAAADAAQAAAADAAAAAAADAAMAAAADAAAAAAAEAAMAAAADAAAAAAAFAAMAAAADAAAAAAAGAAMAAAAAAAMAAAAGAAIAAAADAAAAAAAGAAEAAAADAAAAAAAFAAEAAAADAAAAAAAFAAIAAAADAAAAAAAEAAIAAAADAAAAAAAEAAEAAAADAAAAAAADAAEAAAADAAAAAAACAAIAAAADAAAAAAACAAEAAAADAAAAAAABAAIAAAADAAAAAAABAAMAAAADAAAAAAACAAMAAAADAAAAAAABAAEAAAADAAAAAAAHAAAAAAAAAAMAAAAKAAIAAAAFAAAAAAAKAAMAAAAEAAAAAAAJAAMAAAAEAAAAAAAJAAQAAAAEAAAAAAAKAAQAAAADAAEAAAADAAIAAAADAAEAAAAIAAMAAAAEAAAAAAAIAAQAAAADAAAAAAAIAAUAAAADAAAAAAAJAAUAAAAFAAAAAAAKAAUAAAADAAAAAAALAAUAAAADAAAAAAALAAQAAAADAAAAAAAMAAQAAAADAAAAAAAMAAUAAAADAAAAAAAMAAMAAAAEAAIAAAALAAMAAAAAAAMAAAALAAIAAAADAAAAAAAMAAIAAAAAAAMAAAAKAAEAAAAEAAAAAAAKAAAAAAAEAAAAAAALAAAAAAADAAEAAAAKAP//AAAEAAAAAAAMAP//AAAEAAIAAAAMAAAAAAAAAAMAAAAMAAEAAAAEAAIAAAANAP//AAADAAAAAAAOAP//AAADAAAAAAAOAAAAAAADAAAAAAAOAAEAAAADAAAAAAANAAEAAAADAAAAAAANAAIAAAADAAAAAAANAAAAAAADAAAAAAAOAAIAAAADAAAAAAAOAAMAAAADAAAAAAANAAMAAAADAAAAAAANAAQAAAADAAAAAAANAAUAAAADAAAAAAAOAAUAAAADAAAAAAAOAAQAAAADAAAAAAAPAAQAAAADAAAAAAAPAAUAAAADAAAAAAAQAAQAAAADAAAAAAAQAAMAAAADAAAAAAAPAAMAAAAEAAIAAAAPAAIAAAAEAAIAAAAQAAIAAAADAAAAAAAQAAEAAAADAAAAAAAPAAAAAAAEAAIAAAAPAP//AAADAAAAAAARAAAAAAACAAAAAAAIAAAAAAAAAAMAAAALAAEAAAADAAAAAAALAP//AAAAAAMAAAAPAAEAAAAEAAIAAAAQAAAAAAAAAAMAAAAHAAMAAAADAAAAAAAHAAQAAAADAAAAAAAHAAUAAAADAAAAAAAIAAIAAAAEAAIAAAA=")
@@ -113,8 +113,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_4pk8d")
+script = ExtResource("3_j4bog")
 player = NodePath("../../Player")
+metadata/_edit_use_anchors_ = true
 
 [node name="PULLS_LEFT" type="RichTextLabel" parent="CRT/UI" unique_id=1462460011]
 layout_mode = 1
@@ -126,14 +127,15 @@ offset_top = 18.0
 offset_bottom = 108.0
 grow_horizontal = 0
 theme_override_constants/outline_size = 23
-theme_override_fonts/normal_font = ExtResource("4_f021o")
-theme_override_fonts/bold_font = ExtResource("4_f021o")
+theme_override_fonts/normal_font = ExtResource("4_wsbyg")
+theme_override_fonts/bold_font = ExtResource("4_wsbyg")
 theme_override_font_sizes/normal_font_size = 58
 bbcode_enabled = true
 text = "PULLS LEFT:"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="FLIES_LEFT" type="RichTextLabel" parent="CRT/UI" unique_id=2025533003]
 layout_mode = 1
@@ -145,8 +147,8 @@ offset_right = 341.5
 offset_bottom = 90.0
 grow_horizontal = 2
 theme_override_constants/outline_size = 23
-theme_override_fonts/normal_font = ExtResource("4_f021o")
-theme_override_fonts/bold_font = ExtResource("4_f021o")
+theme_override_fonts/normal_font = ExtResource("4_wsbyg")
+theme_override_fonts/bold_font = ExtResource("4_wsbyg")
 theme_override_font_sizes/normal_font_size = 58
 bbcode_enabled = true
 text = "PULLS LEFT:"
@@ -163,7 +165,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Player" parent="." unique_id=515176469 node_paths=PackedStringArray("tilemap_layer", "ui_node", "camera") instance=ExtResource("4_4ydut")]
+[node name="Player" parent="." unique_id=515176469 node_paths=PackedStringArray("tilemap_layer", "ui_node", "camera") instance=ExtResource("6_jcf7s")]
 position = Vector2(324, 571)
 motion_mode = 1
 tilemap_layer = NodePath("../TileMapLayer")
