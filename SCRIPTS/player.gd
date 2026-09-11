@@ -7,7 +7,7 @@ const TILE_SIZE = 128
 @export var tilemap_layer: TileMapLayer
 @export var max_pulls: int = 5
 @export var required_bugs: int = 1
-@export var ui_node: Control
+var ui_node;
 
 var remaining_pulls = 0
 var collected_bugs = 0

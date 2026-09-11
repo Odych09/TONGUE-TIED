@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://ch1aj31c4pioj"]
+
+[ext_resource type="Script" uid="uid://c36ckv5ttxw5b" path="res://SCENES/UI/crt.gd" id="1_jc5x0"]
+[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="2_t1itu"]
+[ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="3_1tjdh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7iixq"]
+shader = ExtResource("3_1tjdh")
+shader_parameter/brightness = 1.02
+shader_parameter/contrast = 1.08
+shader_parameter/saturation = 2.0
+shader_parameter/gamma = 1.05
+shader_parameter/curvature = 0.0
+shader_parameter/corner_soften = 0.06
+shader_parameter/vignette = 0.0
+shader_parameter/scanline_strength = 0.0
+shader_parameter/scanline_density = 1.15
+shader_parameter/interlace_strength = 0.2
+shader_parameter/mask_strength = 0.22
+shader_parameter/mask_scale = 1.0
+shader_parameter/chroma_offset_px = 0.0
+shader_parameter/luma_smear_px = 2.2
+shader_parameter/jitter_px = 0.0
+shader_parameter/wobble_px = 0.0
+shader_parameter/tape_noise = 0.22
+shader_parameter/tape_lines = 0.0
+shader_parameter/roll_speed = 0.10000000475
+shader_parameter/roll_strength = 0.15
+shader_parameter/glow_strength = 2.0
+shader_parameter/glow_threshold = 0.65
+
+[node name="CRT" type="CanvasLayer" unique_id=510479985]
+layer = 5
+script = ExtResource("1_jc5x0")
+
+[node name="UI" type="Control" parent="." unique_id=1760769116]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="PULLS_LEFT" type="RichTextLabel" parent="UI" unique_id=259030708]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -683.0
+offset_top = 18.0
+offset_bottom = 108.0
+grow_horizontal = 0
+theme_override_constants/outline_size = 23
+theme_override_fonts/normal_font = ExtResource("2_t1itu")
+theme_override_fonts/bold_font = ExtResource("2_t1itu")
+theme_override_font_sizes/normal_font_size = 58
+bbcode_enabled = true
+text = "PULLS LEFT:"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="FLIES_LEFT" type="RichTextLabel" parent="UI" unique_id=952952309]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -341.5
+offset_right = 341.5
+offset_bottom = 90.0
+grow_horizontal = 2
+theme_override_constants/outline_size = 23
+theme_override_fonts/normal_font = ExtResource("2_t1itu")
+theme_override_fonts/bold_font = ExtResource("2_t1itu")
+theme_override_font_sizes/normal_font_size = 58
+bbcode_enabled = true
+text = "PULLS LEFT:"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=708671421]
+material = SubResource("ShaderMaterial_7iixq")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

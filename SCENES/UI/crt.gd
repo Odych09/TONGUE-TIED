@@ -1,8 +1,8 @@
-extends Control
+extends CanvasLayer
 
 @export var player: Frog
-@onready var pulls_label: RichTextLabel = $PULLS_LEFT
-@onready var bugs_label: RichTextLabel = $FLIES_LEFT
+@onready var pulls_label: RichTextLabel = $UI/PULLS_LEFT
+@onready var bugs_label: RichTextLabel = $UI/FLIES_LEFT
 
 var shake_timer = 0.0
 var base_position: Vector2
@@ -13,6 +13,12 @@ func _ready() -> void:
 	if player:
 		player.connect("player_pulled", Callable(self, "_on_player_pulled"))
 
+func setup_player(p : Frog):
+	player = p;
+	player.ui_node = self;
+	if not player.player_pulled.is_connected(_on_player_pulled):
+		player.player_pulled.connect(_on_player_pulled)
+		
 func _process(delta: float) -> void:
 	if not player:
 		return

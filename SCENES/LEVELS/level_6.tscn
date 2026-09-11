@@ -1,10 +1,9 @@
 [gd_scene format=4 uid="uid://dbju7ngjkibx2"]
 
 [ext_resource type="Texture2D" uid="uid://ct2wwthco5xm" path="res://ASSETS/TILES/tileset_png.png" id="1_0yslm"]
+[ext_resource type="Script" uid="uid://bhc5bfwdlk38j" path="res://SCRIPTS/levels.gd" id="1_belv4"]
 [ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="2_dx5vm"]
-[ext_resource type="Script" uid="uid://b7a32g8okciu1" path="res://SCENES/UI/ui.gd" id="3_belv4"]
-[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="4_md28i"]
-[ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="5_a4101"]
+[ext_resource type="PackedScene" uid="uid://ch1aj31c4pioj" path="res://SCENES/LEVELS/crt.tscn" id="4_0yslm"]
 [ext_resource type="PackedScene" uid="uid://dbdxb7wvjtna1" path="res://SCENES/Player.tscn" id="6_i16h8"]
 [ext_resource type="PackedScene" uid="uid://dw305oodxmtej" path="res://SCENES/enemy.tscn" id="7_dx5vm"]
 
@@ -61,32 +60,8 @@ shader_parameter/speed = 0.3
 shader_parameter/scale = 4.0
 shader_parameter/wave_intensity = 2.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7iixq"]
-shader = ExtResource("5_a4101")
-shader_parameter/brightness = 1.02
-shader_parameter/contrast = 1.08
-shader_parameter/saturation = 2.0
-shader_parameter/gamma = 1.05
-shader_parameter/curvature = 0.0
-shader_parameter/corner_soften = 0.06
-shader_parameter/vignette = 0.0
-shader_parameter/scanline_strength = 0.0
-shader_parameter/scanline_density = 1.15
-shader_parameter/interlace_strength = 0.2
-shader_parameter/mask_strength = 0.22
-shader_parameter/mask_scale = 1.0
-shader_parameter/chroma_offset_px = 0.0
-shader_parameter/luma_smear_px = 2.2
-shader_parameter/jitter_px = 0.0
-shader_parameter/wobble_px = 0.0
-shader_parameter/tape_noise = 0.22
-shader_parameter/tape_lines = 0.0
-shader_parameter/roll_speed = 0.10000000475
-shader_parameter/roll_strength = 0.15
-shader_parameter/glow_strength = 2.0
-shader_parameter/glow_threshold = 0.65
-
 [node name="level_6" type="Node2D" unique_id=878385310]
+script = ExtResource("1_belv4")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1947185227]
 tile_map_data = PackedByteArray("AAABAAcAAAAEAAAAAAACAAcAAAAEAAAAAAADAAcAAAAEAAAAAAAEAAcAAAAEAAAAAAAFAAcAAAAEAAAAAAAGAAcAAAAEAAAAAAAHAAcAAAAEAAAAAAAIAAcAAAAEAAAAAAAJAAcAAAAEAAAAAAAKAAcAAAAEAAAAAAALAAcAAAAEAAAAAAAMAAcAAAAEAAAAAAABAAIAAAAEAAAAAAACAAIAAAAEAAAAAAADAAIAAAAEAAAAAAAEAAIAAAAEAAAAAAAFAAIAAAAEAAAAAAAGAAIAAAAEAAAAAAAHAAIAAAAEAAAAAAAIAAIAAAAEAAAAAAAJAAIAAAAEAAAAAAAKAAIAAAAEAAAAAAALAAIAAAAEAAAAAAAMAAIAAAAEAAAAAAANAAIAAAAEAAAAAAAOAAIAAAAEAAAAAAAAAAIAAAAEAAAAAAAAAAMAAAAEAAAAAAAAAAQAAAAEAAAAAAAAAAUAAAAEAAAAAAAAAAYAAAAEAAAAAAAAAAcAAAAEAAAAAAANAAcAAAAEAAAAAAAOAAcAAAAEAAAAAAAHAAYAAAADAAAAAAAHAAUAAAADAAAAAAAHAAQAAAADAAAAAAAHAAMAAAADAAAAAAAGAAMAAAADAAAAAAAGAAQAAAADAAAAAAAGAAUAAAADAAAAAAAGAAYAAAADAAAAAAAFAAMAAAADAAAAAAAFAAQAAAADAAAAAAAFAAUAAAADAAAAAAAFAAYAAAADAAAAAAAEAAMAAAADAAAAAAAEAAQAAAADAAAAAAAEAAUAAAADAAAAAAAEAAYAAAADAAAAAAAJAAMAAAAEAAIAAAAJAAQAAAAEAAIAAAAJAAUAAAAEAAIAAAANAAYAAAAEAAIAAAANAAUAAAAEAAIAAAANAAQAAAAEAAIAAAALAAMAAAAEAAIAAAALAAYAAAAEAAIAAAALAAUAAAAEAAIAAAAPAAMAAAAEAAIAAAAPAAQAAAAEAAIAAAAPAAYAAAAEAAIAAAAPAAcAAAAEAAAAAAAPAAIAAAAEAAAAAAAPAAUAAAADAAEAAAAQAAcAAAAEAAAAAAARAAcAAAAEAAAAAAAQAAIAAAAEAAAAAAARAAIAAAAEAAAAAAASAAIAAAAEAAAAAAASAAcAAAAEAAAAAAAQAAQAAAAAAAMAAAARAAQAAAAAAAMAAAASAAQAAAAAAAMAAAAQAAYAAAAAAAMAAAARAAYAAAAAAAMAAAASAAYAAAAAAAMAAAAQAAMAAAACAAAAAAASAAMAAAAFAAAAAAARAAMAAAADAAAAAAATAAQAAAAAAAMAAAATAAYAAAAAAAMAAAAUAAYAAAAAAAMAAAAVAAYAAAAAAAMAAAAUAAQAAAAAAAMAAAAVAAQAAAAAAAMAAAAWAAYAAAAAAAMAAAAXAAUAAAAAAAMAAAAWAAMAAAAAAAMAAAAWAAIAAAAAAAMAAAAYAAMAAAAAAAMAAAAYAAQAAAAAAAMAAAAYAAIAAAAAAAMAAAATAAcAAAAEAAAAAAAUAAcAAAAEAAAAAAAVAAcAAAAEAAAAAAAWAAcAAAAEAAAAAAAXAAcAAAAEAAAAAAAXAAYAAAAEAAAAAAAYAAUAAAAEAAAAAAAZAAQAAAAEAAAAAAAZAAMAAAAEAAAAAAAZAAIAAAAEAAAAAAAaAAIAAAAEAAAAAAAbAAIAAAAEAAAAAAAbAAEAAAAEAAAAAAAbAAAAAAAEAAAAAAAbAP//AAAEAAAAAAAaAP//AAAEAAAAAAAZAP//AAAEAAAAAAAYAP//AAAEAAAAAAAXAP//AAAEAAAAAAAWAP//AAAEAAAAAAAVAP//AAAEAAAAAAAUAP//AAAEAAAAAAATAP//AAAEAAAAAAASAP//AAAEAAAAAAASAAAAAAAEAAAAAAASAAEAAAAEAAAAAAAQAAUAAAADAAAAAAARAAUAAAADAAAAAAASAAUAAAADAAAAAAATAAUAAAADAAAAAAAUAAUAAAADAAAAAAAVAAUAAAADAAAAAAAWAAUAAAADAAAAAAAWAAQAAAADAAAAAAAXAAQAAAADAAAAAAAXAAMAAAADAAAAAAAXAAIAAAADAAAAAAA=")
@@ -104,75 +79,15 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="CRT" type="CanvasLayer" parent="." unique_id=1356541309]
-layer = 5
+[node name="CRT" parent="." unique_id=510479985 node_paths=PackedStringArray("player") instance=ExtResource("4_0yslm")]
+player = NodePath("../Player")
 
-[node name="UI" type="Control" parent="CRT" unique_id=25600132 node_paths=PackedStringArray("player")]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("3_belv4")
-player = NodePath("../../Player")
-metadata/_edit_use_anchors_ = true
-
-[node name="PULLS_LEFT" type="RichTextLabel" parent="CRT/UI" unique_id=92926789]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -683.0
-offset_top = 18.0
-offset_bottom = 108.0
-grow_horizontal = 0
-theme_override_constants/outline_size = 23
-theme_override_fonts/normal_font = ExtResource("4_md28i")
-theme_override_fonts/bold_font = ExtResource("4_md28i")
-theme_override_font_sizes/normal_font_size = 58
-bbcode_enabled = true
-text = "PULLS LEFT:"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="FLIES_LEFT" type="RichTextLabel" parent="CRT/UI" unique_id=372403719]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -341.5
-offset_right = 341.5
-offset_bottom = 90.0
-grow_horizontal = 2
-theme_override_constants/outline_size = 23
-theme_override_fonts/normal_font = ExtResource("4_md28i")
-theme_override_fonts/bold_font = ExtResource("4_md28i")
-theme_override_font_sizes/normal_font_size = 58
-bbcode_enabled = true
-text = "PULLS LEFT:"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ColorRect" type="ColorRect" parent="CRT" unique_id=867006724]
-material = SubResource("ShaderMaterial_7iixq")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="Player" parent="." unique_id=515176469 node_paths=PackedStringArray("tilemap_layer", "ui_node", "camera") instance=ExtResource("6_i16h8")]
+[node name="Player" parent="." unique_id=515176469 node_paths=PackedStringArray("tilemap_layer", "camera") instance=ExtResource("6_i16h8")]
 position = Vector2(324, 571)
 motion_mode = 1
 tilemap_layer = NodePath("../TileMapLayer")
 max_pulls = 4
 required_bugs = 3
-ui_node = NodePath("../CRT/UI")
 camera = NodePath("Camera2D")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=720503385]
