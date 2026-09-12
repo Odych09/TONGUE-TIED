@@ -276,5 +276,6 @@ func trigger_win():
 	tween.tween_property(sprite, "scale", Vector2(1.5, 1.5), 0.2).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(sprite, "scale", Vector2.ZERO, 0.2)
 	tween.chain().tween_callback(func():
-		get_tree().reload_current_scene()
+		GameManager.ChangeLevel.emit()
 	)
+	print("why the fuck i am here?")
