@@ -1,14 +1,14 @@
-[gd_scene format=4 uid="uid://d0kf8jx2x6vk3"]
+[gd_scene format=4 uid="uid://brmx5dy0lkb38"]
 
-[ext_resource type="Texture2D" uid="uid://ct2wwthco5xm" path="res://ASSETS/TILES/tileset_png.png" id="1_ohesy"]
-[ext_resource type="Script" uid="uid://bhc5bfwdlk38j" path="res://SCRIPTS/levels.gd" id="1_s88r1"]
-[ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="2_i8ky0"]
-[ext_resource type="PackedScene" uid="uid://ch1aj31c4pioj" path="res://SCENES/LEVELS/crt.tscn" id="5_f0rly"]
-[ext_resource type="PackedScene" uid="uid://dbdxb7wvjtna1" path="res://SCENES/Player.tscn" id="6_rowrb"]
-[ext_resource type="PackedScene" uid="uid://dw305oodxmtej" path="res://SCENES/enemy.tscn" id="7_pf313"]
+[ext_resource type="Script" uid="uid://bhc5bfwdlk38j" path="res://SCRIPTS/levels.gd" id="1_65brp"]
+[ext_resource type="Texture2D" uid="uid://ct2wwthco5xm" path="res://ASSETS/TILES/tileset_png.png" id="2_jb8h1"]
+[ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="3_0eutv"]
+[ext_resource type="PackedScene" uid="uid://dbdxb7wvjtna1" path="res://SCENES/Player.tscn" id="4_r6nv4"]
+[ext_resource type="PackedScene" uid="uid://dw305oodxmtej" path="res://SCENES/enemy.tscn" id="5_0aar2"]
+[ext_resource type="PackedScene" uid="uid://ch1aj31c4pioj" path="res://SCENES/LEVELS/crt.tscn" id="6_evqrj"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wvd0d"]
-texture = ExtResource("1_ohesy")
+texture = ExtResource("2_jb8h1")
 margins = Vector2i(63, 65)
 separation = Vector2i(64, 0)
 texture_region_size = Vector2i(128, 128)
@@ -52,7 +52,7 @@ custom_data_layer_0/type = 4
 sources/0 = SubResource("TileSetAtlasSource_wvd0d")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k1hc4"]
-shader = ExtResource("2_i8ky0")
+shader = ExtResource("3_0eutv")
 shader_parameter/base_dark_blue = Color(0.17262742, 0.24754325, 0.50558704, 1)
 shader_parameter/cyan_glow = Color(0, 0.4, 0.8, 1)
 shader_parameter/deep_purple = Color(0.5379149, 0.40068102, 0.9487458, 1)
@@ -61,7 +61,7 @@ shader_parameter/scale = 4.0
 shader_parameter/wave_intensity = 2.0
 
 [node name="levl_11" type="Node2D" unique_id=712370164]
-script = ExtResource("1_s88r1")
+script = ExtResource("1_65brp")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1626986601]
 tile_map_data = PackedByteArray("AAD//wEAAAAEAAAAAAD//wIAAAAEAAAAAAD//wMAAAAEAAAAAAD//wQAAAAEAAAAAAD//wUAAAAEAAAAAAD//wYAAAAEAAAAAAAAAAcAAAAEAAAAAAABAAgAAAAEAAAAAAACAAkAAAAEAAAAAAADAAoAAAAEAAAAAAAEAAoAAAAEAAAAAAAFAAoAAAAEAAAAAAAGAAoAAAAEAAAAAAAHAAoAAAAEAAAAAAAIAAoAAAAEAAAAAAAJAAoAAAAEAAAAAAAKAAoAAAAEAAAAAAD//wAAAAAEAAAAAAD/////AAAEAAAAAAAAAP7/AAAEAAAAAAABAP3/AAAEAAAAAAACAPz/AAAEAAAAAAALAAkAAAAEAAAAAAAMAAgAAAAEAAAAAAANAAcAAAAEAAAAAAAOAAYAAAAEAAAAAAAOAAUAAAAEAAAAAAAOAAQAAAAEAAAAAAAOAAEAAAAEAAAAAAAOAAAAAAAEAAAAAAAOAP//AAAEAAAAAAANAP7/AAAEAAAAAAAMAP3/AAAEAAAAAAALAPz/AAAEAAAAAAADAPv/AAAEAAAAAAAEAPv/AAAEAAAAAAAFAPv/AAAEAAAAAAAGAPv/AAAEAAAAAAAHAPv/AAAEAAAAAAAIAPv/AAAEAAAAAAAJAPv/AAAEAAAAAAAKAPv/AAAEAAAAAAAEAAEAAAAAAAMAAAAEAAIAAAAAAAMAAAAEAAMAAAAAAAMAAAAEAAQAAAAAAAMAAAAJAAEAAAAAAAMAAAAJAAIAAAAAAAMAAAAJAAMAAAAAAAMAAAAJAAQAAAAAAAMAAAAFAAUAAAAEAAIAAAAGAAUAAAADAAAAAAAHAAUAAAADAAAAAAAIAAUAAAAEAAIAAAAFAAAAAAAEAAIAAAAIAAAAAAAEAAIAAAAGAAAAAAADAAAAAAAHAAAAAAADAAAAAAAGAAEAAAAFAAAAAAAHAAEAAAAFAAAAAAAGAAQAAAAFAAAAAAAHAAQAAAAFAAAAAAAFAAYAAAADAAAAAAAGAAYAAAADAAAAAAAHAAYAAAADAAAAAAAIAAYAAAADAAAAAAAJAAUAAAADAAAAAAAEAAUAAAADAAAAAAADAAQAAAADAAAAAAADAAMAAAADAAAAAAADAAIAAAADAAAAAAADAAEAAAADAAAAAAAEAAAAAAADAAAAAAAFAP//AAADAAAAAAAHAP//AAADAAAAAAAIAP//AAADAAAAAAAKAAEAAAADAAAAAAAKAAIAAAADAAAAAAAJAAAAAAADAAAAAAAKAAMAAAADAAAAAAAKAAQAAAADAAAAAAAEAAYAAAAAAAMAAAACAAgAAAAAAAMAAAABAAcAAAAAAAMAAAADAAUAAAAAAAMAAAACAAcAAAADAAAAAAADAAYAAAADAAAAAAALAAgAAAAAAAMAAAAJAAYAAAAAAAMAAAALAAcAAAADAAAAAAAKAAYAAAADAAAAAAAKAAUAAAAAAAMAAAAMAAcAAAAAAAMAAAACAAQAAAAAAAMAAAACAAMAAAAAAAMAAAACAAIAAAAAAAMAAAACAAEAAAAAAAMAAAADAAAAAAAAAAMAAAAKAAAAAAAAAAMAAAALAAQAAAAAAAMAAAALAAMAAAAAAAMAAAALAAIAAAAAAAMAAAALAAEAAAAAAAMAAAAEAP//AAAAAAMAAAABAP7/AAAAAAMAAAACAP3/AAAAAAMAAAALAP3/AAAAAAMAAAAMAP7/AAAAAAMAAAACAP7/AAADAAAAAAADAP//AAADAAAAAAAKAP//AAADAAAAAAALAP7/AAADAAAAAAAJAP//AAAAAAMAAAADAAkAAAAEAAIAAAAEAAkAAAAEAAIAAAAFAAkAAAAEAAIAAAAGAAkAAAADAAEAAAAHAAkAAAADAAEAAAAIAAkAAAAEAAIAAAAJAAkAAAAEAAIAAAAKAAkAAAAEAAIAAAAAAP//AAAEAAIAAAAAAAAAAAAEAAIAAAAAAAEAAAAEAAIAAAAAAAIAAAADAAEAAAAAAAMAAAADAAEAAAAAAAQAAAAEAAIAAAAAAAUAAAAEAAIAAAAAAAYAAAAEAAIAAAANAAYAAAAEAAIAAAANAAUAAAAEAAIAAAANAAQAAAAEAAIAAAANAAEAAAAEAAIAAAANAAAAAAAEAAIAAAANAP//AAAEAAIAAAADAPz/AAAEAAIAAAAEAPz/AAAEAAIAAAAFAPz/AAAEAAIAAAAGAPz/AAADAAEAAAAHAPz/AAADAAEAAAAIAPz/AAAEAAIAAAAJAPz/AAAEAAIAAAAKAPz/AAAEAAIAAAAGAP//AAADAAAAAAAPAAEAAAAEAAAAAAAQAAIAAAAEAAAAAAAQAAMAAAAEAAAAAAAQAAQAAAAEAAAAAAAPAAQAAAAEAAAAAAAQAAEAAAAEAAAAAAALAAAAAAADAAAAAAAMAAAAAAADAAAAAAAMAAEAAAADAAAAAAAMAAIAAAADAAAAAAAMAAMAAAADAAAAAAAMAAQAAAADAAAAAAALAAUAAAADAAAAAAAMAAUAAAADAAAAAAANAAIAAAAFAAAAAAANAAMAAAAFAAAAAAAOAAIAAAADAAAAAAAOAAMAAAADAAAAAAAPAAIAAAACAAAAAAAPAAMAAAACAAAAAAAFAP7/AAAAAAMAAAAIAP7/AAAAAAMAAAA=")
@@ -79,7 +79,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Player" parent="." unique_id=515176469 node_paths=PackedStringArray("tilemap_layer", "camera") instance=ExtResource("6_rowrb")]
+[node name="Player" parent="." unique_id=515176469 node_paths=PackedStringArray("tilemap_layer", "camera") instance=ExtResource("4_r6nv4")]
 position = Vector2(880, 433)
 motion_mode = 1
 tilemap_layer = NodePath("../TileMapLayer")
@@ -94,21 +94,21 @@ limit_top = -955
 limit_right = 3122
 limit_bottom = 1494
 
-[node name="Enemy" parent="." unique_id=1920425195 node_paths=PackedStringArray("player", "tilemap_layer") instance=ExtResource("7_pf313")]
+[node name="Enemy" parent="." unique_id=1920425195 node_paths=PackedStringArray("player", "tilemap_layer") instance=ExtResource("5_0aar2")]
 position = Vector2(452, 1081)
 motion_mode = 1
 player = NodePath("../Player")
 tilemap_layer = NodePath("../TileMapLayer")
 patrol_steps = 7
 
-[node name="Enemy3" parent="." unique_id=726947214 node_paths=PackedStringArray("player", "tilemap_layer") instance=ExtResource("7_pf313")]
+[node name="Enemy3" parent="." unique_id=726947214 node_paths=PackedStringArray("player", "tilemap_layer") instance=ExtResource("5_0aar2")]
 position = Vector2(446, -197)
 motion_mode = 1
 player = NodePath("../Player")
 tilemap_layer = NodePath("../TileMapLayer")
 patrol_steps = 1
 
-[node name="Enemy4" parent="." unique_id=1626766828 node_paths=PackedStringArray("player", "tilemap_layer") instance=ExtResource("7_pf313")]
+[node name="Enemy4" parent="." unique_id=1626766828 node_paths=PackedStringArray("player", "tilemap_layer") instance=ExtResource("5_0aar2")]
 position = Vector2(1339, -217)
 motion_mode = 1
 player = NodePath("../Player")
@@ -116,7 +116,7 @@ tilemap_layer = NodePath("../TileMapLayer")
 patrol_direction = Vector2(-1, 0)
 patrol_steps = 1
 
-[node name="Enemy2" parent="." unique_id=479154649 node_paths=PackedStringArray("player", "tilemap_layer") instance=ExtResource("7_pf313")]
+[node name="Enemy2" parent="." unique_id=479154649 node_paths=PackedStringArray("player", "tilemap_layer") instance=ExtResource("5_0aar2")]
 position = Vector2(1342, 962)
 motion_mode = 1
 player = NodePath("../Player")
@@ -124,5 +124,5 @@ tilemap_layer = NodePath("../TileMapLayer")
 patrol_direction = Vector2(-1, 0)
 patrol_steps = 7
 
-[node name="CRT2" parent="." unique_id=510479985 node_paths=PackedStringArray("player") instance=ExtResource("5_f0rly")]
+[node name="CRT2" parent="." unique_id=510479985 node_paths=PackedStringArray("player") instance=ExtResource("6_evqrj")]
 player = NodePath("../Player")
