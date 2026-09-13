@@ -11,8 +11,14 @@ config_version=5
 [application]
 
 config/name="FROG_GAME"
+run/main_scene="uid://ylo3o6oh0ppb"
 config/features=PackedStringArray("4.7", "Mobile")
-config/icon="uid://bka37dohhrmq8"
+config/icon="uid://ca7pbj1jbccv5"
+
+[autoload]
+
+GameManager="*uid://xppkkuoxmfhb"
+TransitionLayer="*uid://b2l4lrpmr5c6y"
 
 [display]
 
@@ -40,4 +46,4 @@ folder_colors={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"

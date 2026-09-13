@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dbdxb7wvjtna1"]
 
 [ext_resource type="Script" uid="uid://cxh6fr537aie3" path="res://SCRIPTS/player.gd" id="1_667t4"]
-[ext_resource type="Texture2D" uid="uid://bka37dohhrmq8" path="res://ASSETS/CHARACTER/frog.png" id="1_esb2h"]
+[ext_resource type="Texture2D" uid="uid://ca7pbj1jbccv5" path="res://ASSETS/TILES/frog1.png" id="2_667t4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xrivr"]
 radius = 65.03076
@@ -10,7 +10,8 @@ radius = 65.03076
 script = ExtResource("1_667t4")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1340845868]
-texture = ExtResource("1_esb2h")
+z_index = 2
+texture = ExtResource("2_667t4")
 
 [node name="Line2D" type="Line2D" parent="." unique_id=553188206]
 default_color = Color(1.6859999, 0.52303547, 1.6757697, 1)

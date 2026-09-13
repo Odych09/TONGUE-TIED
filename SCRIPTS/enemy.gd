@@ -19,6 +19,13 @@ var is_moving = false
 func _ready():
 	position = get_tile_center(position)
 	move_timer.timeout.connect(_on_move_timer_timeout)
+	update_facing(patrol_direction)
+
+func update_facing(dir: Vector2):
+	if sprite and dir != Vector2.ZERO:
+		# croc1.png faces DOWN natively (PI/2 radians)
+		var target_rotation = dir.angle() - (PI / 2.0)
+		sprite.rotation = target_rotation
 
 func _on_move_timer_timeout():
 	if is_moving or (player and player.is_dead):
@@ -30,18 +37,25 @@ func _on_move_timer_timeout():
 	# Check if the enemy is walking into a wall tile
 	if tilemap_layer and get_tile_type_at(next_pos) == "wall":
 		moving_forward = not moving_forward
+		step_dir = patrol_direction if moving_forward else -patrol_direction
+		update_facing(step_dir)
 		return
 		
+	is_moving = true
+	
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(self, "position", next_pos, 0.15).set_trans(Tween.TRANS_QUAD)
+	
+	# Smoothly turn sprite towards the step direction
+	var target_rot = step_dir.angle() - (PI / 2.0)
+	tween.tween_property(sprite, "rotation", target_rot, 0.15).set_trans(Tween.TRANS_QUAD)
+	
 	current_step += 1
 	if current_step >= patrol_steps:
 		current_step = 0
 		moving_forward = not moving_forward
-		
-	is_moving = true
-	var tween = create_tween()
-	tween.tween_property(self, "position", next_pos, 0.15).set_trans(Tween.TRANS_QUAD)
 	
-	tween.tween_callback(func():
+	tween.chain().tween_callback(func():
 		is_moving = false
 		
 		if player and not player.is_dead:

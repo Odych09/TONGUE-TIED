@@ -1,0 +1,178 @@
+[gd_scene format=3 uid="uid://bjdglxl4fb47s"]
+
+[ext_resource type="Script" uid="uid://c3u8um8ah7vjn" path="res://SCENES/LEVELS/MainMenu.gd" id="1_5cyo5"]
+[ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="1_i0lhj"]
+[ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="2_flj8n"]
+[ext_resource type="Texture2D" uid="uid://fb0fn2553vnr" path="res://ASSETS/TILES/box2.png" id="3_5cyo5"]
+[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="4_cvoun"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k3vnx"]
+shader = ExtResource("1_i0lhj")
+shader_parameter/base_dark_blue = Color(0.491512, 0.593768, 0.88595, 1)
+shader_parameter/cyan_glow = Color(0, 0.476966, 0.944609, 1)
+shader_parameter/deep_purple = Color(0.129412, 0.768627, 0.988235, 1)
+shader_parameter/speed = 0.3
+shader_parameter/scale = 4.0
+shader_parameter/wave_intensity = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cvoun"]
+shader = ExtResource("2_flj8n")
+shader_parameter/brightness = 1.02
+shader_parameter/contrast = 1.08
+shader_parameter/saturation = 2.0
+shader_parameter/gamma = 1.05
+shader_parameter/curvature = 0.0
+shader_parameter/corner_soften = 0.06
+shader_parameter/vignette = 0.0
+shader_parameter/scanline_strength = 0.0
+shader_parameter/scanline_density = 1.15
+shader_parameter/interlace_strength = 0.2
+shader_parameter/mask_strength = 0.22
+shader_parameter/mask_scale = 1.0
+shader_parameter/chroma_offset_px = 0.0
+shader_parameter/luma_smear_px = 2.2
+shader_parameter/jitter_px = 0.0
+shader_parameter/wobble_px = 0.0
+shader_parameter/tape_noise = 0.22
+shader_parameter/tape_lines = 0.0
+shader_parameter/roll_speed = 0.1
+shader_parameter/roll_strength = 0.15
+shader_parameter/glow_strength = 2.0
+shader_parameter/glow_threshold = 0.65
+
+[node name="MAIN_MENU" type="Control" unique_id=1897658910]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5cyo5")
+
+[node name="BG" type="CanvasLayer" parent="." unique_id=380612676]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="BG" unique_id=533402743]
+material = SubResource("ShaderMaterial_k3vnx")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=537313187]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1366447376]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="Title" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=483332586]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1892374612]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="PLAY" type="TextureButton" parent="MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1850382313]
+custom_minimum_size = Vector2(400, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("3_5cyo5")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/ButtonsContainer/PLAY" unique_id=503319831]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/outline_size = 51
+theme_override_fonts/normal_font = ExtResource("4_cvoun")
+theme_override_font_sizes/normal_font_size = 78
+bbcode_enabled = true
+text = "Play"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SETTINGS" type="TextureButton" parent="MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1591532868]
+custom_minimum_size = Vector2(400, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("3_5cyo5")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/ButtonsContainer/SETTINGS" unique_id=2042246812]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/outline_size = 51
+theme_override_fonts/normal_font = ExtResource("4_cvoun")
+theme_override_font_sizes/normal_font_size = 78
+bbcode_enabled = true
+text = "Settings"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="QUIT" type="TextureButton" parent="MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1664061040]
+custom_minimum_size = Vector2(400, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("3_5cyo5")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/ButtonsContainer/QUIT" unique_id=1424996727]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/outline_size = 51
+theme_override_fonts/normal_font = ExtResource("4_cvoun")
+theme_override_font_sizes/normal_font_size = 78
+bbcode_enabled = true
+text = "Quit"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CRTOverlay" type="CanvasLayer" parent="." unique_id=869595719]
+layer = 10
+
+[node name="ColorRect" type="ColorRect" parent="CRTOverlay" unique_id=142045339]
+material = SubResource("ShaderMaterial_cvoun")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

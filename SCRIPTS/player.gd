@@ -1,37 +1,36 @@
+class_name Frog
 extends CharacterBody2D
 
-class_name Frog
+signal player_pulled
 
-const TILE_SIZE = 128
+const TILE_SIZE: float = 128.0
 
 @export var tilemap_layer: TileMapLayer
 @export var max_pulls: int = 5
 @export var required_bugs: int = 1
-var ui_node;
-
-var remaining_pulls = 0
-var collected_bugs = 0
-var tongue_path = []
-var is_latching = false
-var is_dead = false
-
-var shake_strength = 0.0
-var shake_fade = 5.0
-
-@onready var tongue_line = $Line2D
-@onready var sprite = $Sprite2D
 @export var camera: Camera2D
 
-signal player_pulled
+@onready var tongue_line: Line2D = $Line2D
+@onready var sprite: Sprite2D = $Sprite2D
 
-func _ready():
+var ui_node: Node
+var remaining_pulls: int = 0
+var collected_bugs: int = 0
+var tongue_path: Array[Vector2] = []
+var is_latching: bool = false
+var is_dead: bool = false
+
+var shake_strength: float = 0.0
+var shake_fade: float = 5.0
+
+func _ready() -> void:
 	remaining_pulls = max_pulls
 	tongue_line.top_level = true
 	position = get_tile_center(position)
 	tongue_path.append(position)
 	update_tongue_visuals()
 
-func _process(delta):
+func _process(delta: float) -> void:
 	if is_latching and tongue_line.get_point_count() > 0:
 		tongue_line.set_point_position(0, position)
 		
@@ -43,15 +42,15 @@ func _process(delta):
 		if camera:
 			camera.offset = Vector2.ZERO
 
-func _unhandled_input(event):
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") or Input.is_key_pressed(KEY_R):
-		get_tree().reload_current_scene()
+		GameManager.restart_level()
 		return
 
 	if is_latching or is_dead:
 		return
 		
-	var direction = Vector2.ZERO
+	var direction := Vector2.ZERO
 	if event.is_action_pressed("ui_right"):
 		direction = Vector2.RIGHT
 	elif event.is_action_pressed("ui_left"):
@@ -67,9 +66,21 @@ func _unhandled_input(event):
 	if event.is_action_pressed("ui_accept"):
 		pull_frog()
 
-func extend_tongue(direction: Vector2):
-	var current_head = tongue_path.back()
-	var next_pos = current_head + (direction * TILE_SIZE)
+func rotate_to_direction(direction: Vector2, duration: float = 0.1) -> void:
+	if direction == Vector2.ZERO:
+		return
+	# + PI/2 offset aligns Godot's RIGHT (0 rad) to the sprite's UP resting pose
+	var target_angle := direction.angle() + (PI / 2.0)
+	var angle_diff := angle_difference(sprite.rotation, target_angle)
+	
+	var tween := create_tween()
+	tween.tween_property(sprite, "rotation", sprite.rotation + angle_diff, duration)\
+		.set_trans(Tween.TRANS_QUAD)\
+		.set_ease(Tween.EASE_OUT)
+
+func extend_tongue(direction: Vector2) -> void:
+	var current_head := tongue_path.back() as Vector2
+	var next_pos := current_head + (direction * TILE_SIZE)
 	
 	if tongue_path.size() > 1 and next_pos.is_equal_approx(tongue_path[tongue_path.size() - 2]):
 		tongue_path.pop_back()
@@ -79,8 +90,12 @@ func extend_tongue(direction: Vector2):
 	for p in tongue_path:
 		if p.is_equal_approx(next_pos):
 			return
-			
-	var tile_type = get_tile_type_at(next_pos)
+
+	# Snappily turn the frog toward the tongue direction on initial extension
+	if tongue_path.size() == 1:
+		rotate_to_direction(direction, 0.12)
+
+	var tile_type := get_tile_type_at(next_pos)
 	
 	if tile_type == "pushable_box":
 		push_tile_box(next_pos, direction)
@@ -95,25 +110,24 @@ func extend_tongue(direction: Vector2):
 	tongue_path.append(next_pos)
 	update_tongue_visuals()
 
-func push_tile_box(box_world_pos: Vector2, direction: Vector2):
-	var next_world_pos = box_world_pos + (direction * TILE_SIZE)
-	var next_tile_type = get_tile_type_at(next_world_pos)
+func push_tile_box(box_world_pos: Vector2, direction: Vector2) -> void:
+	var next_world_pos := box_world_pos + (direction * TILE_SIZE)
+	var next_tile_type := get_tile_type_at(next_world_pos)
 	
 	if next_tile_type == "wall" or next_tile_type == "pushable_box":
 		shake_strength = 10.0
 		return
 		
-	var map_pos = tilemap_layer.local_to_map(tilemap_layer.to_local(box_world_pos))
-	var next_map_pos = map_pos + Vector2i(direction)
+	var map_pos := tilemap_layer.local_to_map(tilemap_layer.to_local(box_world_pos))
+	var next_map_pos := map_pos + Vector2i(direction)
 	
 	if next_tile_type == "water":
 		tilemap_layer.erase_cell(map_pos)
 		tilemap_layer.erase_cell(next_map_pos)
-		
 		tongue_path.append(box_world_pos)
 		update_tongue_visuals()
 		
-		var tween = create_tween()
+		var tween := create_tween()
 		tween.tween_interval(0.1)
 		tween.tween_callback(func():
 			tongue_path.pop_back()
@@ -125,9 +139,9 @@ func push_tile_box(box_world_pos: Vector2, direction: Vector2):
 		shake_strength = 10.0
 		return
 		
-	var source_id = tilemap_layer.get_cell_source_id(map_pos)
-	var atlas_coords = tilemap_layer.get_cell_atlas_coords(map_pos)
-	var alt_tile = tilemap_layer.get_cell_alternative_tile(map_pos)
+	var source_id := tilemap_layer.get_cell_source_id(map_pos)
+	var atlas_coords := tilemap_layer.get_cell_atlas_coords(map_pos)
+	var alt_tile := tilemap_layer.get_cell_alternative_tile(map_pos)
 	
 	tilemap_layer.erase_cell(map_pos)
 	tilemap_layer.set_cell(next_map_pos, source_id, atlas_coords, alt_tile)
@@ -135,14 +149,14 @@ func push_tile_box(box_world_pos: Vector2, direction: Vector2):
 	tongue_path.append(box_world_pos)
 	update_tongue_visuals()
 	
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.tween_interval(0.1)
 	tween.tween_callback(func():
 		tongue_path.pop_back()
 		update_tongue_visuals()
 	)
 
-func pull_frog():
+func pull_frog() -> void:
 	if tongue_path.size() > 1:
 		if remaining_pulls <= 0:
 			shake_strength = 15.0
@@ -152,46 +166,45 @@ func pull_frog():
 			
 		remaining_pulls -= 1
 		is_latching = true
-		emit_signal("player_pulled")
+		player_pulled.emit()
 		
-		var tween = create_tween()
+		var tween := create_tween()
 		tween.tween_property(sprite, "scale", Vector2(1.2, 0.8), 0.1)
 		tween.tween_property(sprite, "scale", Vector2(0.8, 1.2), 0.1)
 		tween.tween_callback(traverse_tongue)
 
-func traverse_tongue():
+func traverse_tongue() -> void:
 	if tongue_path.size() <= 1:
 		reset_tongue()
 		return
 		
-	var next_pos = tongue_path[1]
+	var next_pos := tongue_path[1]
+	var tile_type := get_tile_type_at(next_pos)
 	
-	var tile_type = get_tile_type_at(next_pos)
 	if tile_type == "frog_hazard":
 		kill_frog(next_pos)
 		return
 	
-	var direction = (next_pos - position).normalized()
-	sprite.rotation = direction.angle()
+	var direction := (next_pos - position).normalized()
+	rotate_to_direction(direction, 0.06)
 	
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.tween_property(self, "position", next_pos, 0.08).set_trans(Tween.TRANS_LINEAR)
 	
 	tween.tween_callback(func():
 		tongue_path.pop_front()
 		update_tongue_visuals()
 		
-		var current_tile_pos = tilemap_layer.local_to_map(tilemap_layer.to_local(position))
-		var current_tile_type = get_tile_type_at(position)
+		var current_tile_pos := tilemap_layer.local_to_map(tilemap_layer.to_local(position))
+		var current_tile_type := get_tile_type_at(position)
 		
 		if current_tile_type == "bug":
 			collected_bugs += 1
 			tilemap_layer.erase_cell(current_tile_pos)
 		
-		if current_tile_type == "water":
-			if tongue_path.size() <= 1:
-				kill_frog(position)
-				return
+		if current_tile_type == "water" and tongue_path.size() <= 1:
+			kill_frog(position)
+			return
 		
 		if current_tile_type == "win":
 			if collected_bugs >= required_bugs:
@@ -207,14 +220,14 @@ func get_tile_type_at(world_pos: Vector2) -> String:
 	if not tilemap_layer or not tilemap_layer.tile_set:
 		return ""
 		
-	var layer_index = tilemap_layer.tile_set.get_custom_data_layer_by_name("type")
+	var layer_index := tilemap_layer.tile_set.get_custom_data_layer_by_name("type")
 	if layer_index < 0:
 		return ""
 		
-	var local_pos = tilemap_layer.to_local(world_pos)
-	var map_pos = tilemap_layer.local_to_map(local_pos)
+	var local_pos := tilemap_layer.to_local(world_pos)
+	var map_pos := tilemap_layer.local_to_map(local_pos)
 	
-	var tile_data = tilemap_layer.get_cell_tile_data(map_pos)
+	var tile_data := tilemap_layer.get_cell_tile_data(map_pos)
 	if tile_data:
 		var custom_data = tile_data.get_custom_data("type")
 		if custom_data != null:
@@ -223,33 +236,36 @@ func get_tile_type_at(world_pos: Vector2) -> String:
 	return ""
 
 func get_tile_center(pos: Vector2) -> Vector2:
-	var grid_pos = floor(pos / TILE_SIZE)
+	var grid_pos := (pos / TILE_SIZE).floor()
 	return (grid_pos * TILE_SIZE) + Vector2(TILE_SIZE / 2.0, TILE_SIZE / 2.0)
 
-func update_tongue_visuals():
+func update_tongue_visuals() -> void:
 	tongue_line.clear_points()
 	for p in tongue_path:
 		tongue_line.add_point(p)
 
-func reset_tongue():
+func reset_tongue() -> void:
 	tongue_path.clear()
 	tongue_path.append(position)
 	update_tongue_visuals()
 	is_latching = false
-	
 	shake_strength = 20.0
-	sprite.rotation = 0
 	
-	var tween = create_tween()
-	tween.tween_property(sprite, "scale", Vector2(1.4, 0.6), 0.05)
+	# Smoothly return to standard UP orientation (0 rad relative to resting pose)
+	var angle_diff := angle_difference(sprite.rotation, 0.0)
+	
+	var tween := create_tween()
+	tween.tween_property(sprite, "rotation", sprite.rotation + angle_diff, 0.2)
+	tween.parallel().tween_property(sprite, "scale", Vector2(1.4, 0.6), 0.05)
 	tween.tween_property(sprite, "scale", Vector2(1.0, 1.0), 0.4).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
-func hurt_tongue(hazard_pos: Vector2):
+func hurt_tongue(hazard_pos: Vector2) -> void:
 	shake_strength = 10.0
 	tongue_path.append(hazard_pos)
 	update_tongue_visuals()
 	tongue_line.modulate = Color.RED
-	var timer_tween = create_tween()
+	
+	var timer_tween := create_tween()
 	timer_tween.tween_interval(0.1)
 	timer_tween.tween_callback(func():
 		tongue_path.pop_back()
@@ -257,24 +273,26 @@ func hurt_tongue(hazard_pos: Vector2):
 		tongue_line.modulate = Color.WHITE
 	)
 
-func kill_frog(death_pos: Vector2):
+func kill_frog(death_pos: Vector2) -> void:
 	is_dead = true
 	shake_strength = 30.0
-	var tween = create_tween()
+	
+	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(self, "position", death_pos, 0.15).set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(sprite, "rotation", PI * 4, 0.3)
 	tween.tween_property(sprite, "scale", Vector2.ZERO, 0.3)
 	tween.chain().tween_callback(func():
-		get_tree().reload_current_scene()
+		GameManager.restart_level()
 	)
 
-func trigger_win():
+func trigger_win() -> void:
 	is_dead = true
 	shake_strength = 5.0
-	var tween = create_tween()
+	
+	var tween := create_tween()
 	tween.tween_property(sprite, "scale", Vector2(1.5, 1.5), 0.2).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(sprite, "scale", Vector2.ZERO, 0.2)
 	tween.chain().tween_callback(func():
-		get_tree().reload_current_scene()
+		GameManager.next_level()
 	)

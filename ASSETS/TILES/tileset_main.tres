@@ -1,0 +1,111 @@
+[gd_resource type="TileSet" format=3 uid="uid://521ckdcudgjm"]
+
+[ext_resource type="Texture2D" uid="uid://ct2wwthco5xm" path="res://ASSETS/TILES/tileset_png.png" id="1_7ykgj"]
+[ext_resource type="Texture2D" uid="uid://fb0fn2553vnr" path="res://ASSETS/TILES/box2.png" id="2_acniw"]
+[ext_resource type="Texture2D" uid="uid://gn4i65yx74ci" path="res://ASSETS/TILES/fly1.png" id="3_lyt21"]
+[ext_resource type="Texture2D" uid="uid://fbc0puy52y5g" path="res://ASSETS/TILES/pad1.png" id="4_3inlh"]
+[ext_resource type="Texture2D" uid="uid://coy4xp8cfbcs" path="res://ASSETS/TILES/pole1.png" id="5_5uis6"]
+[ext_resource type="Texture2D" uid="uid://bdmlmhxopp4rd" path="res://ASSETS/TILES/trap1.png" id="6_ucbf3"]
+[ext_resource type="Texture2D" uid="uid://b5t5rk2c2pbki" path="res://ASSETS/TILES/wall2.png" id="7_jj06t"]
+[ext_resource type="Texture2D" uid="uid://xypbvukvvkec" path="res://ASSETS/TILES/water2.png" id="8_wf0yf"]
+[ext_resource type="Texture2D" uid="uid://bx5la5k47fcj" path="res://ASSETS/TILES/goop1.png" id="9_3inlh"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wvd0d"]
+texture = ExtResource("1_7ykgj")
+margins = Vector2i(63, 65)
+separation = Vector2i(64, 0)
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+2:0/0/custom_data_0 = "win"
+3:0/0 = 0
+3:0/0/custom_data_0 = "water"
+5:0/0 = 0
+5:0/0/custom_data_0 = "pushable_box"
+6:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+3:1/0/custom_data_0 = "bug"
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+4:2/0/custom_data_0 = "frog_hazard"
+5:2/0 = 0
+6:2/0 = 0
+0:3/0 = 0
+0:3/0/custom_data_0 = "tongue_hazard"
+1:3/0 = 0
+4:0/0 = 0
+4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+4:0/0/custom_data_0 = "wall"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8akyk"]
+texture = ExtResource("2_acniw")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/custom_data_0 = "pushable_box"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w76nt"]
+texture = ExtResource("3_lyt21")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/custom_data_0 = "bug"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rj20q"]
+texture = ExtResource("4_3inlh")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/custom_data_0 = "win"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6pw2q"]
+texture = ExtResource("5_5uis6")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/custom_data_0 = "frog_hazard"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yr8dt"]
+texture = ExtResource("6_ucbf3")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/custom_data_0 = "tongue_hazard"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_y7ghf"]
+texture = ExtResource("7_jj06t")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/custom_data_0 = "wall"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u2kcg"]
+texture = ExtResource("8_wf0yf")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/custom_data_0 = "water"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5uis6"]
+texture = ExtResource("9_3inlh")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/custom_data_0 = "water"
+
+[resource]
+tile_size = Vector2i(128, 128)
+physics_layer_0/collision_layer = 1
+custom_data_layer_0/name = "type"
+custom_data_layer_0/type = 4
+sources/0 = SubResource("TileSetAtlasSource_wvd0d")
+sources/1 = SubResource("TileSetAtlasSource_8akyk")
+sources/2 = SubResource("TileSetAtlasSource_w76nt")
+sources/3 = SubResource("TileSetAtlasSource_rj20q")
+sources/4 = SubResource("TileSetAtlasSource_6pw2q")
+sources/5 = SubResource("TileSetAtlasSource_yr8dt")
+sources/6 = SubResource("TileSetAtlasSource_y7ghf")
+sources/8 = SubResource("TileSetAtlasSource_5uis6")
+sources/7 = SubResource("TileSetAtlasSource_u2kcg")

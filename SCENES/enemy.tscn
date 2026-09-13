@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dw305oodxmtej"]
 
 [ext_resource type="Script" uid="uid://4yfs210yjl7i" path="res://SCRIPTS/enemy.gd" id="1_n00gh"]
-[ext_resource type="Texture2D" uid="uid://iuyn75l634ol" path="res://ASSETS/CHARACTER/Gator.png" id="1_ne0yb"]
+[ext_resource type="Texture2D" uid="uid://b7ncy6gk2b63t" path="res://ASSETS/TILES/croc1.png" id="2_n00gh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xrivr"]
 radius = 56.008926
@@ -10,7 +10,7 @@ radius = 56.008926
 script = ExtResource("1_n00gh")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1737526318]
-texture = ExtResource("1_ne0yb")
+texture = ExtResource("2_n00gh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=913773576]
 shape = SubResource("CircleShape2D_xrivr")
