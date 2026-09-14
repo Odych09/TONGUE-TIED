@@ -14,8 +14,13 @@ signal game_completed
 	preload("uid://cxm1tr8v0auuf"),
 	preload("uid://cgw8ien5i4353"),
 	preload("uid://cwsog6cunrn5u"),
+	preload("uid://c3cn4qsnmwell"),
+	#missing where is 12??
 	preload("uid://6p3sgtylm6dn"),
-	preload("uid://ctyp6d243bhfo")
+	preload("uid://ctyp6d243bhfo"),
+	preload("uid://etlbcg3fcwcg"),
+	preload("uid://c1p5den7ox4hc")
+	
 ]
 
 var current_level_index: int = 0
