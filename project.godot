@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="FROG_GAME"
-run/main_scene="uid://ylo3o6oh0ppb"
+run/main_scene="uid://bjdglxl4fb47s"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="uid://ca7pbj1jbccv5"
 

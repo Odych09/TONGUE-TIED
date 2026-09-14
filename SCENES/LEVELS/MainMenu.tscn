@@ -1,13 +1,19 @@
 [gd_scene format=3 uid="uid://bjdglxl4fb47s"]
 
 [ext_resource type="Script" uid="uid://c3u8um8ah7vjn" path="res://SCENES/LEVELS/MainMenu.gd" id="1_5cyo5"]
-[ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="1_i0lhj"]
-[ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="2_flj8n"]
-[ext_resource type="Texture2D" uid="uid://fb0fn2553vnr" path="res://ASSETS/TILES/box2.png" id="3_5cyo5"]
+[ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="2_i0lhj"]
+[ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="3_flj8n"]
 [ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="4_cvoun"]
+[ext_resource type="Texture2D" uid="uid://ca7pbj1jbccv5" path="res://ASSETS/TILES/frog1.png" id="5_frog"]
+[ext_resource type="Texture2D" uid="uid://gn4i65yx74ci" path="res://ASSETS/TILES/fly1.png" id="6_fly"]
+[ext_resource type="Texture2D" uid="uid://fbc0puy52y5g" path="res://ASSETS/TILES/pad1.png" id="7_pad"]
+[ext_resource type="AudioStream" uid="uid://canah35uobihe" path="res://AUDIO/ui_hover.wav" id="8_hover"]
+[ext_resource type="AudioStream" uid="uid://bsolub8tb4qun" path="res://AUDIO/ui_click.wav" id="9_click"]
+[ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="10_back"]
+[ext_resource type="AudioStream" uid="uid://bbiw763y2alxy" path="res://Froggy2(1).mp3" id="11_bgm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k3vnx"]
-shader = ExtResource("1_i0lhj")
+shader = ExtResource("2_i0lhj")
 shader_parameter/base_dark_blue = Color(0.491512, 0.593768, 0.88595, 1)
 shader_parameter/cyan_glow = Color(0, 0.476966, 0.944609, 1)
 shader_parameter/deep_purple = Color(0.129412, 0.768627, 0.988235, 1)
@@ -15,8 +21,154 @@ shader_parameter/speed = 0.3
 shader_parameter/scale = 4.0
 shader_parameter/wave_intensity = 2.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+bg_color = Color(0.05, 0.12, 0.22, 0.82)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.75, 0.85, 0.45)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+content_margin_left = 65.0
+content_margin_top = 18.0
+content_margin_right = 35.0
+content_margin_bottom = 18.0
+bg_color = Color(0.0588235, 0.12549, 0.219608, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.55, 0.75, 0.5)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0.02, 0.05, 0.1, 0.5)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+content_margin_left = 65.0
+content_margin_top = 18.0
+content_margin_right = 35.0
+content_margin_bottom = 18.0
+bg_color = Color(0.04, 0.09, 0.16, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.75, 0.65, 0.8)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+content_margin_left = 65.0
+content_margin_top = 18.0
+content_margin_right = 35.0
+content_margin_bottom = 18.0
+bg_color = Color(0.12, 0.26, 0.42, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.38, 0.9, 0.85, 0.95)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0.1, 0.6, 0.65, 0.4)
+shadow_size = 14
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.4, 0.95, 1, 0.9)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pip"]
+bg_color = Color(1, 0.38, 0.68, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(1, 0.3, 0.6, 0.6)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_panel"]
+content_margin_left = 48.0
+content_margin_top = 40.0
+content_margin_right = 48.0
+content_margin_bottom = 40.0
+bg_color = Color(0.06, 0.12, 0.2, 0.97)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.35, 0.8, 0.9, 0.8)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.01, 0.03, 0.08, 0.8)
+shadow_size = 32
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_back_normal"]
+content_margin_left = 28.0
+content_margin_top = 12.0
+content_margin_right = 28.0
+content_margin_bottom = 12.0
+bg_color = Color(0.08, 0.18, 0.3, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.65, 0.85, 0.5)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_back_hover"]
+content_margin_left = 28.0
+content_margin_top = 12.0
+content_margin_right = 28.0
+content_margin_bottom = 12.0
+bg_color = Color(0.14, 0.3, 0.48, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.9, 0.9, 0.9)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cvoun"]
-shader = ExtResource("2_flj8n")
+shader = ExtResource("3_flj8n")
 shader_parameter/brightness = 1.02
 shader_parameter/contrast = 1.08
 shader_parameter/saturation = 2.0
@@ -40,139 +192,433 @@ shader_parameter/roll_strength = 0.15
 shader_parameter/glow_strength = 2.0
 shader_parameter/glow_threshold = 0.65
 
-[node name="MAIN_MENU" type="Control" unique_id=1897658910]
+[node name="MainMenu" type="Control" unique_id=20602494]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_5cyo5")
 
-[node name="BG" type="CanvasLayer" parent="." unique_id=380612676]
+[node name="BG" type="CanvasLayer" parent="." unique_id=1272671837]
 layer = -1
 
-[node name="ColorRect" type="ColorRect" parent="BG" unique_id=533402743]
+[node name="ColorRect" type="ColorRect" parent="BG" unique_id=1299780606]
 material = SubResource("ShaderMaterial_k3vnx")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=537313187]
+[node name="Diorama" type="Node2D" parent="." unique_id=2115705476]
+
+[node name="AmbientPad1" type="Sprite2D" parent="Diorama" unique_id=117312180]
+modulate = Color(1, 1, 1, 0.18)
+position = Vector2(220, 940)
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("7_pad")
+
+[node name="AmbientPad2" type="Sprite2D" parent="Diorama" unique_id=1113436997]
+modulate = Color(1, 1, 1, 0.14)
+position = Vector2(1780, 200)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("7_pad")
+
+[node name="PadShadow" type="Sprite2D" parent="Diorama" unique_id=1883699685]
+modulate = Color(0.03, 0.06, 0.12, 0.45)
+position = Vector2(1380, 710)
+scale = Vector2(2.6, 1.4)
+texture = ExtResource("7_pad")
+
+[node name="LilyPad" type="Sprite2D" parent="Diorama" unique_id=300468603]
+position = Vector2(1380, 680)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("7_pad")
+
+[node name="Frog" type="Sprite2D" parent="Diorama" unique_id=1178312886]
+position = Vector2(1380, 560)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("5_frog")
+
+[node name="Tongue" type="Line2D" parent="Diorama" unique_id=642188976]
+width = 14.0
+default_color = Color(1, 0.42, 0.68, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Fly" type="Sprite2D" parent="Diorama" unique_id=2060470173]
+position = Vector2(1460, 280)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("6_fly")
+
+[node name="UI" type="Control" parent="." unique_id=1309055039]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_bottom = 40
+mouse_filter = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1366447376]
-layout_mode = 2
-theme_override_constants/separation = 40
-alignment = 1
-
-[node name="Title" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=483332586]
-custom_minimum_size = Vector2(0, 200)
-layout_mode = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="ButtonsContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1892374612]
-layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="PLAY" type="TextureButton" parent="MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1850382313]
-custom_minimum_size = Vector2(400, 90)
-layout_mode = 2
-size_flags_horizontal = 4
-texture_normal = ExtResource("3_5cyo5")
-ignore_texture_size = true
-stretch_mode = 5
-
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/ButtonsContainer/PLAY" unique_id=503319831]
+[node name="MarginContainer" type="MarginContainer" parent="UI" unique_id=1844705426]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 35.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/outline_size = 51
-theme_override_fonts/normal_font = ExtResource("4_cvoun")
-theme_override_font_sizes/normal_font_size = 78
-bbcode_enabled = true
-text = "Play"
-scroll_active = false
+theme_override_constants/margin_left = 130
+theme_override_constants/margin_top = 110
+theme_override_constants/margin_right = 130
+theme_override_constants/margin_bottom = 90
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer" unique_id=93480748]
+layout_mode = 2
+theme_override_constants/separation = 80
+
+[node name="LeftColumn" type="VBoxContainer" parent="UI/MarginContainer/HBoxContainer" unique_id=908289714]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 45
+
+[node name="TitleBox" type="Control" parent="UI/MarginContainer/HBoxContainer/LeftColumn" unique_id=641839759]
+custom_minimum_size = Vector2(700, 230)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="TitleShadow" type="Label" parent="UI/MarginContainer/HBoxContainer/LeftColumn/TitleBox" unique_id=413958514]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 7.0
+offset_right = 720.0
+offset_bottom = 138.0
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.03, 0.07, 0.15, 0.9)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 104
+text = "TONGUE TIED"
+
+[node name="TitleGlow" type="Label" parent="UI/MarginContainer/HBoxContainer/LeftColumn/TitleBox" unique_id=1653002744]
+layout_mode = 0
+offset_right = 715.0
+offset_bottom = 131.0
+mouse_filter = 1
+theme_override_colors/font_color = Color(0, 0.55, 0.8, 0.35)
+theme_override_colors/font_outline_color = Color(0.04, 0.08, 0.16, 0.9)
+theme_override_constants/outline_size = 24
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 104
+text = "TONGUE TIED"
+
+[node name="TitleFront" type="Label" parent="UI/MarginContainer/HBoxContainer/LeftColumn/TitleBox" unique_id=331279438]
+layout_mode = 0
+offset_right = 715.0
+offset_bottom = 131.0
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.14, 0.24, 1)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 104
+text = "TONGUE TIED"
+
+[node name="TitleTongueAccent" type="Line2D" parent="UI/MarginContainer/HBoxContainer/LeftColumn/TitleBox" unique_id=184478530]
+width = 8.0
+default_color = Color(1, 0.45, 0.72, 0.9)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="BadgePanel" type="PanelContainer" parent="UI/MarginContainer/HBoxContainer/LeftColumn/TitleBox" unique_id=1249227147]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 155.0
+offset_right = 386.0
+offset_bottom = 196.0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
+
+[node name="BadgeLabel" type="Label" parent="UI/MarginContainer/HBoxContainer/LeftColumn/TitleBox/BadgePanel" unique_id=1480846033]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 18
+text = "★ A STRETCHY PUZZLE ADVENTURE ★"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SETTINGS" type="TextureButton" parent="MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1591532868]
-custom_minimum_size = Vector2(400, 90)
+[node name="ButtonsStack" type="VBoxContainer" parent="UI/MarginContainer/HBoxContainer/LeftColumn" unique_id=936109644]
+custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
-size_flags_horizontal = 4
-texture_normal = ExtResource("3_5cyo5")
-ignore_texture_size = true
-stretch_mode = 5
+theme_override_constants/separation = 20
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/ButtonsContainer/SETTINGS" unique_id=2042246812]
+[node name="PlayButton" type="Button" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack" unique_id=65199515]
+custom_minimum_size = Vector2(400, 82)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 0.93, 0.35, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 0.93, 0.35, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "   PLAY"
+alignment = 0
+
+[node name="Pip" type="Panel" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/PlayButton" unique_id=983671176]
+modulate = Color(1, 0.45, 0.7, 0.65)
+layout_mode = 0
+offset_left = 26.0
+offset_top = 33.0
+offset_right = 42.0
+offset_bottom = 49.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pip")
+
+[node name="SettingsButton" type="Button" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack" unique_id=982817120]
+custom_minimum_size = Vector2(400, 82)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 0.93, 0.35, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 0.93, 0.35, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "   SETTINGS"
+alignment = 0
+
+[node name="Pip" type="Panel" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/SettingsButton" unique_id=1765990587]
+modulate = Color(1, 0.45, 0.7, 0.65)
+layout_mode = 0
+offset_left = 26.0
+offset_top = 33.0
+offset_right = 42.0
+offset_bottom = 49.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pip")
+
+[node name="QuitButton" type="Button" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack" unique_id=1895033490]
+custom_minimum_size = Vector2(400, 82)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 0.93, 0.35, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 0.93, 0.35, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "   QUIT"
+alignment = 0
+
+[node name="Pip" type="Panel" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/QuitButton" unique_id=1260725354]
+modulate = Color(1, 0.45, 0.7, 0.65)
+layout_mode = 0
+offset_left = 26.0
+offset_top = 33.0
+offset_right = 42.0
+offset_bottom = 49.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pip")
+
+[node name="Spacer" type="Control" parent="UI/MarginContainer/HBoxContainer/LeftColumn" unique_id=515026892]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ControlHints" type="VBoxContainer" parent="UI/MarginContainer/HBoxContainer/LeftColumn" unique_id=1528970817]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Hint1" type="Label" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ControlHints" unique_id=805697907]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.94, 1, 0.85)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 16
+text = "🎮  [WASD / ARROWS] TO MOVE   •   [SPACE] TO PULL"
+
+[node name="Hint2" type="Label" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ControlHints" unique_id=1783094121]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.8, 0.92, 0.65)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 14
+text = "v1.0  •  CREATED WITH HEART FOR PUZZLE FANS"
+
+[node name="RightHeroSpace" type="Control" parent="UI/MarginContainer/HBoxContainer" unique_id=480774487]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="SettingsModal" type="Control" parent="." unique_id=1687080484]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/outline_size = 51
-theme_override_fonts/normal_font = ExtResource("4_cvoun")
-theme_override_font_sizes/normal_font_size = 78
-bbcode_enabled = true
-text = "Settings"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+mouse_filter = 1
 
-[node name="QUIT" type="TextureButton" parent="MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1664061040]
-custom_minimum_size = Vector2(400, 90)
-layout_mode = 2
-size_flags_horizontal = 4
-texture_normal = ExtResource("3_5cyo5")
-ignore_texture_size = true
-stretch_mode = 5
-
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/ButtonsContainer/QUIT" unique_id=1424996727]
+[node name="Dimmer" type="ColorRect" parent="SettingsModal" unique_id=505489768]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 27.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/outline_size = 51
-theme_override_fonts/normal_font = ExtResource("4_cvoun")
-theme_override_font_sizes/normal_font_size = 78
-bbcode_enabled = true
-text = "Quit"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+color = Color(0.02, 0.05, 0.1, 0.72)
 
-[node name="CRTOverlay" type="CanvasLayer" parent="." unique_id=869595719]
+[node name="CenterContainer" type="CenterContainer" parent="SettingsModal" unique_id=1794383073]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="SettingsModal/CenterContainer" unique_id=2010856946]
+custom_minimum_size = Vector2(620, 520)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="SettingsModal/CenterContainer/PanelContainer" unique_id=153772539]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer" unique_id=1419927132]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="ModalTitle" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1646989628]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 46
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=289504657]
+layout_mode = 2
+
+[node name="VolumeRow" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1419695499]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HeaderRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow" unique_id=824440439]
+layout_mode = 2
+
+[node name="VolLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow" unique_id=413251507]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 22
+text = "MASTER VOLUME"
+
+[node name="VolumeValue" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow" unique_id=898003875]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.35, 0.85, 0.95, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 22
+text = "100%"
+horizontal_alignment = 2
+
+[node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow" unique_id=343102086]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="FullscreenRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=627404058]
+layout_mode = 2
+
+[node name="FSLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow" unique_id=615574493]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 22
+text = "FULLSCREEN MODE"
+
+[node name="FullscreenCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow" unique_id=2128562276]
+layout_mode = 2
+
+[node name="CRTRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=113032936]
+layout_mode = 2
+
+[node name="CRTLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow" unique_id=314165333]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 22
+text = "CRT RETRO SHADER"
+
+[node name="CRTCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow" unique_id=77347175]
+layout_mode = 2
+button_pressed = true
+
+[node name="Spacer" type="Control" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1863393753]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SettingsBackButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=856551263]
+custom_minimum_size = Vector2(220, 58)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 0.93, 0.35, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_back_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
+text = "BACK"
+
+[node name="Audio" type="Node" parent="." unique_id=538789814]
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="Audio" unique_id=438076007]
+stream = ExtResource("11_bgm")
+autoplay = true
+
+[node name="HoverSFX" type="AudioStreamPlayer" parent="Audio" unique_id=1828140878]
+stream = ExtResource("8_hover")
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="Audio" unique_id=487003026]
+stream = ExtResource("9_click")
+
+[node name="BackSFX" type="AudioStreamPlayer" parent="Audio" unique_id=423013476]
+stream = ExtResource("10_back")
+
+[node name="CRTOverlay" type="CanvasLayer" parent="." unique_id=1839390277]
 layer = 10
 
-[node name="ColorRect" type="ColorRect" parent="CRTOverlay" unique_id=142045339]
+[node name="ColorRect" type="ColorRect" parent="CRTOverlay" unique_id=1166514367]
 material = SubResource("ShaderMaterial_cvoun")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
