@@ -579,6 +579,26 @@ text = "CRT RETRO SHADER"
 layout_mode = 2
 button_pressed = true
 
+[node name="PlayGamesRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=741029182]
+layout_mode = 2
+
+[node name="PGLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow" unique_id=741029183]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 22
+text = "GOOGLE PLAY GAMES"
+
+[node name="PlayGamesButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow" unique_id=741029184]
+custom_minimum_size = Vector2(170, 44)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_back_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
+text = "SIGN IN"
+
 [node name="Spacer" type="Control" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1863393753]
 layout_mode = 2
 size_flags_vertical = 3
@@ -621,4 +641,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2

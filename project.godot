@@ -19,6 +19,7 @@ config/icon="uid://ca7pbj1jbccv5"
 
 GameManager="*uid://xppkkuoxmfhb"
 TransitionLayer="*uid://b2l4lrpmr5c6y"
+GodotPlayGameServices="*uid://bnj1e5ski7rlf"
 
 [display]
 
@@ -29,6 +30,10 @@ window/size/window_width_override=1920
 window/size/window_height_override=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/GodotPlayGameServices/plugin.cfg")
 
 [file_customization]
 
@@ -47,3 +52,4 @@ folder_colors={
 
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

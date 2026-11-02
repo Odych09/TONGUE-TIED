@@ -7,6 +7,10 @@ func _ready() -> void:
 	GameManager.setup_level_container(level_holder)
 	GameManager.level_changed.connect(_on_level_changed)
 	_bind_player_to_crt()
+	var transition_layer := get_node_or_null("/root/TransitionLayer")
+	if transition_layer and transition_layer.has_method("transition_in"):
+		transition_layer.transition_in()
+
 
 func _on_level_changed(_index: int) -> void:
 	_bind_player_to_crt()

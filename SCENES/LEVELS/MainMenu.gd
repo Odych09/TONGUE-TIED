@@ -33,7 +33,10 @@ extends Control
 @onready var volume_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow/VolumeValue
 @onready var fullscreen_check: CheckBox = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow/FullscreenCheck
 @onready var crt_check: CheckBox = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow/CRTCheck
+@onready var play_games_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PlayGamesButton
+@onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PGLabel
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
+
 
 # Audio Stream Players
 @onready var bgm_player: AudioStreamPlayer = $Audio/BGMPlayer
@@ -86,6 +89,7 @@ func _ready() -> void:
 
 	# Initialize settings state
 	_init_settings_values()
+	_init_play_games()
 
 	# Start BGM if not already playing
 	if not bgm_player.playing:
@@ -97,7 +101,48 @@ func _ready() -> void:
 	# Hide settings modal initially
 	settings_modal.visible = false
 
+func _init_play_games() -> void:
+	if not is_instance_valid(play_games_btn):
+		return
+	
+	if OS.get_name() != "Android":
+		play_games_btn.text = "DESKTOP"
+		play_games_btn.disabled = true
+		return
+	
+	play_games_btn.mouse_entered.connect(func():
+		hover_sfx.pitch_scale = 0.95
+		hover_sfx.play()
+	)
+	
+	play_games_btn.pressed.connect(func():
+		click_sfx.play()
+		if GodotPlayGameServices.is_signed_in:
+			GodotPlayGameServices.show_achievements()
+		else:
+			GodotPlayGameServices.sign_in()
+	)
+	
+	GodotPlayGameServices.user_authenticated.connect(func(authenticated: bool):
+		if authenticated:
+			play_games_btn.text = "PROFILE"
+			play_games_label.text = "GOOGLE PLAY: SIGNED IN"
+		else:
+			play_games_btn.text = "SIGN IN"
+			play_games_label.text = "GOOGLE PLAY GAMES"
+	)
+	
+	GodotPlayGameServices.current_player_loaded.connect(func(player: PlayGamesPlayer):
+		if player:
+			play_games_label.text = "PLAY: %s" % player.display_name
+	)
+	
+	if GodotPlayGameServices.is_signed_in:
+		play_games_btn.text = "PROFILE"
+		play_games_label.text = "GOOGLE PLAY: SIGNED IN"
+
 func _init_settings_values() -> void:
+
 	# Master volume
 	var current_db := AudioServer.get_bus_volume_db(0)
 	var current_linear := db_to_linear(current_db)
