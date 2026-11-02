@@ -31,6 +31,12 @@ var level_container: Node = null
 var unlocked_level: int = 0
 var level_stars: Dictionary = {} # int -> int (1..3)
 
+var haptics_enabled: bool = true
+var music_enabled: bool = true
+var sfx_enabled: bool = true
+
+signal settings_changed
+
 func _ready() -> void:
 	load_progress()
 
@@ -98,7 +104,10 @@ func is_level_unlocked(level_idx: int) -> bool:
 func save_progress() -> void:
 	var data := {
 		"unlocked_level": unlocked_level,
-		"level_stars": level_stars
+		"level_stars": level_stars,
+		"haptics_enabled": haptics_enabled,
+		"music_enabled": music_enabled,
+		"sfx_enabled": sfx_enabled
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
@@ -117,5 +126,23 @@ func load_progress() -> void:
 			var data: Dictionary = json.data
 			unlocked_level = int(data.get("unlocked_level", 0))
 			level_stars = data.get("level_stars", {})
+			haptics_enabled = bool(data.get("haptics_enabled", true))
+			music_enabled = bool(data.get("music_enabled", true))
+			sfx_enabled = bool(data.get("sfx_enabled", true))
 			unlocked_level = clamp(unlocked_level, 0, levels.size() - 1)
 			current_level_index = unlocked_level
+
+func set_music_enabled(val: bool) -> void:
+	music_enabled = val
+	save_progress()
+	settings_changed.emit()
+
+func set_haptics_enabled(val: bool) -> void:
+	haptics_enabled = val
+	save_progress()
+	settings_changed.emit()
+
+func set_sfx_enabled(val: bool) -> void:
+	sfx_enabled = val
+	save_progress()
+	settings_changed.emit()

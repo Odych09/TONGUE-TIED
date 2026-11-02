@@ -165,6 +165,8 @@ func _init_play_games() -> void:
 		play_games_label.text = "GOOGLE PLAY: SIGNED IN"
 
 func _init_settings_values() -> void:
+	if bgm_player:
+		bgm_player.volume_db = 0.0 if GameManager.music_enabled else -80.0
 
 	# Master volume
 	var current_db := AudioServer.get_bus_volume_db(0)

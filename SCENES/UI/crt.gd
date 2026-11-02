@@ -22,9 +22,20 @@ extends CanvasLayer
 @onready var levels_btn: Button = $UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/LevelsBtn
 @onready var next_btn: Button = $UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/NextBtn
 
+# Pause modal elements
+@onready var pause_modal: Control = $UI/PauseModal
+@onready var music_toggle_btn: Button = $UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/SettingsBox/MusicToggleBtn
+@onready var sfx_toggle_btn: Button = $UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/SettingsBox/SFXToggleBtn
+@onready var haptics_toggle_btn: Button = $UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/SettingsBox/HapticsToggleBtn
+@onready var resume_btn: Button = $UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ResumeBtn
+@onready var pause_restart_btn: Button = $UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2/PauseRestartBtn
+@onready var pause_levels_btn: Button = $UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2/PauseLevelsBtn
+@onready var pause_home_btn: Button = $UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2/PauseHomeBtn
+
 var shake_timer := 0.0
 var base_position: Vector2
 var is_win_active := false
+var is_paused := false
 
 func _ready() -> void:
 	if pulls_label:
@@ -34,21 +45,23 @@ func _ready() -> void:
 
 	# Update level label and listen for changes
 	GameManager.level_changed.connect(_on_level_changed)
+	GameManager.settings_changed.connect(_update_settings_ui)
 	update_level_label(GameManager.current_level_index)
 
 	# Hook up HUD buttons
 	if restart_btn:
 		restart_btn.pressed.connect(func():
-			if not is_win_active:
+			if not is_win_active and not is_paused:
 				GameManager.restart_level()
 		)
 	if menu_btn:
 		menu_btn.pressed.connect(func():
-			GameManager.return_to_menu()
+			if not is_win_active:
+				toggle_pause()
 		)
 	if big_pull_btn:
 		big_pull_btn.pressed.connect(func():
-			if player and not is_win_active:
+			if player and not is_win_active and not is_paused:
 				player.pull_frog()
 		)
 
@@ -72,23 +85,92 @@ func _ready() -> void:
 			GameManager.next_level()
 		)
 
-	# Initially hide win modal
+	# Hook up Pause Modal buttons
+	if resume_btn:
+		resume_btn.pressed.connect(func():
+			toggle_pause(false)
+		)
+	if pause_restart_btn:
+		pause_restart_btn.pressed.connect(func():
+			toggle_pause(false)
+			GameManager.restart_level()
+		)
+	if pause_levels_btn:
+		pause_levels_btn.pressed.connect(func():
+			toggle_pause(false)
+			GameManager.return_to_menu()
+		)
+	if pause_home_btn:
+		pause_home_btn.pressed.connect(func():
+			toggle_pause(false)
+			GameManager.return_to_menu()
+		)
+
+	if music_toggle_btn:
+		music_toggle_btn.pressed.connect(func():
+			GameManager.set_music_enabled(!GameManager.music_enabled)
+		)
+	if sfx_toggle_btn:
+		sfx_toggle_btn.pressed.connect(func():
+			GameManager.set_sfx_enabled(!GameManager.sfx_enabled)
+		)
+	if haptics_toggle_btn:
+		haptics_toggle_btn.pressed.connect(func():
+			GameManager.set_haptics_enabled(!GameManager.haptics_enabled)
+		)
+
+	# Initially hide modals
 	if win_modal:
 		win_modal.visible = false
+	if pause_modal:
+		pause_modal.visible = false
+
+	_update_settings_ui()
+
+func toggle_pause(paused: Variant = null) -> void:
+	if paused == null:
+		is_paused = !is_paused
+	else:
+		is_paused = bool(paused)
+		
+	if pause_modal:
+		pause_modal.visible = is_paused
+		if is_paused:
+			_update_settings_ui()
+			var panel = pause_modal.get_node_or_null("CenterContainer/PanelContainer")
+			if panel:
+				panel.scale = Vector2(0.85, 0.85)
+				panel.pivot_offset = panel.size * 0.5
+				var tw := create_tween()
+				tw.tween_property(panel, "scale", Vector2.ONE, 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+func _update_settings_ui() -> void:
+	if music_toggle_btn:
+		music_toggle_btn.text = "🎵 MUSIC: " + ("ON" if GameManager.music_enabled else "OFF")
+	if sfx_toggle_btn:
+		sfx_toggle_btn.text = "🔊 SFX: " + ("ON" if GameManager.sfx_enabled else "OFF")
+	if haptics_toggle_btn:
+		haptics_toggle_btn.text = "📳 VIBRATION: " + ("ON" if GameManager.haptics_enabled else "OFF")
 
 func setup_player(p: Frog) -> void:
 	player = p
 	player.ui_node = self
 	is_win_active = false
+	is_paused = false
 	if win_modal:
 		win_modal.visible = false
+	if pause_modal:
+		pause_modal.visible = false
 	update_level_label(GameManager.current_level_index)
 	_bind_player(player)
 
 func _on_level_changed(new_index: int) -> void:
 	is_win_active = false
+	is_paused = false
 	if win_modal:
 		win_modal.visible = false
+	if pause_modal:
+		pause_modal.visible = false
 	update_level_label(new_index)
 
 func update_level_label(idx: int) -> void:
@@ -97,7 +179,6 @@ func update_level_label(idx: int) -> void:
 
 func _bind_player(p: Frog) -> void:
 	if not p.player_pulled.is_connected(_on_player_pulled):
-
 		p.player_pulled.connect(_on_player_pulled)
 
 func _process(delta: float) -> void:
@@ -112,7 +193,7 @@ func _process(delta: float) -> void:
 		elif player.remaining_pulls <= 0:
 			color_tag = "[color=red]"
 			
-		pulls_label.text = "Pulls: " + color_tag + str(player.remaining_pulls) + "[/color]"
+		pulls_label.text = "⚡ PULLS: " + color_tag + str(player.remaining_pulls) + "[/color]"
 		
 		if shake_timer > 0.0:
 			shake_timer -= delta
@@ -128,11 +209,11 @@ func _process(delta: float) -> void:
 		else:
 			bug_color = "[color=green]"
 			
-		bugs_label.text = "Bugs: " + bug_color + str(player.collected_bugs) + "/" + str(player.required_bugs) + "[/color]"
+		bugs_label.text = "🪰 FLIES: " + bug_color + str(player.collected_bugs) + "/" + str(player.required_bugs) + "[/color]"
 
 	# --- Pull Button Active State / Juice ---
 	if big_pull_btn:
-		var can_pull := player.tongue_path.size() > 1 and not player.is_latching and not player.is_dead
+		var can_pull := player.tongue_path.size() > 1 and not player.is_latching and not player.is_dead and not is_paused
 		if can_pull:
 			var pulse := 1.0 + sin(Time.get_ticks_msec() * 0.006) * 0.04
 			big_pull_btn.scale = Vector2(pulse, pulse)

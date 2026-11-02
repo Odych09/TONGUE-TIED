@@ -387,6 +387,153 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_pull_btn")
 theme_override_styles/hover = SubResource("StyleBoxFlat_pull_btn_pressed")
 text = "NEXT ➔"
 
+[node name="PauseModal" type="Control" parent="UI" unique_id=1849204960]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="UI/PauseModal" unique_id=1849204961]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.05, 0.1, 0.8)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/PauseModal" unique_id=1849204962]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/PauseModal/CenterContainer" unique_id=1849204963]
+custom_minimum_size = Vector2(560, 490)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_win_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer" unique_id=1849204964]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="PauseTitle" type="Label" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204965]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 38
+text = "GAME PAUSED"
+horizontal_alignment = 1
+
+[node name="SettingsBox" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204966]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="MusicToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/SettingsBox" unique_id=1849204967]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+text = "🎵 MUSIC: ON"
+
+[node name="SFXToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/SettingsBox" unique_id=1849204968]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+text = "🔊 SFX: ON"
+
+[node name="HapticsToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/SettingsBox" unique_id=1849204969]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+text = "📳 VIBRATION: ON"
+
+[node name="Spacer" type="Control" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204970]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ActionsRow" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204971]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ResumeBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow" unique_id=1849204972]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.25, 0.2, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_pull_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pull_btn_pressed")
+text = "▶ RESUME"
+
+[node name="ButtonsRow2" type="HBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow" unique_id=1849204973]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="PauseRestartBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204974]
+custom_minimum_size = Vector2(140, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+text = "↺ RETRY"
+
+[node name="PauseLevelsBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204975]
+custom_minimum_size = Vector2(140, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+text = "☰ LEVELS"
+
+[node name="PauseHomeBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204976]
+custom_minimum_size = Vector2(140, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+text = "🏠 MENU"
+
+[node name="PondAmbience" type="CPUParticles2D" parent="." unique_id=1849204950]
+position = Vector2(960, 540)
+amount = 20
+lifetime = 6.0
+emission_shape = 3
+emission_rect_extents = Vector2(960, 540)
+spread = 180.0
+gravity = Vector2(0, -8)
+initial_velocity_min = 6.0
+initial_velocity_max = 20.0
+scale_amount_min = 2.5
+scale_amount_max = 5.0
+color = Color(0.78, 1, 0.45, 0.28)
+
 [node name="ColorRect" type="ColorRect" parent="." unique_id=708671421]
 material = SubResource("ShaderMaterial_7iixq")
 anchors_preset = 15
