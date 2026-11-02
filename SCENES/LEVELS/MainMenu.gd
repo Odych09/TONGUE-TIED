@@ -66,6 +66,8 @@ var title_base_pos: Vector2
 var is_snapping: bool = false
 var fly_caught: bool = false
 var active_hover_btn: Button = null
+var hover_tongue_prog: float = 0.0
+var last_hover_target: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	# Cache base transform positions
@@ -145,7 +147,6 @@ func _init_play_games() -> void:
 		else:
 			GodotPlayGameServices.sign_in()
 	)
-	
 	GodotPlayGameServices.user_authenticated.connect(func(authenticated: bool):
 		if authenticated:
 			play_games_btn.text = "PROFILE"
@@ -232,13 +233,11 @@ func _process(delta: float) -> void:
 		frog.scale = Vector2(frog_base_scale.x * (1.0 + breath), frog_base_scale.y * (1.0 - breath))
 
 		# Look towards hovered button or mouse cursor
-		var target_look: Vector2
 		if active_hover_btn:
-			target_look = (active_hover_btn.global_position - frog.global_position).normalized()
+			var target_look := (active_hover_btn.global_position - frog.global_position).normalized()
+			frog.rotation = lerp_angle(frog.rotation, target_look.x * 0.16, 0.12)
 		else:
-			var mouse_pos := get_global_mouse_position()
-			target_look = (mouse_pos - frog.global_position).normalized()
-		frog.rotation = lerp_angle(frog.rotation, target_look.x * 0.08, 0.1)
+			frog.rotation = lerp_angle(frog.rotation, 0.0, 0.08)
 
 	# 3. Fly Buzzing Figure-8 Motion & Wing Flap
 	if not fly_caught:
@@ -250,32 +249,38 @@ func _process(delta: float) -> void:
 		var flap := 1.0 + sin(elapsed_time * 35.0) * 0.12
 		fly.scale = Vector2(1.1 * flap, 1.1 / flap)
 
-	# 4. Idle / Reactive Tongue Ribbon
+	# 4. Reactive Tongue on Menu Button Hover
 	if not is_snapping:
-		_animate_idle_tongue()
+		_animate_hover_tongue(delta)
 
 	# 5. Gentle Title Float
 	title_box.position.y = title_base_pos.y + sin(elapsed_time * 1.4) * 5.0
 
-func _animate_idle_tongue() -> void:
-	tongue.clear_points()
-	var mouth := frog.position + Vector2(0, 8)
+func _animate_hover_tongue(delta: float) -> void:
+	# Snout / mouth position on the frog (between and slightly below eyes)
+	var mouth: Vector2 = frog.to_global(Vector2(-4.0, -16.0))
 
-	var stretch_target: Vector2
-	if active_hover_btn:
-		# Tongue reaches out playfully toward left buttons
-		var btn_hover_ratio := 0.4 + sin(elapsed_time * 4.5) * 0.08
-		stretch_target = mouth + Vector2(-110.0 * btn_hover_ratio, 18.0 + sin(elapsed_time * 3.0) * 8.0)
+	if active_hover_btn and is_instance_valid(active_hover_btn):
+		var btn_rect := active_hover_btn.get_global_rect()
+		# Tongue targets the right side of the hovered menu button
+		var target_pos := Vector2(btn_rect.end.x - 25.0, btn_rect.position.y + btn_rect.size.y * 0.5)
+		last_hover_target = target_pos
+		hover_tongue_prog = move_toward(hover_tongue_prog, 1.0, delta * 5.0)
 	else:
-		# Resting cute curl on the lily pad
-		var curl_wave := sin(elapsed_time * 2.8) * 4.0
-		stretch_target = mouth + Vector2(-18.0, 32.0 + curl_wave)
+		hover_tongue_prog = move_toward(hover_tongue_prog, 0.0, delta * 8.0)
 
-	# Generate smooth curve for tongue
-	var control := mouth + Vector2((stretch_target.x - mouth.x) * 0.4 - 10.0, (stretch_target.y - mouth.y) * 0.6 - 15.0)
-	for i in range(12):
-		var t := float(i) / 11.0
-		var pt := mouth.bezier_interpolate(control, control, stretch_target, t)
+	# When not hovering, keep tongue fully retracted inside mouth
+	if hover_tongue_prog <= 0.01:
+		tongue.clear_points()
+		return
+
+	# Beautiful organic Bezier curve stretching from mouth to hovered button
+	tongue.clear_points()
+	var current_tip := mouth.lerp(last_hover_target, hover_tongue_prog)
+	var mid := mouth.lerp(current_tip, 0.5) + Vector2(0.0, -45.0 * sin(hover_tongue_prog * PI) + sin(elapsed_time * 6.5) * 8.0)
+	for i in range(16):
+		var t := float(i) / 15.0
+		var pt := mouth.bezier_interpolate(mid, mid, current_tip, t)
 		tongue.add_point(pt)
 
 func _draw_title_tongue_accent() -> void:
@@ -319,8 +324,11 @@ func _on_play_pressed() -> void:
 	GameManager.current_level_index = GameManager.unlocked_level
 
 
+	active_hover_btn = null
+	hover_tongue_prog = 0.0
+
 	# Frog Tongue Snap Sequence!
-	var mouth := frog.position + Vector2(0, 8)
+	var mouth := frog.to_global(Vector2(0, -18.0))
 	var target_fly_pos := fly.position
 
 	var seq := create_tween()

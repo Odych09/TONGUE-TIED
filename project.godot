@@ -19,6 +19,7 @@ config/icon="uid://ca7pbj1jbccv5"
 
 GameManager="*uid://xppkkuoxmfhb"
 TransitionLayer="*uid://b2l4lrpmr5c6y"
+SnapshotsClient="*uid://cwcaoife58xkq"
 GodotPlayGameServices="*uid://bnj1e5ski7rlf"
 
 [display]
