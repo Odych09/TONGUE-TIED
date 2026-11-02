@@ -4,9 +4,10 @@ extends Node2D
 @onready var crt_overlay: Node = $CRT
 
 func _ready() -> void:
-	GameManager.setup_level_container(level_holder)
 	GameManager.level_changed.connect(_on_level_changed)
+	GameManager.setup_level_container(level_holder)
 	_bind_player_to_crt()
+
 	var transition_layer := get_node_or_null("/root/TransitionLayer")
 	if transition_layer and transition_layer.has_method("transition_in"):
 		transition_layer.transition_in()

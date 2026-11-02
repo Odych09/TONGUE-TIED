@@ -20,8 +20,16 @@ var tongue_path: Array[Vector2] = []
 var is_latching: bool = false
 var is_dead: bool = false
 
+var touch_start_pos: Vector2 = Vector2.ZERO
+var is_touch_active: bool = false
+const SWIPE_THRESHOLD: float = 38.0
+
 var shake_strength: float = 0.0
 var shake_fade: float = 5.0
+
+func trigger_haptic(ms: int = 20) -> void:
+	if OS.get_name() == "Android" or OS.get_name() == "iOS":
+		Input.vibrate_handheld(ms)
 
 func _ready() -> void:
 	remaining_pulls = max_pulls
@@ -49,6 +57,27 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if is_latching or is_dead:
 		return
+
+	# Touch & Mouse Swipe Gestures
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			is_touch_active = true
+			touch_start_pos = event.position
+		else:
+			is_touch_active = false
+	elif event is InputEventScreenDrag:
+		if is_touch_active:
+			_process_swipe(event.position)
+	elif event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				is_touch_active = true
+				touch_start_pos = event.position
+			else:
+				is_touch_active = false
+	elif event is InputEventMouseMotion:
+		if is_touch_active and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			_process_swipe(event.position)
 		
 	var direction := Vector2.ZERO
 	if event.is_action_pressed("ui_right"):
@@ -65,6 +94,21 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("ui_accept"):
 		pull_frog()
+
+func _process_swipe(current_pos: Vector2) -> void:
+	if is_latching or is_dead:
+		return
+	var diff := current_pos - touch_start_pos
+	if diff.length() >= SWIPE_THRESHOLD:
+		var dir := Vector2.ZERO
+		if abs(diff.x) > abs(diff.y):
+			dir = Vector2.RIGHT if diff.x > 0 else Vector2.LEFT
+		else:
+			dir = Vector2.DOWN if diff.y > 0 else Vector2.UP
+		
+		extend_tongue(dir)
+		touch_start_pos = current_pos
+
 
 func rotate_to_direction(direction: Vector2, duration: float = 0.1) -> void:
 	if direction == Vector2.ZERO:
@@ -85,6 +129,7 @@ func extend_tongue(direction: Vector2) -> void:
 	if tongue_path.size() > 1 and next_pos.is_equal_approx(tongue_path[tongue_path.size() - 2]):
 		tongue_path.pop_back()
 		update_tongue_visuals()
+		trigger_haptic(12)
 		return
 	
 	for p in tongue_path:
@@ -109,6 +154,7 @@ func extend_tongue(direction: Vector2) -> void:
 	
 	tongue_path.append(next_pos)
 	update_tongue_visuals()
+	trigger_haptic(15)
 
 func push_tile_box(box_world_pos: Vector2, direction: Vector2) -> void:
 	var next_world_pos := box_world_pos + (direction * TILE_SIZE)
@@ -116,12 +162,14 @@ func push_tile_box(box_world_pos: Vector2, direction: Vector2) -> void:
 	
 	if next_tile_type == "wall" or next_tile_type == "pushable_box":
 		shake_strength = 10.0
+		trigger_haptic(25)
 		return
 		
 	var map_pos := tilemap_layer.local_to_map(tilemap_layer.to_local(box_world_pos))
 	var next_map_pos := map_pos + Vector2i(direction)
 	
 	if next_tile_type == "water":
+		trigger_haptic(35)
 		tilemap_layer.erase_cell(map_pos)
 		tilemap_layer.erase_cell(next_map_pos)
 		tongue_path.append(box_world_pos)
@@ -137,12 +185,14 @@ func push_tile_box(box_world_pos: Vector2, direction: Vector2) -> void:
 	
 	if next_tile_type != "":
 		shake_strength = 10.0
+		trigger_haptic(25)
 		return
 		
 	var source_id := tilemap_layer.get_cell_source_id(map_pos)
 	var atlas_coords := tilemap_layer.get_cell_atlas_coords(map_pos)
 	var alt_tile := tilemap_layer.get_cell_alternative_tile(map_pos)
 	
+	trigger_haptic(25)
 	tilemap_layer.erase_cell(map_pos)
 	tilemap_layer.set_cell(next_map_pos, source_id, atlas_coords, alt_tile)
 	
@@ -160,6 +210,7 @@ func pull_frog() -> void:
 	if tongue_path.size() > 1:
 		if remaining_pulls <= 0:
 			shake_strength = 15.0
+			trigger_haptic(35)
 			if ui_node and ui_node.has_method("trigger_out_of_pulls_effect"):
 				ui_node.trigger_out_of_pulls_effect()
 			return
@@ -167,6 +218,8 @@ func pull_frog() -> void:
 		remaining_pulls -= 1
 		is_latching = true
 		player_pulled.emit()
+		trigger_haptic(30)
+
 		
 		var tween := create_tween()
 		tween.tween_property(sprite, "scale", Vector2(1.2, 0.8), 0.1)
@@ -260,6 +313,7 @@ func reset_tongue() -> void:
 	tween.tween_property(sprite, "scale", Vector2(1.0, 1.0), 0.4).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 func hurt_tongue(hazard_pos: Vector2) -> void:
+	trigger_haptic(50)
 	shake_strength = 10.0
 	tongue_path.append(hazard_pos)
 	update_tongue_visuals()
@@ -275,6 +329,7 @@ func hurt_tongue(hazard_pos: Vector2) -> void:
 
 func kill_frog(death_pos: Vector2) -> void:
 	is_dead = true
+	trigger_haptic(75)
 	shake_strength = 30.0
 	
 	var tween := create_tween()
@@ -288,11 +343,27 @@ func kill_frog(death_pos: Vector2) -> void:
 
 func trigger_win() -> void:
 	is_dead = true
+	trigger_haptic(45)
 	shake_strength = 5.0
+	
+	# Calculate stars earned based on remaining pulls
+	var stars: int = 1
+	if remaining_pulls >= max_pulls - 1:
+		stars = 3
+	elif remaining_pulls >= 1:
+		stars = 2
+	else:
+		stars = 1
+		
+	GameManager.complete_level(GameManager.current_level_index, stars)
 	
 	var tween := create_tween()
 	tween.tween_property(sprite, "scale", Vector2(1.5, 1.5), 0.2).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(sprite, "scale", Vector2.ZERO, 0.2)
 	tween.chain().tween_callback(func():
-		GameManager.next_level()
+		if ui_node and ui_node.has_method("show_win_modal"):
+			ui_node.show_win_modal(stars, remaining_pulls)
+		else:
+			GameManager.next_level()
 	)
+

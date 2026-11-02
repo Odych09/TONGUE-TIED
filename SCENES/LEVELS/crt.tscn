@@ -4,6 +4,126 @@
 [ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="2_t1itu"]
 [ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="3_1tjdh"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_btn"]
+bg_color = Color(0.06, 0.14, 0.24, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.75, 0.85, 0.7)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.01, 0.04, 0.08, 0.5)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_btn_pressed"]
+bg_color = Color(0.12, 0.28, 0.45, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.95, 1, 0.9)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+bg_color = Color(0.05, 0.12, 0.22, 0.82)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.75, 0.85, 0.5)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pull_btn"]
+bg_color = Color(0.08, 0.45, 0.35, 0.9)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.35, 0.95, 0.75, 0.9)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.05, 0.35, 0.25, 0.6)
+shadow_size = 14
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pull_btn_pressed"]
+bg_color = Color(0.04, 0.32, 0.24, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.6, 1, 0.85, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_win_panel"]
+content_margin_left = 40.0
+content_margin_top = 36.0
+content_margin_right = 40.0
+content_margin_bottom = 36.0
+bg_color = Color(0.05, 0.11, 0.2, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.35, 0.85, 0.95, 0.85)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.01, 0.03, 0.08, 0.85)
+shadow_size = 36
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_btn"]
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+bg_color = Color(0.09, 0.22, 0.36, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.75, 0.9, 0.6)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_btn_hover"]
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+bg_color = Color(0.15, 0.36, 0.55, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.95, 1, 0.95)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7iixq"]
 shader = ExtResource("3_1tjdh")
 shader_parameter/brightness = 1.02
@@ -24,7 +144,7 @@ shader_parameter/jitter_px = 0.0
 shader_parameter/wobble_px = 0.0
 shader_parameter/tape_noise = 0.22
 shader_parameter/tape_lines = 0.0
-shader_parameter/roll_speed = 0.10000000475
+shader_parameter/roll_speed = 0.1
 shader_parameter/roll_strength = 0.15
 shader_parameter/glow_strength = 2.0
 shader_parameter/glow_threshold = 0.65
@@ -40,27 +160,52 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
+mouse_filter = 1
 
-[node name="PULLS_LEFT" type="RichTextLabel" parent="UI" unique_id=259030708]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -683.0
-offset_top = 18.0
-offset_bottom = 108.0
-grow_horizontal = 0
-theme_override_constants/outline_size = 23
-theme_override_fonts/normal_font = ExtResource("2_t1itu")
-theme_override_fonts/bold_font = ExtResource("2_t1itu")
-theme_override_font_sizes/normal_font_size = 58
-bbcode_enabled = true
-text = "PULLS LEFT:"
-scroll_active = false
+[node name="TopLeftBar" type="HBoxContainer" parent="UI" unique_id=1849204910]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 450.0
+offset_bottom = 96.0
+theme_override_constants/separation = 14
+
+[node name="RestartBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204911]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.9, 0.3, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 38
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_hud_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hud_btn_pressed")
+text = "↺"
+
+[node name="MenuBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204912]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.9, 0.3, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_hud_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_hud_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hud_btn_pressed")
+text = "☰"
+
+[node name="LevelBadge" type="PanelContainer" parent="UI/TopLeftBar" unique_id=1849204913]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
+
+[node name="LevelLabel" type="Label" parent="UI/TopLeftBar/LevelBadge" unique_id=1849204914]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 24
+text = "LEVEL 1"
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
 
 [node name="FLIES_LEFT" type="RichTextLabel" parent="UI" unique_id=952952309]
 layout_mode = 1
@@ -71,15 +216,176 @@ offset_left = -341.5
 offset_right = 341.5
 offset_bottom = 90.0
 grow_horizontal = 2
+mouse_filter = 2
 theme_override_constants/outline_size = 23
 theme_override_fonts/normal_font = ExtResource("2_t1itu")
 theme_override_fonts/bold_font = ExtResource("2_t1itu")
 theme_override_font_sizes/normal_font_size = 58
 bbcode_enabled = true
-text = "PULLS LEFT:"
+text = "BUGS:"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PULLS_LEFT" type="RichTextLabel" parent="UI" unique_id=259030708]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -580.0
+offset_top = 18.0
+offset_right = -40.0
+offset_bottom = 108.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/outline_size = 23
+theme_override_fonts/normal_font = ExtResource("2_t1itu")
+theme_override_fonts/bold_font = ExtResource("2_t1itu")
+theme_override_font_sizes/normal_font_size = 58
+bbcode_enabled = true
+text = "PULLS: 5"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BigPullBtn" type="Button" parent="UI" unique_id=1849204915]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -140.0
+offset_right = -40.0
+offset_bottom = -35.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.95, 1, 0.98, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.95, 0.4, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 38
+theme_override_styles/normal = SubResource("StyleBoxFlat_pull_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pull_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pull_btn_pressed")
+text = "⚡ PULL"
+
+[node name="WinModal" type="Control" parent="UI" unique_id=1849204916]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="UI/WinModal" unique_id=1849204917]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.05, 0.1, 0.75)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/WinModal" unique_id=1849204918]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/WinModal/CenterContainer" unique_id=1849204919]
+custom_minimum_size = Vector2(620, 480)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_win_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer" unique_id=1849204920]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="WinTitle" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204921]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 48
+text = "★ LEVEL CLEAR! ★"
+horizontal_alignment = 1
+
+[node name="StarsRow" type="HBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204922]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Star1" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/StarsRow" unique_id=1849204923]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.15, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 64
+text = "★"
+
+[node name="Star2" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/StarsRow" unique_id=1849204924]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.15, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 64
+text = "★"
+
+[node name="Star3" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/StarsRow" unique_id=1849204925]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.15, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 64
+text = "★"
+
+[node name="StatsLabel" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204926]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 22
+text = "Pulls Left: 4"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204927]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ActionsRow" type="HBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204928]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ReplayBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow" unique_id=1849204929]
+custom_minimum_size = Vector2(150, 56)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+text = "↻ REPLAY"
+
+[node name="LevelsBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow" unique_id=1849204930]
+custom_minimum_size = Vector2(150, 56)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+text = "☰ LEVELS"
+
+[node name="NextBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow" unique_id=1849204931]
+custom_minimum_size = Vector2(160, 56)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.25, 0.2, 1)
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_pull_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pull_btn_pressed")
+text = "NEXT ➔"
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=708671421]
 material = SubResource("ShaderMaterial_7iixq")

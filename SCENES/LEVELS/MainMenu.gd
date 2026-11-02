@@ -18,13 +18,22 @@ extends Control
 # UI components
 @onready var title_box: Control = $UI/MarginContainer/HBoxContainer/LeftColumn/TitleBox
 @onready var play_btn: Button = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/PlayButton
+@onready var levels_btn: Button = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/LevelsButton
 @onready var settings_btn: Button = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/SettingsButton
 @onready var quit_btn: Button = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/QuitButton
+@onready var hint_1: Label = $UI/MarginContainer/HBoxContainer/LeftColumn/ControlHints/Hint1
 
 # Indicator pips inside buttons
 @onready var play_pip: Panel = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/PlayButton/Pip
+@onready var levels_pip: Panel = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/LevelsButton/Pip
 @onready var settings_pip: Panel = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/SettingsButton/Pip
 @onready var quit_pip: Panel = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/QuitButton/Pip
+
+# Level Select Modal
+@onready var level_select_modal: Control = $LevelSelectModal
+@onready var level_select_panel: PanelContainer = $LevelSelectModal/CenterContainer/PanelContainer
+@onready var level_grid: GridContainer = $LevelSelectModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer
+@onready var level_select_back_btn: Button = $LevelSelectModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LevelSelectBackButton
 
 # Settings Modal
 @onready var settings_modal: Control = $SettingsModal
@@ -36,6 +45,7 @@ extends Control
 @onready var play_games_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PlayGamesButton
 @onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PGLabel
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
+
 
 
 # Audio Stream Players
@@ -68,24 +78,35 @@ func _ready() -> void:
 
 	# Hook up button hover & click interactions
 	_setup_nav_button(play_btn, play_pip)
+	_setup_nav_button(levels_btn, levels_pip)
 	_setup_nav_button(settings_btn, settings_pip)
 	_setup_nav_button(quit_btn, quit_pip)
 
-	# Settings back button hover effect
+	# Settings and Level Select back button hover effects
 	settings_back_btn.mouse_entered.connect(func():
+		hover_sfx.pitch_scale = 0.95
+		hover_sfx.play()
+	)
+	level_select_back_btn.mouse_entered.connect(func():
 		hover_sfx.pitch_scale = 0.95
 		hover_sfx.play()
 	)
 
 	play_btn.pressed.connect(_on_play_pressed)
+	levels_btn.pressed.connect(_on_levels_pressed)
 	settings_btn.pressed.connect(_on_settings_pressed)
 	quit_btn.pressed.connect(_on_quit_pressed)
 
-	# Hook up settings modal events
+	# Hook up modal events
+	level_select_back_btn.pressed.connect(_on_level_select_back_pressed)
 	settings_back_btn.pressed.connect(_on_settings_back_pressed)
 	volume_slider.value_changed.connect(_on_volume_changed)
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
 	crt_check.toggled.connect(_on_crt_toggled)
+
+	# Mobile dynamic control hint
+	if OS.get_name() == "Android" or OS.get_name() == "iOS":
+		hint_1.text = "🎮  SWIPE TO STRETCH TONGUE   •   TAP PULL TO SNAP"
 
 	# Initialize settings state
 	_init_settings_values()
@@ -98,8 +119,10 @@ func _ready() -> void:
 	# Draw title tongue accent
 	_draw_title_tongue_accent()
 
-	# Hide settings modal initially
+	# Hide modals initially
 	settings_modal.visible = false
+	level_select_modal.visible = false
+
 
 func _init_play_games() -> void:
 	if not is_instance_valid(play_games_btn):
@@ -285,9 +308,14 @@ func _on_play_pressed() -> void:
 		return
 	is_snapping = true
 	play_btn.disabled = true
+	levels_btn.disabled = true
 	settings_btn.disabled = true
 	quit_btn.disabled = true
 	click_sfx.play()
+
+	# ALWAYS launch into the latest unlocked level!
+	GameManager.current_level_index = GameManager.unlocked_level
+
 
 	# Frog Tongue Snap Sequence!
 	var mouth := frog.position + Vector2(0, 8)
@@ -382,3 +410,96 @@ func _on_quit_pressed() -> void:
 	click_sfx.play()
 	await get_tree().create_timer(0.25).timeout
 	get_tree().quit(0)
+
+# --- Level Select Modal ---
+
+func _on_levels_pressed() -> void:
+	click_sfx.play()
+	_populate_level_grid()
+	level_select_modal.visible = true
+	level_select_modal.modulate.a = 0.0
+	level_select_panel.scale = Vector2(0.85, 0.85)
+	level_select_panel.pivot_offset = level_select_panel.size * 0.5
+
+	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(level_select_modal, "modulate:a", 1.0, 0.22)
+	tw.tween_property(level_select_panel, "scale", Vector2.ONE, 0.26)
+
+func _on_level_select_back_pressed() -> void:
+	back_sfx.play()
+	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tw.tween_property(level_select_modal, "modulate:a", 0.0, 0.18)
+	tw.tween_property(level_select_panel, "scale", Vector2(0.85, 0.85), 0.18)
+	await tw.finished
+	level_select_modal.visible = false
+
+func _populate_level_grid() -> void:
+	if not level_grid:
+		return
+		
+	for child in level_grid.get_children():
+		child.queue_free()
+
+	var font := load("res://ASSETS/FONT/Gorditas-Bold.ttf") as FontFile
+
+	for i in range(GameManager.levels.size()):
+		var btn := Button.new()
+		btn.custom_minimum_size = Vector2(145, 95)
+		
+		var is_unlocked := GameManager.is_level_unlocked(i)
+		var stars := GameManager.get_level_stars(i)
+		
+		if is_unlocked:
+			var stars_text := ""
+			for s in range(3):
+				stars_text += "★" if s < stars else "☆"
+			btn.text = "%d\n%s" % [i + 1, stars_text]
+			btn.add_theme_color_override("font_color", Color(0.9, 0.95, 1, 1))
+			btn.add_theme_color_override("font_hover_color", Color(1, 0.9, 0.3, 1))
+			btn.pressed.connect(_on_level_selected.bind(i))
+			btn.mouse_entered.connect(func():
+				hover_sfx.pitch_scale = randf_range(1.0, 1.15)
+				hover_sfx.play()
+			)
+		else:
+			btn.text = "%d\n🔒" % (i + 1)
+			btn.disabled = true
+			btn.modulate = Color(0.45, 0.55, 0.65, 0.6)
+
+		if font:
+			btn.add_theme_font_override("font", font)
+		btn.add_theme_font_size_override("font_size", 22)
+		
+		# Button style
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color(0.07, 0.16, 0.28, 0.92)
+		style.set_corner_radius_all(18)
+		style.set_border_width_all(2)
+		style.border_color = Color(0.3, 0.75, 0.9, 0.7) if is_unlocked else Color(0.2, 0.3, 0.4, 0.35)
+		style.shadow_color = Color(0.01, 0.03, 0.06, 0.4)
+		style.shadow_size = 6
+		btn.add_theme_stylebox_override("normal", style)
+		
+		var hover_style := style.duplicate() as StyleBoxFlat
+		hover_style.bg_color = Color(0.12, 0.3, 0.5, 0.98)
+		hover_style.border_color = Color(0.4, 0.95, 1, 0.95)
+		hover_style.shadow_size = 10
+		btn.add_theme_stylebox_override("hover", hover_style)
+		btn.add_theme_stylebox_override("pressed", hover_style)
+		
+		level_grid.add_child(btn)
+
+func _on_level_selected(level_index: int) -> void:
+	click_sfx.play()
+	GameManager.current_level_index = level_index
+	level_select_modal.visible = false
+	
+	if is_snapping:
+		return
+	is_snapping = true
+	
+	var transition_layer := get_node_or_null("/root/TransitionLayer")
+	if transition_layer and transition_layer.has_method("transition_out"):
+		await transition_layer.transition_out()
+		
+	get_tree().change_scene_to_file("res://SCENES/LEVELS/main.tscn")
