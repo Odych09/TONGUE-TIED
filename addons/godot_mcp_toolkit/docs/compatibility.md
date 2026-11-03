@@ -1,0 +1,655 @@
+# Godot Version Compatibility
+
+**Minimum supported:** Godot 4.2  
+**Full functionality:** Godot 4.5+  
+**Recommended:** Godot 4.5+  
+**Tested on:** Godot 4.2–4.7.x
+
+Future Godot versions (4.8+) are not blocked. The plugin runs normally on
+untested versions and logs a startup warning.
+
+## Version tiers
+
+| Godot version | Support level | Notes |
+|---------------|---------------|-------|
+| 4.0 - 4.1    | Not supported | EditorInterface is not a global singleton; would require wrapping 70+ call sites |
+| **4.2**       | Core          | All tools work; some UI degradation (see below) |
+| **4.3**       | Core          | TileMapLayer support added (tilemap tool auto-detects) |
+| **4.4**       | Full UI       | Toast notifications added (`EditorInterface.get_editor_toaster()` is 4.4+) |
+| **4.5+**      | Full          | All tools and UI features available |
+| 4.8+ (future) | Expected      | `has_method()` guards are forward-compatible; startup warning only |
+
+## Tool compatibility matrix
+
+All MCP tools work on Godot 4.2+ unless noted below.
+
+| Tool | Min version | Behavior on older Godot |
+|------|-------------|------------------------|
+| `scene_close` | 4.5 | Returns `UNSUPPORTED` error with version message. On 4.5+ closes active or inactive tabs; last-tab close auto-creates an empty scene |
+| `script_check` | 4.2 | GDScript only (`.gd`); rejects `.cs` with `INVALID_PARAMS`. The check renames the script's `class_name` in its copy and checks the name itself, as the engine does; a name that clashes reports its error with a `line` on every version (an abstract engine class only from 4.4; see [the limitations](#script_check-limitations-all-versions)). Error messages name the file itself, except for a script under the project's script-templates folder (see below) |
+| `editor_refresh` | 4.2 | Supports `file_paths` param for targeted O(1)-per-file mode; without params falls back to full `scan()`. Both modes work on all versions |
+| `input_map_event`, `input_map_list` | 4.2 | A key's `location` (left or right) needs 4.3+: on 4.2 a `location` passed to a bind or an unbind is ignored and the response carries a `warnings` entry, and keys are read back without one. On 4.7, keys and mice have their own device ids (16 and 32), and a key or mouse event saved with device 0 by an older Godot matches one bound now |
+| `extensions_refresh` | 4.2 | On 4.2.2, an extension edit made with `script_write` or `script_edit` (or their undo/redo) applies live when it compiles. An edit made outside the toolkit, or to a C# extension, needs an editor restart, and so does every extension edit on 4.2.0 and 4.2.1; `extensions_refresh` names it in its `hint` (a cached read avoids an engine reimport crash — see below). When the file does not compile, the `hint` says to fix it instead. Adding/removing extensions applies live. 4.3+ applies all changes live |
+| `script_write` | 4.2 | `.gd` inline diagnostics (`valid`/`diagnostics`) on all versions. On 4.2.2 and later, a `.gd` that compiles is reloaded in the editor after the write, and after its undo and redo, so the nodes already running it run the new code (`script_edit` too). On 4.2.0 and 4.2.1 the toolkit reloads nothing (an in-place reload there can crash the editor, see below): the nodes keep the old code until the editor relaunches, and a write over an existing `.gd` that compiles carries a stale-instance `hint` that says so. A `.gd` that does not compile is written but the toolkit does not load it: on Godot 4.2–4.3 and on a 4.5+ headless editor, the nodes keep the code they had. On 4.4+ with an editor window, and on 4.4 headless, the editor's own reload of the changed file can still apply the broken source to the nodes running it, until the file is fixed. Undoing a write restores the file's previous content, or deletes a file the write created |
+| `node_set_script` | 4.2 | Reloads a `.gd` whose file changed since the editor loaded it, so every node running it, old or new, runs the code on disk; the toolkit's own scripts are never reloaded. On 4.2.0 and 4.2.1 it reloads nothing and sets the version the editor already has (see `script_write`). A file that does not compile is not loaded: when the file changed since the editor loaded it and does not compile, the response carries `valid: false` and a `hint` that says so and points at `script_check`, and the node runs the version the editor already had (unless the editor had already reloaded that broken source by itself; see `script_write`). Undoing `node_set_script` restores the node's previous script, not the file's previous content |
+| `node_call_method` | 4.2 | On **< 4.4**, an `INVALID_METHOD` whose method exists on the node's on-disk `.gd` (a stale live instance, after the file changed outside the toolkit) carries a stale-instance `hint` (set the script again, or on 4.2.0 and 4.2.1, where that does not reload it, relaunch the editor); a genuine typo does not. 4.4+ hot-reloads on a **display** editor, so the call just succeeds — but a **4.4+ headless** editor never re-instantiates the reloaded node, so the stale `hint` fires there too (headless wording: set the script again or relaunch a display editor) |
+| `lsp_*` (diagnostics, symbols, hover, completion, definition, references) | 4.2 | LSP works on 4.2+. **Multi-editor conflict detection is degraded < 4.5**: the cross-project root-mismatch check needs 4.5+, so on 4.2–4.4 give each editor a distinct `--lsp-port` + `GODOT_MCP_LSP_PORT` (see [multi-instance.md](multi-instance.md)) |
+| `editor_get_console` | 4.2 | Captures runtime output (errors/warnings/prints) on all versions. **Editor parse errors** (from `editor_refresh` recompiling a script) surface only on **4.5+** (the Logger API hooks editor diagnostics); on **4.2–4.4** a default editor launch does NOT write them to `godot.log`, so neither `source="buffer"` nor `source="file"` can return them — use `script_check` or the `script_write` inline diagnostics instead. From 4.3, an editor launched with `--log-file user://logs/godot.log` writes its own errors to that file, so both sources can return them (see [Degraded behavior](#degraded-behavior-by-version)). Multi-line errors that ARE captured (`SCRIPT ERROR: …` + `   at: <script>.gd:LINE`) are leveled as a unit, so a filename + `level_filter:["error"]` query finds the location line. 4.5+ uses the synchronous Logger (one entry per error, zero-latency) |
+| `animationtree_edit` | 4.2 | All ops work on 4.2+ (set_root, add/remove_node, add/remove_transition, set_property; transitions enumerate on all versions) |
+| `animationtree_list` | 4.2 | Listing works on 4.2+, but **node enumeration is 4.5+:** `AnimationNodeStateMachine.get_node_list()` is a 4.5 script API (absent 4.2-4.4), so on 4.2-4.4 `animationtree_list` returns `nodes: []` and `nodes_count` reads 0 (node *operations* via `animationtree_edit` add/remove/has still work; only listing existing nodes is unavailable). 4.5+ enumerates nodes fully |
+| `input_simulate` (`send_text` event) | 4.2 | `send_text` synthesizes one `InputEventKey.unicode` per codepoint and delivers it via `Viewport.push_input` (engine-level APIs, all ≥4.0) — identical on every supported version, ungated. Non-ASCII via `String.unicode_at`; a `secret` `LineEdit`'s `text_after` is redacted |
+| `debug_set_breakpoint` | 4.2 | Works on all versions **only with Godot's built-in script editor**. If the editor is configured for an **external editor** (Editor Settings → Text Editor → External, e.g. VS Code), returns `EXTERNAL_EDITOR_ACTIVE` with a steering hint — a **100% engine limitation**, not version-specific (see [External script editor](#external-script-editor-engine-limitation)) |
+| All other tools | 4.2 | Fully functional. Mutating ops register UndoRedo history (undo via Edit > Undo) on all supported versions — the toolkit reaches `EditorUndoRedoManager` through `EditorPlugin.get_undo_redo()`, which is 4.0+ stable |
+
+### External script editor (engine limitation)
+
+**Breakpoint tools require Godot's built-in script editor — on every supported version.** Godot sets
+and stores editor breakpoints on the built-in `CodeEdit` (the script editor's code widget). When the
+editor is configured to use an **external editor** (Editor Settings → *Text Editor* → *External* →
+"Use External Editor" enabled, pointing at e.g. VS Code), `EditorInterface.edit_script()` opens the
+file in that external editor and the built-in script editor is bypassed — so there is **no `CodeEdit`
+to set a breakpoint on**. `debug_set_breakpoint` detects this and returns `EXTERNAL_EDITOR_ACTIVE` with
+a hint to disable the external-editor setting and retry.
+
+**This is 100% an engine limitation, not a toolkit one** — the engine exposes no API to place a
+built-in-editor breakpoint on a script it is not displaying in the built-in editor. It is **not
+version-specific**: it behaves identically on Godot 4.2 through 4.7+. The remedy is to use Godot's
+built-in script editor for breakpoint workflows (external editors provide their own, separate
+breakpoint mechanism). Verified empirically on 4.2: with the built-in editor the breakpoint binds by
+script identity (even across stale/phantom tabs); with an external editor the tool returns the clear
+`EXTERNAL_EDITOR_ACTIVE` signal.
+
+### Degraded behavior by version
+
+**Godot 4.2 – 4.3 (minimum):**
+- Toast notifications silently skip (no user-visible impact on tool behavior).
+  `EditorInterface.get_editor_toaster()` is 4.4+, so the toolkit falls back to
+  `push_warning()` to the Output panel here.
+- `script_check` limitations apply (see section below).
+- On 4.2 specifically, TileMapLayer nodes do not exist (introduced in 4.3).
+  The tilemap tool still works with legacy `TileMap` nodes.
+- **Extension hot-reload — an edit made outside the toolkit needs a restart (4.2
+  only).** Adding a new extension and removing one both apply live. Loading a
+  freshly-edited `@tool` script fresh (`CACHE_MODE_IGNORE`) while
+  `EditorFileSystem` is still reimporting it spawns a second, unregistered,
+  synchronous parallel load during global-class registration and natively crashes
+  the 4.2 editor — the same `CACHE_MODE_IGNORE` hazard already noted for
+  `script_check`. On 4.2 the extension loader therefore reads through the
+  editor cache (`CACHE_MODE_REUSE`), which is crash-safe and sees an edit once
+  the cached script holds it. On 4.2.2, an extension edit made with
+  `script_write` or `script_edit` (or their undo/redo) applies live when it
+  compiles. An edit made outside the toolkit, or to a C# extension, needs an
+  editor restart, and so does every extension edit on 4.2.0 and 4.2.1 (see the
+  next item); `extensions_refresh` names it in its `hint`, and a
+  `push_warning` also shows in the Output panel. When the file on disk does not
+  compile, the `hint` says to fix it (with `script_write` or `script_edit`;
+  `script_check` lists the errors) rather than restart, since a restart would
+  load the broken file. Godot 4.3+ applies edits live (validated on 4.5).
+- **No in-place script reload on 4.2.0 and 4.2.1.** On these two releases,
+  reloading a script in place frees the code of its lambdas while a `Callable`
+  held elsewhere (a signal connection, an extension's registered tool) still
+  points at it, and the next call crashes the editor. 4.2.2 and 4.3 fixed it.
+  So on 4.2.0 and 4.2.1 the toolkit reloads nothing after `script_write`,
+  `script_edit`, their undo and redo, or `node_set_script`: the nodes running a
+  changed script keep the old code until the editor relaunches, and the hints on
+  `script_write` and `node_call_method` say so. The script editor's own save
+  of a `@tool` script that holds such lambdas can hit the same crash; update to
+  4.2.2 if you edit those scripts in-session. When a GDScript extension's
+  loaded source changes (a reload), the toolkit registers its tools again,
+  even for a body-only change, so no registered tool keeps running code from
+  before the reload.
+- **Live attached-script reload — a script changed outside the toolkit needs the
+  script set again (4.2 + 4.3).** A **distinct** boundary from the extension
+  hot-reload above (which is 4.2→4.3): live scene-node attached-script reload is
+  the **4.3→4.4** boundary. On 4.2 and 4.3, after a `.gd` that is already attached
+  to a live node changes on disk outside the toolkit (an external editor, a git
+  checkout), that instance keeps the OLD code — *added members* surface as
+  `INVALID_METHOD`, and *changed method bodies* run silently with the old
+  behaviour and **no error**. `editor_refresh` keeps the stale code.
+  `node_set_script` reloads a script whose file changed, so setting the script
+  again, on the same node or a new one, picks up the edit. The toolkit's own
+  writes (`script_write`, `script_edit`, and their undo and redo) reload the
+  script themselves, so they need no second step. On 4.2.0 and 4.2.1 neither
+  reloads (see the item above), so only an editor relaunch picks up the edit. The toolkit surfaces the
+  outside-edit case on < 4.4 as a `hint` on a `node_call_method` `INVALID_METHOD`
+  whose method exists on the on-disk script. A genuine typo (method absent on
+  disk) gets no such hint, and a file that does not compile is left to
+  `script_check`. Empirically characterised across 4.2–4.6.
+  **`.gd` only** — C# (`.cs`) live reload is a different (assembly-rebuild) model
+  and is not yet characterised.
+  Godot 4.4+ hot-reloads promptly on a **display** editor, so no hint fires there — but a
+  **headless** 4.4+ editor never re-instantiates the live node (the play/reload path is
+  display-bound), so the reactive `node_call_method` hint fires headless on 4.4+ too, with
+  a headless-specific message (set the script again or relaunch a display editor; the edit is
+  on disk, confirm with `script_check`).
+- **GDScript LSP multi-editor — root verification needs 4.5+.** The `lsp_*` tools
+  work, but the server's cross-project safety check (the workspace-root mismatch
+  warning) doesn't exist before 4.5. With more than one editor open the server
+  cannot detect a foreign or near-simultaneous holder of LSP port 6005, so each
+  editor must use a distinct `--lsp-port` + `GODOT_MCP_LSP_PORT` (see
+  [multi-instance.md](multi-instance.md)).
+- **`animationtree_list` — node enumeration needs 4.5+ (4.2–4.4).**
+  `AnimationNodeStateMachine.get_node_list()` is a 4.5+ script API, so on 4.2–4.4
+  `animationtree_list` returns `nodes: []` and summaries report `nodes_count: 0`.
+  Transitions enumerate and every node *operation* (`add_node`/`remove_node`/`has_node` via
+  `add`/`remove`) works on 4.2+ — only *listing existing nodes* is unavailable. The handler
+  guards the call with `has_method("get_node_list")`, so it always returns a well-formed
+  result (never the malformed `INTERNAL`). 4.5+ enumerates fully.
+- **`editor_get_console` — editor parse-error capture needs 4.5+ (4.2–4.4).** Godot's file
+  logging (`user://logs/godot.log`, what `source="file"` reads) captures **running-game**
+  output, **not** editor parse/import errors — the "red" Output-panel errors are not written
+  to a file (per the engine docs; the editor-log-to-file proposal #13479 is still open). The
+  4.5+ `Logger` API hooks the editor's internal error/warning stream into the in-memory
+  buffer; on 4.2–4.4 there is no such hook, so editor *parse* errors are unreachable via
+  `editor_get_console` (neither `source`). Use `script_check` or `script_write`'s inline
+  diagnostics for parse errors instead. (Editor *runtime* warnings — `push_warning` from
+  `@tool` scripts — and game output DO reach `godot.log` and are captured on all versions.)
+  All of this holds for a default launch. From 4.3, an editor launched with
+  `--log-file user://logs/godot.log` writes its own errors to that file, so `source="file"`
+  returns them, and so does `source="buffer"`, which tails the same file before 4.5. The tail
+  is polled, so an error can arrive a moment after the call that caused it. On Windows, a 4.4
+  editor launched this way keeps the file from being read: `source="file"` returns
+  `LOG_BUSY` and `source="buffer"` returns nothing.
+- **Scene saves emit benign console errors (4.2 only).** On 4.2, saving a scene prints
+  `"save_scene() resumed after await, but script is gone"` (and a paired *disconnect
+  nonexistent connection 'process_frame'*) from the safe-save coroutine's `await
+  process_frame` — a 4.2 static-coroutine lifecycle quirk.
+  **The save still succeeds**; the editor may show a transient "could not save scene" notice
+  but the file is written. Benign console noise; 4.3+ is unaffected. The `await` is a
+  deliberate scene-save re-entrancy/crash guard, so it is not reworked for this cosmetic
+  4.2-only effect.
+- **Custom class docs appear lazily in the in-editor reference (4.2 only).** A
+  custom public class's documentation shows in the in-editor class reference (Help →
+  Search Help / F1) only **after its script has been opened/loaded once** in the session — 4.2
+  generates custom-class docs lazily (on script load), whereas **4.3+** loads them eagerly at
+  scan (`EditorFileSystem::_update_script_documentation`, added in 4.3). Workaround on 4.2: open
+  the script once. Not a toolkit issue.
+
+**Godot 4.4:**
+- Toast notifications work (`EditorInterface.get_editor_toaster()` is 4.4+).
+- `script_check` limitations apply (see section below).
+- `scene_close` returns `UNSUPPORTED`.
+- `scene_delete`/`file_delete`: non-active open scene tabs become phantoms
+  with a warning; active scene deletion is blocked (`EDITED_SCENE`).
+- GDScript LSP multi-editor: root verification needs 4.5+ (see the 4.2–4.3 note);
+  a multi-editor LSP setup on 4.4 still needs a distinct `--lsp-port` +
+  `GODOT_MCP_LSP_PORT`.
+
+**Godot 4.5+:**
+- Full functionality. All tools, all UI features.
+- GDScript LSP multi-editor conflict detection fully supported (workspace-root
+  verification catches a wrong-project or non-registry holder of port 6005).
+- Console capture uses the Logger API (zero-latency, in-memory ring buffer) instead of
+  the file-tailing backend used on 4.2-4.4 — and, because the Logger hooks the editor's
+  internal error/warning stream, it captures editor **parse/import errors** that
+  `godot.log` file logging does not in a default launch, so `editor_get_console` surfaces
+  them here.
+- `animationtree_list` enumerates state-machine nodes fully (`get_node_list` is 4.5+).
+
+### EditorFileSystem indexing (all versions)
+
+File-mutating commands (`script_write`, `resource_write`, `scene_create`,
+`file_delete`, etc.) call `EditorFileSystem.update_file()` and poll
+`get_file_type()` to confirm indexing before returning. An `indexed` or
+`deindexed` field in the response indicates whether EditorFileSystem
+acknowledged the change.
+
+**The `indexed` field is advisory, not a functional gate.** All downstream
+operations (`script_check`, `resource_load`, `scene_open`) work regardless
+of the `indexed` value. Known cases where `indexed` may be `false`:
+
+- **First file in a new directory:** `update_file()` cannot index a file
+  whose parent directory is unknown to EditorFileSystem. A `scan()` fallback
+  runs, but on .NET editor builds the scan may not complete within the
+  3-second timeout. The second file in the same directory typically returns
+  `indexed: true` because the first file's scan taught EditorFileSystem
+  about the directory.
+- **SVG imports:** `asset_import` may return `class: null` if the import
+  pipeline hasn't finished. Call `editor_wait_for_idle` after importing.
+
+### Phantom tab cleanup (scene/file/folder delete)
+
+`scene_delete`, `file_delete` (for `.tscn`/`.scn`), and `folder_delete` all
+attempt to close editor tabs for scenes being deleted, preventing phantom
+tabs that silently recreate files on save (godot#44123).
+
+**Godot 4.5+:** tabs are closed automatically via `close_scene_tab_safe()`.
+The response includes `tab_closed: true`. For `folder_delete` with exactly
+one scene inside, that tab is closed cleanly. Multiple scene tabs cannot be
+closed in a loop (deferred-queue crash, signal 11) — the response returns a
+`stale_tabs` array; call `scene_close` on each afterward (MCP round-trip
+provides safe sequencing).
+
+**Active tab after close:** closing a non-active tab switches to that tab
+first, then closes it. Godot auto-switches to an adjacent tab afterward —
+the previously-active tab is **not** restored (restoring triggers a benign
+but noisy `_set_main_scene_state` deferred-queue error in the engine).
+
+**Godot 4.2–4.4:** no `close_scene()` API exists. Deleting a non-active
+open scene proceeds with a phantom warning (`tab_closed: false`, `warnings`
+array). Deleting the **active** scene returns `EDITED_SCENE` error (the
+phantom would be the focused tab, and Ctrl+S would recreate the file).
+`folder_delete` uses the switch-away strategy and returns `stale_tabs` +
+`warnings`.
+
+### C# (.NET) editor requirement
+
+> [!IMPORTANT]
+> C# projects require the Godot **.NET editor build** (`Godot_v*_mono_*`).
+> Standard builds cannot load `.cs` scripts at all.
+
+Standard builds have no .NET resource loader — `.cs` files cannot be loaded
+as scripts, `[GlobalClass]` types do not register in ClassDB, and C#
+runtime execution is impossible. The toolkit itself handles `.cs` file I/O
+correctly on both builds; the limitation is in the Godot binary.
+
+### `script_check` limitations (all versions)
+
+`script_check`, and the inline check `script_write` and `script_edit` run on a
+`.gd` file, compile a copy of the script in memory with `GDScript.new().reload()`.
+`ResourceLoader.load()` with `CACHE_MODE_IGNORE` was evaluated as an
+alternative and stays banned: it goes through the resource loader's layer,
+where it corrupted already-loaded scripts and crashed the editor. Reloading a
+script whose file changed is a separate recipe, the one the script editor
+uses for a file changed on disk: the cached script takes the file's source and
+recompiles in place with `reload(true)`. The toolkit uses it only for a source
+that passed this check, so its own reload never replaces working code with a
+file that does not compile, and never on 4.2.0 and 4.2.1 (see the 4.2 notes
+above). On 4.4+ with an editor window, and on 4.4 headless,
+the editor reloads a changed file by itself too, without that check (see
+`node_set_script` and `script_write` above).
+
+A copy that kept the script's `class_name` would clash with the global class
+the editor registered for the file, so the copy renames it: the class name
+gets a probe suffix, and so does every use of the name in the script. If that
+copy fails, the check compiles a second copy with only the declaration renamed.
+On 4.5+, when both fail for a script whose `class_name` is registered for that
+file, a third copy keeps the name, and the script passes when that copy's only
+error is the clash with its own registered class. That step reads the copy's
+errors back from the console capture, so it runs only while the toolkit's
+Logger capture is active; when the toolkit falls back to reading the log file,
+the step is skipped and 4.5+ behaves as 4.2–4.4 below.
+It then checks the original name the way the engine does: a name that hides a
+built-in type (`Plane`), a native class, another script's `class_name` or an
+autoload singleton is reported with the engine's message and the
+declaration's `line`, on every version. The console text `editor_get_console`
+and `game_start` return shows the original name.
+
+Remaining trade-offs:
+- **A preloaded alias of the script itself:** on 4.2–4.4, and on 4.5+ without
+  the Logger capture, `const Self = preload("<this file>")` with
+  `var me: Self = self` reports a false error.
+- **A codegen-only error next to self typing:** a script that types `self` as
+  its own class, uses its own name as a value (`Player.new()`) or passes `self`
+  to another script, and has an error only the compiler's last stage finds
+  (`self.hp` inside `hp`'s own getter) reads as valid. Passing `self` reads as
+  valid only on 4.5+ with the Logger capture active, where the check accepts it.
+- **The Output panel:** the editor's Output panel shows each compile the check
+  runs. A valid script that types `self` as its own class and uses its own name
+  as a value leaves two error lines per check that name the class with the
+  probe suffix, and an invalid script can print its error up to three times
+  on 4.2–4.4 and up to four times on 4.5+. On 4.5+, a script whose
+  `class_name` is registered for its file and that the renamed copies reject
+  is compiled once more under its own name. That compile prints the line
+  `Class "<Name>" hides a global script class.`, which is not a real error,
+  and the script's real errors again, without the probe suffix, to the panel
+  and to stderr. `editor_get_console` does not return that compile's script
+  errors; any other error it causes, such as a dependency that fails to load,
+  stays in the console. Godot gives no way to keep these lines out of the
+  panel.
+- **Abstract engine classes on 4.2–4.3:** a `class_name` equal to an abstract
+  engine class, such as `CanvasItem`, reads as valid there. 4.4 and later
+  report it.
+- **A member named like the script's own class:** a script that declares a
+  member with the same name as its `class_name` (an enum value, for example),
+  refers to it through a dotted access (`Team.Player`) and also uses its own
+  class name as a type reports a false error, on every version.
+- **Passing `self` to another script on 4.2–4.4:** a script that passes `self`
+  to another script's function whose parameter is typed with this script's
+  `class_name` (`Other.new().take(self)`, with `func take(_a: Player)`) reports
+  a false error there, and on 4.5+ when the Logger capture is not active. The
+  renamed copy of the script is not the type the other script expects, and the
+  copy that keeps the name needs the 4.5+ Logger capture to read its errors
+  back. `lsp_diagnostics` checks the file as the editor loads it, so it gives
+  the real result.
+- **`text_filter`:** `editor_get_console` matches `text_filter` against the
+  stored text, which still carries the probe suffix, so a regular expression
+  that expects the class name to end there, such as `Player\b`, can miss the
+  check's error.
+- **Other threads' errors:** while its compiles run (a few milliseconds), the
+  check turns error printing off for the whole editor, so an error another
+  thread prints in that window is missing from the console.
+- **Where the check compiles its copy:** the check compiles its copy beside
+  the file, so relative `preload()` and `extends` paths and the project's
+  per-directory warning rules apply to it as to the file, and its error
+  messages name the file itself. A file under the project's script-templates
+  folder (the `editor/script/templates_search_path` project setting,
+  `res://script_templates/` by default; a sibling folder whose name starts
+  with it counts too) is the exception: the editor loads a
+  template without parsing it, so the check compiles its copy with no path.
+  Its relative `preload()` and `extends` paths don't resolve, its error
+  messages name an internal `gdscript://` path instead of the file, and on
+  4.5+ a relative `preload()` gets the hint that the file doesn't exist yet, even
+  when the file sits beside the template.
+
+**Workaround:** for a template, use absolute `res://` paths in its `preload()`
+and `extends`, or check a copy of it saved outside the templates folder.
+
+### Quit during a pending save — one-time console noise (all versions)
+
+Quitting the editor while a toolkit-issued save (`editor_save_scene`, or any
+tool that saves a scene as a side effect) is still mid-flight can print
+one-time errors in the shutdown console, in the shape of:
+
+- `Resumed function 'save_scene()' after await, but script is gone`
+- `Attempt to disconnect a nonexistent connection ... 'process_frame'`
+
+This is accepted engine-teardown behavior, not a defect. The save path
+deliberately yields for one frame before writing (part of the toolkit's
+crash-safe save sequencing); a quit landing on exactly that frame tears the
+scripts down before the suspended call resumes, and the engine prints the two
+messages while discarding it. It is rare (the quit must hit the one yielded
+frame), cosmetic, and harmless — nothing leaks and nothing crashes; the
+interrupted save simply did not complete, and the editor's own quit flow still
+prompts for unsaved scenes as usual. The engine exposes no queryable
+"quitting" state a script could check first, so the noise cannot be guarded
+away — it is safe to ignore.
+
+### `editor_description` tooltip timer (Godot 4.3 engine issue)
+
+Setting a node's `editor_description` arms a 0.5-second one-shot timer in the
+editor's `SceneTreeEditor` that holds a **raw pointer to that node's tree row**
+(`TreeItem`). On **Godot 4.3**, concurrent scene-tree churn runs a full
+`tree->clear()` (4.3 rebuilds the whole scene dock on every node add/remove/move,
+and has no `TreeItem` cache) that frees the armed row — even for a mutation on an
+*unrelated* node — before the timer fires, so the timer dereferences freed memory
+→ editor use-after-free crash (SIGSEGV). Godot **4.2** renders node tooltips
+synchronously (no deferred timer) and is unaffected; Godot **4.4** added a
+`SceneTreeEditor` node cache (PR #99700) that keeps `TreeItem`s alive across
+rebuilds, so ordinary churn no longer frees the armed row. **4.3 is the only
+version where this crashes under normal tool use.**
+
+One narrow theoretical line-up survives on **4.4+**: the timer still binds a raw
+row pointer, and *deleting the described node itself* within 0.5 s of the set
+frees its cached row. That pairing is effectively unreachable at interactive pace
+— only same-tick scripted `set editor_description` + `delete` of one node arms it
+— and is not auto-guarded (the upstream engine fix is the real cure). If you
+script that exact pairing, set the description on a node you keep, or delete a
+step later.
+
+**The toolkit prevents this automatically on 4.3.** Immediately *before* any
+built-in tool writes `editor_description` (`node_set_property` scalar/batch,
+`scene_create_node` inline properties), the handler drops the `SceneTreeEditor`'s
+`editor_description_changed` connections on that node, so the write arms no timer.
+The disconnect is **zero-latency** (no wait) and self-healing: Godot re-adds the
+connection with a fresh row pointer and refreshes the tooltip synchronously on its
+next scene-tree update, so nothing is lost. Connections made by *user* scripts to
+the same signal are left untouched. No action needed on 4.3.
+
+**Extension authors:** any new tool that writes `editor_description` must call
+`Modules.CommandHelpers.disarm_tooltip_uaf(node, "editor_description")` immediately
+before the set (a no-op off Godot 4.3) so it can't reintroduce the crash — see
+[extending.md](extending.md).
+
+### Editor crash at startup on macOS (Godot 4.5.0 engine issue)
+
+On macOS, **Godot 4.5.0** can abort while the editor starts, printing
+`libc++abi: Pure virtual function called!` (the terminal or crash report shows
+`Abort trap: 6`). It happens before any plugin loads, so it occurs with or without
+this toolkit, in both the standard and the .NET (mono) builds.
+
+It only happens while the editor rebuilds its help cache. That is the first launch
+after installing 4.5.0, the first launch after the cache
+(`~/Library/Caches/Godot/editor_doc_cache-4.5.res`) is deleted, and the first launch
+after running a different 4.5 build (for example switching between the standard and
+.NET editors). Headless `--import` and `--export-*` runs that start from a cold cache
+can hit it too. It is a race, so it does not fire every time. Once one launch gets
+through, the cache is saved and later launches skip the rebuild.
+
+The cause is an engine bug in the iOS/visionOS export platform's device-poll thread,
+fixed in Godot **4.5.1**. **Use 4.5.1 or later.** On 4.5.0, launch the editor again;
+one successful launch saves the cache. Upstream reports:
+[#111416](https://github.com/godotengine/godot/issues/111416),
+[#110634](https://github.com/godotengine/godot/issues/110634); fix:
+[#110485](https://github.com/godotengine/godot/pull/110485) (cherry-picked for 4.5.1).
+
+## UI surface compatibility matrix
+
+| UI surface | 4.3 | 4.4 | 4.5+ | Fallback on older |
+|------------|-----|-----|------|-------------------|
+| Bottom-panel dock | OK | OK | OK | 4.2–4.5: `add_control_to_bottom_panel()`. 4.6+: `add_dock()` (`EditorDock`) — capability gate flips at 4.6 |
+| Server status, audit log | OK | OK | OK | Standard Control nodes |
+| Setup wizard | OK | OK | OK | `AcceptDialog` + `add_button()` stable since 4.0 |
+| Toast notifications | Degraded | OK | OK | Silently skipped; `push_warning()` to Output panel |
+| Menu items (Project > Tools) | OK | OK | OK | `add_tool_menu_item()` stable since 4.0 |
+| Command Palette entries | OK | OK | OK | `get_command_palette()` guarded; skipped if unavailable |
+| Info/Help panel | OK | OK | OK | Standard Control nodes |
+| Plugin disable cleanup dialog | OK | OK | OK | `popup_dialog_centered()` guarded with fallback |
+| Export stripping (every Script Export Mode) | OK | OK | OK | 4.2: OK (text mode only); see below |
+| Script leak warning (another export plugin) | Output log | Export dialog | Export dialog | 4.2: Output log |
+| Inspector plugin | OK | OK | OK | `EditorInspectorPlugin` API stable since 4.0 |
+| Response cap configuration | OK | OK | OK | `SpinBox` / `LineEdit` stable since 4.0 |
+
+## Export stripping
+
+The addon's export plugin removes the addon's files (on 4.2, all but the icon's
+`.import` sidecar and its `.ctex`; see
+[Import sidecars remain in exports](#import-sidecars-remain-in-exports-godot-42-only)),
+GDScript extension scripts and `res://.mcp.json` from the build and nulls the
+runtime autoload, in **every** Script Export Mode: Text, Binary tokens and Binary
+tokens (compressed), Godot's default on 4.3+. Godot offers each exported file to
+its export plugins in name order and stops at the first one that skips or remaps
+it. The strip's name sorts before the
+built-in GDScript plugin, so it removes addon and extension scripts before that
+plugin can compile them to `.gdc`.
+
+The plugin still warns when addon or extension scripts never reach it. Unless the
+preset already excludes them, another export plugin that sorts earlier (an
+obfuscator, for example) consumed them first, and they may ship, as `.gdc` if that
+plugin compiles scripts. The warning names the paths to add to the preset's exclude
+filter (`res://addons/godot_mcp_toolkit/*` and each extension `.gd` path). Where the
+warning appears depends on the Godot version, because `add_message` and
+`get_export_platform` became callable from GDScript in 4.4:
+
+| Godot | Warning delivery |
+|-------|------------------|
+| 4.2, 4.3 | `push_warning()` → **Output / stderr log** |
+| 4.4+ | `EditorExportPlatform.add_message()` → **export dialog** |
+
+A headless **CLI** export on Godot 4.4 and older can also appear to hang after the
+export succeeds — an editor-session restore, not the strip plugin. Cause and
+remedies:
+<https://github.com/NPGameDev/godot-mcp-toolkit/blob/main/docs/troubleshooting.md>
+
+### What an export still carries
+
+An exported game still names the toolkit in a few files. These names are safe to
+ship and do nothing in a shipped game. They are names and paths only, with no
+addon code behind them. The game reads these files when it starts, but no addon
+script ships for them to point to, so none of the addon runs. They hold
+**no secrets**: the auth token lives in `user://` and the registry in a per-user
+folder outside the project, so neither is packed.
+
+The addon's class names stay in `.godot/global_script_class_cache.cfg` and its file
+paths in `.godot/uid_cache.bin` (on Godot 4.2 and 4.3 that file lists only the
+addon's icon). On Godot 4.7, adding `res://addons/godot_mcp_toolkit/*` to the
+preset's exclude filter drops the addon from both files. On 4.2 to 4.6 the engine
+copies both files whole, so the filter doesn't change them and the names stay.
+
+`project.binary` keeps the plugin's `editor_plugins/enabled` entry and any
+`[mcp_toolkit]` settings your project changed from their defaults (limits,
+concurrency, audit). That holds on every version, with or without the filter. The
+toolkit leaves them there on purpose. Godot builds `project.binary` from the
+editor's live settings, so removing an entry for the export means removing it in
+the editor, and a project save during the export would write that to
+`project.godot`. A lost enabled entry disables the plugin in the editor, and a lost
+setting goes back to its default. The runtime autoload is the one entry the strip
+does remove: it nulls the autoload for the export and restores it when the export
+ends, and if a save catches it nulled, the plugin registers it again the next time
+it loads.
+
+Don't disable the plugin before exporting to keep the entry out. With the plugin
+off, the strip doesn't run, and the addon's files ship unless the preset's exclude
+filter covers them. If the editor crashes during an export and the toolkit shows as
+disabled when you reopen the project, re-enable it in **Project Settings →
+Plugins**.
+
+Since 1.0.4 the toolkit no longer registers `internal/bootstrap_complete`, a
+setting that had no effect. A copy an older version left in `project.godot` is
+harmless, and disabling the plugin erases it.
+
+### Import sidecars remain in exports (Godot 4.2 only)
+
+On Godot 4.2, `.import` sidecars for the addon's assets and their compiled
+artifacts ship in exports despite the strip plugin — in practice
+`addons/godot_mcp_toolkit/icon.svg.import` plus its baked `.ctex`, about 8 KB.
+Godot 4.2 never offers import sidecars to `EditorExportPlugin._export_file`, so
+**no** addon can strip them on that version; 4.3+ does offer them and they strip
+normally.
+
+The residue is harmless: an orphaned texture that nothing references and nothing
+loads, so the shipped build stays inert. To remove it on 4.2, add
+`res://addons/godot_mcp_toolkit/*` to the export preset's exclude filter — the
+same recipe the export warning suggests.
+
+## Disabling the plugin safely
+
+Disable the toolkit through **Project Settings → Plugins** (untick *Active*), or
+remove the addon folder entirely — not by hand-editing `project.godot`. A manual
+edit that empties the `[editor_plugins]` enabled list but leaves the
+`[autoload] MCPRuntimeServer` line creates a **dangling autoload** that ships in
+exports. It ships silently (no parse errors, and the autoload self-disables
+outside the editor), so this is a cleanliness tip rather than a correctness fix —
+but the Plugins toggle removes both entries correctly and is the supported path.
+
+## Headless mode (`--headless`)
+
+**Tested:** Godot 4.2.0, 4.2.2, 4.3.0, 4.4.1, 4.5.0, 4.5.2, 4.6.2, 4.7.0 on Windows.
+
+When Godot runs with `--headless --editor`, the plugin loads, the WebSocket
+server starts, and the vast majority of tools function identically to GUI mode.
+Results are consistent across all tested versions.
+
+### Detection
+
+The toolkit checks `DisplayServer.get_name() == "headless"`. Tools
+that require a viewport use this guard to return `HEADLESS_UNSUPPORTED` early.
+
+### Per-tool headless matrix
+
+The matrix below covers the core tool surface as audited end-to-end in
+headless mode. Tools added since that audit (the LSP, debugger, 3D, and
+tileset groups among others) follow the same detection rule — file-based
+operations work, viewport-dependent ones return `HEADLESS_UNSUPPORTED` —
+but have not been individually re-audited headless yet.
+
+| Tool | Headless | Notes |
+|------|----------|-------|
+| `script_read` | ✅ | Merged: accepts optional `start_line`/`end_line` for partial reads |
+| `script_write` | ✅ | |
+| `script_delete` | ✅ | |
+| `script_check` | ✅ | |
+| `folder_create` | ✅ | |
+| `folder_delete` | ✅ | |
+| `file_delete` | ✅ | |
+| `scene_create` | ✅ | File-based |
+| `scene_delete` | ✅ | File-based |
+| `scene_open` | ✅ | `EditorInterface.open_scene_from_path()` works headless |
+| `scene_close` | ✅ | Requires 4.5+ (same as GUI mode) |
+| `scene_get_tree` | ✅ | Requires a scene opened via `scene_open` |
+| `scene_create_node` | ✅ | |
+| `scene_delete_node` | ✅ | |
+| `scene_instantiate` | ✅ | |
+| `scene_diff` | ✅ | |
+| `node_get_property` | ✅ | |
+| `node_set_property` | ✅ | |
+| `node_get_property_list` | ✅ | |
+| `node_set_script` | ✅ | |
+| `node_call_method` | ✅ | Works; but a **4.4+ headless** editor never re-instantiates a reloaded node, so a call to a freshly-added method returns `INVALID_METHOD` + a headless stale `hint` (set the script again with `node_set_script`, or relaunch a display editor). See the live-reload note above |
+| `signal_list` | ✅ | |
+| `signal_manage` | ✅ | |
+| `signal_emit` | ✅ | |
+| `resource_load` | ✅ | |
+| `resource_write` | ✅ | |
+| `resource_delete` | ✅ | |
+| `asset_list` | ✅ | |
+| `asset_get_dependencies` | ✅ | |
+| `asset_import` | ✅ | |
+| `save_read` | ✅ | |
+| `save_write` | ✅ | |
+| `save_delete` | ✅ | |
+| `save_list` | ✅ | |
+| `classdb_get_info` | ✅ | |
+| `classdb_search` | ✅ | |
+| `project_get_settings` | ✅ | |
+| `project_set_setting` | ✅ | |
+| `input_map_action` | ✅ | |
+| `input_map_event` | ✅ | |
+| `input_map_list` | ✅ | |
+| `animation_keyframe` | ✅ | |
+| `animation_get_keys` | ✅ | |
+| `tilemap_set_cells` | ✅ | |
+| `editor_save_scene` | ✅ | |
+| `editor_refresh` | ✅ | |
+| `editor_get_console` | ✅ | Captures runtime output headless; but a headless editor doesn't revalidate scripts, so editor **parse** errors aren't captured — an error-capture query (`level_filter:["error"]` or a `text_filter`) attaches a `headless_hint` steering to `script_check`. See the parse-capture note above |
+| `editor_wait_for_idle` | ✅ | |
+| `game_start` | ❌ | Returns `HEADLESS_UNSUPPORTED` — the game process can't launch without a display, so the runtime connection (the running game) never establishes. Use `script_check` / scene inspection / `editor_get_console` to verify |
+| `game_stop` | ✅ | |
+| `editor_screenshot` | ❌ | Returns `HEADLESS_UNSUPPORTED`. Merged: accepts optional `node_path` for node-focused capture. |
+| `runtime_screenshot` | ❌ | Requires display in game process |
+| `runtime_get_node_state` | ⚠️ | Requires game with runtime server |
+| `debugger_get_log` | ⚠️ | Requires game with runtime server |
+| `input_simulate` | ❌ | Requires display for input events |
+| `animation_player_control` | ⚠️ | Requires game with runtime server |
+| `execute_code` | ⚠️ | Game context requires a game with the runtime server |
+
+✅ = works &nbsp; ⚠️ = depends on runtime server availability &nbsp; ❌ = requires display
+
+### CI/pipeline usage
+
+Headless mode enables CI pipelines and SSH-only workflows. A typical CI setup:
+
+```bash
+godot --headless --editor --path /path/to/project &
+# Wait for plugin to start, then use MCP tools via the server
+npx @npgamedev/godot-mcp-server
+```
+
+File-based tools (scripts, resources, scenes, folders), ClassDB introspection,
+and project settings all work without any display. Scene tree operations also
+work — `scene_open` loads scenes programmatically and the full node/signal
+tool chain functions from there.
+
+## macOS GUI-launch (Node / PATH)
+
+Modern GUI-launched MCP clients (Claude Desktop, Cursor.app, VS Code.app) capture
+your login shell's environment and resolve a bare `npx` to a version-manager Node
+themselves, so the standard config connects whether you launch the client from
+Finder/Dock or a terminal. The toolkit emits the **standard `npx`** command on macOS
+— the same shape as Linux (Windows uses `cmd /c npx`); there is no macOS-specific
+resolution.
+
+If a macOS client won't connect, launch it from a terminal to see its startup error,
+confirm `.mcp.json` is present at the project root, and confirm Node 22+ is
+installed. Full diagnosis + fallbacks (nvm in `~/.zprofile`, the nodejs.org
+installer, `GODOT_MCP_DEV_SERVER_PATH`) are in
+[advanced_configuration.md](advanced_configuration.md) (*macOS* section). Per-client
+setup for other MCP clients lives in the companion server's client guide:
+<https://github.com/NPGameDev/godot-mcp-server/blob/main/docs/mcp-clients.md>.
+
+## Forward compatibility
+
+The `has_method()` + `call()` pattern is inherently forward-compatible.
+When Godot 4.8 (or later) adds new methods, `has_method()` returns `true`
+and the call succeeds — no plugin update needed for the guarded code paths.
+
+A `GODOT_TESTED_MAX_VERSION` constant (currently `"4.7.0"`) controls the startup
+warning threshold. Versions above this emit a `push_warning()` but do not
+restrict any functionality.
+
+## Data format notes
+
+Godot scene files saved in newer versions generally cannot open in older
+versions (mesh compression, PackedByteArray encoding, UID references).
+This is a Godot engine constraint, not a plugin limitation. The plugin
+reads and writes scenes using the connected editor's native format.

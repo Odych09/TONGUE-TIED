@@ -46,6 +46,11 @@ extends Control
 @onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PGLabel
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
 
+# Loading Modal
+@onready var loading_modal: Control = $LoadingModal
+@onready var loading_spinner: Label = $LoadingModal/CenterContainer/Card/MarginContainer/VBox/Spinner
+@onready var loading_status: Label = $LoadingModal/CenterContainer/Card/MarginContainer/VBox/Status
+
 
 
 # Audio Stream Players
@@ -125,6 +130,44 @@ func _ready() -> void:
 	settings_modal.visible = false
 	level_select_modal.visible = false
 
+	# Cloud save loading screen connection
+	if SaveManager:
+		if SaveManager.is_data_loaded:
+			loading_modal.visible = false
+		else:
+			loading_modal.visible = true
+			SaveManager.save_data_ready.connect(_on_save_data_ready)
+			SaveManager.save_data_failed.connect(_on_save_data_failed)
+	else:
+		loading_modal.visible = false
+
+func _on_save_data_ready() -> void:
+	if not is_instance_valid(loading_modal) or not loading_modal.visible:
+		return
+	if loading_status:
+		loading_status.text = "✓ Save Data Synchronized!"
+		loading_status.modulate = Color(0.35, 1.0, 0.7)
+	_init_settings_values()
+	var tw := create_tween()
+	tw.tween_interval(0.35)
+	tw.tween_property(loading_modal, "modulate:a", 0.0, 0.3).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_callback(func():
+		loading_modal.visible = false
+	)
+
+func _on_save_data_failed() -> void:
+	if not is_instance_valid(loading_modal) or not loading_modal.visible:
+		return
+	if loading_status:
+		loading_status.text = "Continuing with local save"
+		loading_status.modulate = Color(1.0, 0.85, 0.3)
+	_init_settings_values()
+	var tw := create_tween()
+	tw.tween_interval(0.5)
+	tw.tween_property(loading_modal, "modulate:a", 0.0, 0.3).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_callback(func():
+		loading_modal.visible = false
+	)
 
 func _init_play_games() -> void:
 	if not is_instance_valid(play_games_btn):
@@ -255,6 +298,11 @@ func _process(delta: float) -> void:
 
 	# 5. Gentle Title Float
 	title_box.position.y = title_base_pos.y + sin(elapsed_time * 1.4) * 5.0
+
+	# 6. Loading Spinner Animation
+	if is_instance_valid(loading_modal) and loading_modal.visible and is_instance_valid(loading_spinner):
+		loading_spinner.rotation += delta * 5.0
+		loading_spinner.pivot_offset = loading_spinner.size * 0.5
 
 func _animate_hover_tongue(delta: float) -> void:
 	# Snout / mouth position on the frog (between and slightly below eyes)

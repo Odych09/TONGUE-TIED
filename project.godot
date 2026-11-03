@@ -21,6 +21,8 @@ GameManager="*uid://xppkkuoxmfhb"
 TransitionLayer="*uid://b2l4lrpmr5c6y"
 SnapshotsClient="*uid://cwcaoife58xkq"
 GodotPlayGameServices="*uid://bnj1e5ski7rlf"
+SaveManager="*uid://pw7yhdisfwif"
+MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
 
 [display]
 
@@ -34,7 +36,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GodotPlayGameServices/plugin.cfg")
+enabled=PackedStringArray("res://addons/GodotPlayGameServices/plugin.cfg", "res://addons/godot_mcp_toolkit/plugin.cfg")
 
 [file_customization]
 
@@ -49,6 +51,10 @@ folder_colors={
 
 pointing/emulate_touch_from_mouse=true
 
+[mcp_toolkit]
+
+server/version="latest"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
@@ -57,4 +63,5 @@ pointing/emulate_touch_from_mouse=true
 
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true

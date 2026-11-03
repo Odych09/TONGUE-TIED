@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ch1aj31c4pioj" path="res://SCENES/LEVELS/crt.tscn" id="2_687ct"]
 [ext_resource type="AudioStream" uid="uid://bbiw763y2alxy" path="res://Froggy2(1).mp3" id="3_k1hc4"]
 
-[node name="Main" type="Node2D" unique_id=712370164]
+[node name="MainGame" type="Node2D" unique_id=712370164]
 script = ExtResource("1_h15md")
 
 [node name="LevelHolder" type="Node2D" parent="." unique_id=179244715]
