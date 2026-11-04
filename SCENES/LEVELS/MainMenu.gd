@@ -1,7 +1,6 @@
 extends Control
 
 # Background and post-process
-@onready var bg_rect: ColorRect = $BG/ColorRect
 @onready var crt_overlay: CanvasLayer = $CRTOverlay
 
 # Hero diorama nodes
@@ -205,8 +204,8 @@ func _init_settings_values() -> void:
 	fullscreen_check.button_pressed = is_fullscreen
 
 	# CRT effect
-	crt_overlay.visible = GameManager.crt_enabled
-	crt_check.button_pressed = GameManager.crt_enabled
+	#crt_overlay.visible = GameManager.crt_enabled
+	#crt_check.button_pressed = GameManager.crt_enabled
 
 func _setup_nav_button(btn: Button, pip: Panel) -> void:
 	btn.mouse_entered.connect(_on_button_hover.bind(btn, pip))
@@ -443,7 +442,7 @@ func _on_fullscreen_toggled(toggled: bool) -> void:
 
 func _on_crt_toggled(toggled: bool) -> void:
 	click_sfx.play()
-	crt_overlay.visible = toggled
+	#crt_overlay.visible = toggled
 	GameManager.set_crt_enabled(toggled)
 
 func _on_quit_pressed() -> void:
