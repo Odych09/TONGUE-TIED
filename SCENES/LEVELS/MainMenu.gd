@@ -29,7 +29,7 @@ extends Control
 # Settings Modal
 @onready var settings_modal: Control = $SettingsModal
 @onready var settings_panel: PanelContainer = $SettingsModal/CenterContainer/PanelContainer
-@onready var volume_slider: HSlider = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/VolumeSlider
+@onready var volume_slider = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/VolumeSlider
 @onready var volume_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow/VolumeValue
 @onready var fullscreen_check: CheckBox = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow/FullscreenCheck
 @onready var crt_check: CheckBox = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow/CRTCheck
@@ -50,14 +50,39 @@ extends Control
 @onready var click_sfx: AudioStreamPlayer = $Audio/ClickSFX
 @onready var back_sfx: AudioStreamPlayer = $Audio/BackSFX
 
+# Background parallax layers (ordered from 7 = farthest sky to 1 = closest foreground)
+@onready var bg_layers: Array[TextureRect] = [
+	$"BG/7",
+	$"BG/6",
+	$"BG/5",
+	$"BG/4",
+	$"BG/3",
+	$"BG/2",
+	$"BG/1"
+]
+const LAYER_WEIGHTS: Array[float] = [
+	0.06,  # 7: Sky & deep background canopy
+	0.14,  # 6: Distant misty woods
+	0.26,  # 5: Mid-distant trees
+	0.42,  # 4: Midground trunks
+	0.62,  # 3: Stumps and face mushrooms
+	0.85,  # 2: Foreground mushrooms & moss
+	1.15   # 1: Nearest ground log & roots
+]
+const MAX_PARALLAX_OFFSET: Vector2 = Vector2(46.0, 24.0)
+
 # State variables
 var elapsed_time: float = 0.0
+var diorama_base_pos: Vector2
 var pad_base_pos: Vector2
 var pad_shadow_base_pos: Vector2
 var frog_base_pos: Vector2
 var frog_base_scale: Vector2
 var fly_base_pos: Vector2
 var title_base_pos: Vector2
+
+var current_parallax: Vector2 = Vector2.ZERO
+var btn_base_x: Dictionary = {}
 
 var is_snapping: bool = false
 var fly_caught: bool = false
@@ -67,12 +92,25 @@ var last_hover_target: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	# Cache base transform positions
+	diorama_base_pos = diorama.position
 	pad_base_pos = lily_pad.position
 	pad_shadow_base_pos = pad_shadow.position
 	frog_base_pos = frog.position
 	frog_base_scale = frog.scale
 	fly_base_pos = fly.position
 	title_base_pos = title_box.position
+
+	# Initialize background layers for parallax overscan
+	for layer in bg_layers:
+		if layer:
+			layer.pivot_offset = Vector2(960, 540)
+			layer.scale = Vector2(1.08, 1.08)
+			layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	# Cache button base X positions
+	for btn in [play_btn, settings_btn, quit_btn]:
+		if btn:
+			btn_base_x[btn] = btn.position.x
 
 	# Hook up button hover & click interactions
 	_setup_nav_button(play_btn, play_pip)
@@ -108,7 +146,7 @@ func _ready() -> void:
 		bgm_player.play()
 
 	# Draw title tongue accent
-	_draw_title_tongue_accent()
+	_update_title_tongue_accent()
 
 	# Hide modals initially
 	settings_modal.visible = false
@@ -218,8 +256,9 @@ func _on_button_hover(btn: Button, pip: Panel) -> void:
 	hover_sfx.pitch_scale = randf_range(0.96, 1.06)
 	hover_sfx.play()
 
+	var base_x: float = btn_base_x.get(btn, 0.0)
 	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tw.tween_property(btn, "position:x", 24.0, 0.2)
+	tw.tween_property(btn, "position:x", base_x + 22.0, 0.2)
 	if pip:
 		tw.tween_property(pip, "custom_minimum_size", Vector2(22, 22), 0.2)
 		tw.tween_property(pip, "modulate", Color(1.0, 0.35, 0.75, 1.0), 0.2)
@@ -228,14 +267,18 @@ func _on_button_unhover(btn: Button, pip: Panel) -> void:
 	if active_hover_btn == btn:
 		active_hover_btn = null
 
+	var base_x: float = btn_base_x.get(btn, 0.0)
 	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tw.tween_property(btn, "position:x", 0.0, 0.24)
+	tw.tween_property(btn, "position:x", base_x, 0.24)
 	if pip:
 		tw.tween_property(pip, "custom_minimum_size", Vector2(16, 16), 0.24)
 		tw.tween_property(pip, "modulate", Color(1.0, 0.45, 0.7, 0.65), 0.24)
 
 func _process(delta: float) -> void:
 	elapsed_time += delta
+
+	# 0. 7-Layer Dynamic Parallax & Diorama Integration
+	_process_parallax(delta)
 
 	# 1. Pad Bobbing & Water Inertia
 	var bob := sin(elapsed_time * 1.8) * 8.0
@@ -249,7 +292,7 @@ func _process(delta: float) -> void:
 	if ambient_pad_1:
 		ambient_pad_1.position.y = 940.0 + sin(elapsed_time * 1.1) * 12.0
 	if ambient_pad_2:
-		ambient_pad_2.position.y = 200.0 + cos(elapsed_time * 0.9) * 10.0
+		ambient_pad_2.position.y = 840.0 + cos(elapsed_time * 0.9) * 10.0
 
 	# 2. Frog Breathing Squash & Eye Direction
 	if not is_snapping:
@@ -278,13 +321,46 @@ func _process(delta: float) -> void:
 	if not is_snapping:
 		_animate_hover_tongue(delta)
 
-	# 5. Gentle Title Float
+	# 5. Gentle Title Float & Animated Title Tongue Accent
 	title_box.position.y = title_base_pos.y + sin(elapsed_time * 1.4) * 5.0
+	_update_title_tongue_accent()
 
 	# 6. Loading Spinner Animation
 	if is_instance_valid(loading_modal) and loading_modal.visible and is_instance_valid(loading_spinner):
 		loading_spinner.rotation += delta * 5.0
 		loading_spinner.pivot_offset = loading_spinner.size * 0.5
+
+func _process_parallax(delta: float) -> void:
+	var vp_rect := get_viewport_rect()
+	var center := vp_rect.size * 0.5
+	var mouse_pos := get_viewport().get_mouse_position()
+
+	# Compute normalized mouse direction from screen center (-1.0 to 1.0)
+	var mouse_vector := Vector2.ZERO
+	if vp_rect.has_point(mouse_pos):
+		mouse_vector = (mouse_pos - center) / center
+		mouse_vector.x = clampf(mouse_vector.x, -1.0, 1.0)
+		mouse_vector.y = clampf(mouse_vector.y, -1.0, 1.0)
+
+	# Natural organic breathing / swamp wind sway (always subtly active)
+	var ambient_sway := Vector2(
+		sin(elapsed_time * 0.7) * 0.14 + cos(elapsed_time * 0.35) * 0.07,
+		cos(elapsed_time * 0.9) * 0.09 + sin(elapsed_time * 0.45) * 0.05
+	)
+
+	var target := mouse_vector + ambient_sway
+	current_parallax = current_parallax.lerp(target, delta * 3.5)
+
+	# Apply layered depth offsets to background
+	for i in range(mini(bg_layers.size(), LAYER_WEIGHTS.size())):
+		var layer := bg_layers[i]
+		if layer:
+			var factor: float = LAYER_WEIGHTS[i]
+			layer.position = current_parallax * MAX_PARALLAX_OFFSET * factor
+
+	# Diorama (frog, lilypad, ripples) depth integration (approx layer 3 depth)
+	if diorama:
+		diorama.position = diorama_base_pos + current_parallax * MAX_PARALLAX_OFFSET * 0.65
 
 func _animate_hover_tongue(delta: float) -> void:
 	# Snout / mouth position on the frog (between and slightly below eyes)
@@ -313,22 +389,28 @@ func _animate_hover_tongue(delta: float) -> void:
 		var pt := mouth.bezier_interpolate(mid, mid, current_tip, t)
 		tongue.add_point(pt)
 
-func _draw_title_tongue_accent() -> void:
+func _update_title_tongue_accent() -> void:
 	if not title_tongue:
 		return
 	title_tongue.clear_points()
-	# Playful curling tongue curve under "TONGUE TIED" with an end curl
+
+	# Organic undulating wave and playful curl twitch at the tip
+	var wave_1 := sin(elapsed_time * 2.2) * 2.5
+	var wave_2 := cos(elapsed_time * 2.8) * 3.0
+	var curl_wiggle := sin(elapsed_time * 3.4) * 4.5
+	var tip_wag := cos(elapsed_time * 4.0) * 3.5
+
 	var pts: Array[Vector2] = [
 		Vector2(10, 126),
-		Vector2(100, 134),
-		Vector2(230, 128),
-		Vector2(360, 136),
-		Vector2(490, 128),
-		Vector2(610, 136),
-		Vector2(665, 126),
-		Vector2(688, 106),
-		Vector2(680, 88),
-		Vector2(658, 92)
+		Vector2(100, 133 + wave_1 * 0.4),
+		Vector2(230, 128 + wave_2 * 0.6),
+		Vector2(360, 135 - wave_1 * 0.8),
+		Vector2(490, 127 + wave_2 * 1.0),
+		Vector2(610, 136 - wave_1 * 1.1),
+		Vector2(665, 125 + curl_wiggle * 0.5),
+		Vector2(688 + tip_wag * 0.4, 104 - curl_wiggle * 0.7),
+		Vector2(680 - tip_wag * 0.5, 86 - curl_wiggle * 0.9),
+		Vector2(656 - tip_wag * 0.8, 90 + curl_wiggle * 0.6)
 	]
 	for i in range(pts.size() - 1):
 		var p_start := pts[i]

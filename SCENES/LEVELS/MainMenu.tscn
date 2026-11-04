@@ -17,7 +17,9 @@
 [ext_resource type="AudioStream" uid="uid://bsolub8tb4qun" path="res://AUDIO/ui_click.wav" id="9_click"]
 [ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="10_back"]
 [ext_resource type="AudioStream" uid="uid://bbiw763y2alxy" path="res://Froggy2(1).mp3" id="11_bgm"]
+[ext_resource type="Texture2D" uid="uid://b5qgj67gloq4x" path="res://ASSETS/UI/panels/bg.png" id="14_mnmd0"]
 [ext_resource type="Texture2D" uid="uid://buq313i42uq61" path="res://ASSETS/UI/buttons/btn.png" id="14_r4j5v"]
+[ext_resource type="Texture2D" uid="uid://df0gekcm0q0s8" path="res://ASSETS/UI/panels/table.png" id="15_mnmd0"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_maxjq"]
 font_size = 136
@@ -31,16 +33,6 @@ texture = ExtResource("14_r4j5v")
 texture_margin_left = 70.0
 texture_margin_right = 85.0
 region_rect = Rect2(0, 0, 308, 100)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_05orf"]
-load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wbed6"]
-texture = SubResource("CompressedTexture2D_05orf")
-texture_margin_left = 70.0
-texture_margin_right = 200.0
-region_rect = Rect2(0, 0, 308, 100)
-modulate_color = Color(0.41215247, 0.41215247, 0.41215247, 1)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wbed6"]
 load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
@@ -70,6 +62,16 @@ texture_margin_left = 70.0
 texture_margin_right = 85.0
 region_rect = Rect2(0, 0, 308, 100)
 modulate_color = Color(0.8132577, 0.8132577, 0.81325763, 1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_05orf"]
+load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wbed6"]
+texture = SubResource("CompressedTexture2D_05orf")
+texture_margin_left = 70.0
+texture_margin_right = 200.0
+region_rect = Rect2(0, 0, 308, 100)
+modulate_color = Color(0.41215247, 0.41215247, 0.41215247, 1)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_w5jam"]
 load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
@@ -106,56 +108,102 @@ font_size = 26
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_panel"]
-content_margin_left = 48.0
-content_margin_top = 40.0
-content_margin_right = 48.0
-content_margin_bottom = 40.0
-bg_color = Color(0.06, 0.12, 0.2, 0.97)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.35, 0.8, 0.9, 0.8)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-shadow_color = Color(0.01, 0.03, 0.08, 0.8)
-shadow_size = 32
-shadow_offset = Vector2(0, 10)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_agr0f"]
+texture = ExtResource("14_mnmd0")
+expand_margin_left = 25.0
+expand_margin_top = 35.0
+expand_margin_right = 55.0
+expand_margin_bottom = 35.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_back_normal"]
-content_margin_left = 28.0
-content_margin_top = 12.0
-content_margin_right = 28.0
-content_margin_bottom = 12.0
-bg_color = Color(0.08, 0.18, 0.3, 0.85)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.3, 0.65, 0.85, 0.5)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_saqwy"]
+texture = ExtResource("15_mnmd0")
+expand_margin_top = 25.0
+expand_margin_right = 25.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_back_hover"]
-content_margin_left = 28.0
-content_margin_top = 12.0
-content_margin_right = 28.0
-content_margin_bottom = 12.0
-bg_color = Color(0.14, 0.3, 0.48, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.4, 0.9, 0.9, 0.9)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
+[sub_resource type="LabelSettings" id="LabelSettings_mnmd0"]
+font = ExtResource("4_cvoun")
+font_size = 55
+font_color = Color(0.9882353, 0.9882353, 0.18039216, 1)
+shadow_size = 12
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_agr0f"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mnmd0"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_agr0f"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_saqwy"]
+font = ExtResource("4_cvoun")
+font_size = 21
+font_color = Color(1, 1, 0.23137255, 1)
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u0fo5"]
+texture = ExtResource("14_r4j5v")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mnmd0"]
+load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1oolv"]
+texture = SubResource("CompressedTexture2D_mnmd0")
+modulate_color = Color(0.728822, 0.728822, 0.7288219, 1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_agr0f"]
+load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q4b3e"]
+texture = SubResource("CompressedTexture2D_agr0f")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_saqwy"]
+load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hh15h"]
+texture = SubResource("CompressedTexture2D_saqwy")
+modulate_color = Color(0.585062, 0.585062, 0.5850621, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nwwlf"]
+texture = ExtResource("14_mnmd0")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i5hl5"]
+texture = ExtResource("15_mnmd0")
+
+[sub_resource type="LabelSettings" id="LabelSettings_1oolv"]
+font = ExtResource("4_cvoun")
+font_size = 38
+font_color = Color(1, 1, 0.26666668, 1)
+outline_size = 11
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_q4b3e"]
+font = ExtResource("4_cvoun")
+font_size = 28
+font_color = Color(1, 1, 0.26666668, 1)
+outline_size = 12
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cvoun"]
 shader = ExtResource("3_flj8n")
@@ -385,7 +433,7 @@ theme_override_colors/font_hover_color = Color(1, 0.9919793, 0.9098202, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 80
 theme_override_styles/normal = SubResource("StyleBoxTexture_r4j5v")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_wbed6")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_p0kf6")
 theme_override_styles/hover = SubResource("StyleBoxTexture_p0kf6")
 text = "   PLAY"
 alignment = 0
@@ -523,14 +571,18 @@ grow_vertical = 2
 custom_minimum_size = Vector2(620, 520)
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
+theme_override_styles/panel = SubResource("StyleBoxTexture_agr0f")
+
+[node name="Panel" type="Panel" parent="SettingsModal/CenterContainer/PanelContainer" unique_id=2114047067]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_saqwy")
 
 [node name="MarginContainer" type="MarginContainer" parent="SettingsModal/CenterContainer/PanelContainer" unique_id=153772539]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 53
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 41
+theme_override_constants/margin_bottom = 56
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer" unique_id=1419927132]
 layout_mode = 2
@@ -539,9 +591,11 @@ theme_override_constants/separation = 26
 [node name="ModalTitle" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1646989628]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 46
 text = "SETTINGS"
+label_settings = SubResource("LabelSettings_mnmd0")
 horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=289504657]
@@ -560,6 +614,7 @@ theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 22
 text = "MASTER VOLUME"
+label_settings = SubResource("LabelSettings_agr0f")
 
 [node name="VolumeValue" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow" unique_id=898003875]
 layout_mode = 2
@@ -571,8 +626,10 @@ text = "100%"
 horizontal_alignment = 2
 
 [node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow" unique_id=343102086]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+theme_override_styles/slider = SubResource("StyleBoxFlat_mnmd0")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_agr0f")
 max_value = 1.0
 step = 0.05
 value = 1.0
@@ -587,6 +644,7 @@ theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 22
 text = "FULLSCREEN MODE"
+label_settings = SubResource("LabelSettings_saqwy")
 
 [node name="FullscreenCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow" unique_id=2128562276]
 layout_mode = 2
@@ -601,6 +659,7 @@ theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 22
 text = "CRT RETRO SHADER"
+label_settings = SubResource("LabelSettings_saqwy")
 
 [node name="CRTCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow" unique_id=77347175]
 layout_mode = 2
@@ -616,14 +675,18 @@ theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 22
 text = "GOOGLE PLAY GAMES"
+label_settings = SubResource("LabelSettings_saqwy")
 
 [node name="PlayGamesButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow" unique_id=741029184]
-custom_minimum_size = Vector2(170, 44)
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("StyleBoxFlat_back_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_u0fo5")
+theme_override_styles/hover = SubResource("StyleBoxTexture_1oolv")
 text = "SIGN IN"
 
 [node name="Spacer" type="Control" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1863393753]
@@ -631,16 +694,19 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="SettingsBackButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=856551263]
-custom_minimum_size = Vector2(220, 58)
+custom_minimum_size = Vector2(180, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
 theme_override_colors/font_hover_color = Color(1, 0.93, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxFlat_back_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_q4b3e")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_hh15h")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hh15h")
 text = "BACK"
 
 [node name="LoadingModal" type="Control" parent="." unique_id=1849204990]
@@ -670,9 +736,9 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Card" type="PanelContainer" parent="LoadingModal/CenterContainer" unique_id=1849204993]
-custom_minimum_size = Vector2(500, 260)
+custom_minimum_size = Vector2(700, 500)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
+theme_override_styles/panel = SubResource("StyleBoxTexture_nwwlf")
 
 [node name="MarginContainer" type="MarginContainer" parent="LoadingModal/CenterContainer/Card" unique_id=1849204994]
 layout_mode = 2
@@ -680,6 +746,10 @@ theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 25
+
+[node name="Panel" type="Panel" parent="LoadingModal/CenterContainer/Card/MarginContainer" unique_id=708219979]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_i5hl5")
 
 [node name="VBox" type="VBoxContainer" parent="LoadingModal/CenterContainer/Card/MarginContainer" unique_id=1849204995]
 layout_mode = 2
@@ -700,6 +770,7 @@ theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 28
 text = "FETCHING SAVE DATA..."
+label_settings = SubResource("LabelSettings_1oolv")
 horizontal_alignment = 1
 
 [node name="Status" type="Label" parent="LoadingModal/CenterContainer/Card/MarginContainer/VBox" unique_id=1849204998]
@@ -708,6 +779,7 @@ theme_override_colors/font_color = Color(0.5, 0.8, 0.95, 0.85)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 18
 text = "Syncing with cloud..."
+label_settings = SubResource("LabelSettings_q4b3e")
 horizontal_alignment = 1
 
 [node name="Audio" type="Node" parent="." unique_id=538789814]
