@@ -2,259 +2,156 @@
 
 [ext_resource type="Script" uid="uid://bw67b6vxffnuh" path="res://SCRIPTS/main_home.gd" id="1_7aww7"]
 [ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="2_bg"]
-[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="4_font"]
-[ext_resource type="AudioStream" uid="uid://canah35uobihe" path="res://AUDIO/ui_hover.wav" id="5_hover"]
-[ext_resource type="AudioStream" uid="uid://bsolub8tb4qun" path="res://AUDIO/ui_click.wav" id="6_click"]
-[ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="7_back"]
-[ext_resource type="AudioStream" uid="uid://bbiw763y2alxy" path="res://Froggy2(1).mp3" id="8_bgm"]
+[ext_resource type="Texture2D" uid="uid://buq313i42uq61" path="res://ASSETS/UI/buttons/btn.png" id="3_btn"]
+[ext_resource type="Texture2D" uid="uid://df0gekcm0q0s8" path="res://ASSETS/UI/panels/table.png" id="4_table"]
+[ext_resource type="Texture2D" uid="uid://b5qgj67gloq4x" path="res://ASSETS/UI/panels/bg.png" id="5_modal_bg"]
+[ext_resource type="Texture2D" uid="uid://bg7b2pghq0ici" path="res://ASSETS/UI/vine_path.svg" id="6_vine"]
+[ext_resource type="Texture2D" uid="uid://c18m8cw2vyx4u" path="res://ASSETS/UI/panels/wood_badge.svg" id="7_wood_badge"]
+[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="8_font"]
+[ext_resource type="AudioStream" uid="uid://canah35uobihe" path="res://AUDIO/ui_hover.wav" id="9_hover"]
+[ext_resource type="AudioStream" uid="uid://bsolub8tb4qun" path="res://AUDIO/ui_click.wav" id="10_click"]
+[ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="11_back"]
+[ext_resource type="AudioStream" uid="uid://bbiw763y2alxy" path="res://Froggy2(1).mp3" id="12_bgm"]
+[ext_resource type="Texture2D" uid="uid://dtxs3i0i7bfvf" path="res://ASSETS/UI/background/home/Decoration1.png" id="13_shrine"]
+[ext_resource type="Texture2D" uid="uid://bh8xij77wax1e" path="res://ASSETS/UI/background/home/Decoration2.png" id="14_waterfall"]
+[ext_resource type="Texture2D" uid="uid://di1f3nlcll0mk" path="res://ASSETS/UI/background/home/Tiles480x480.png" id="15_tiles"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bg"]
 shader = ExtResource("2_bg")
-shader_parameter/base_dark_blue = Color(0.04, 0.1, 0.22, 1)
-shader_parameter/cyan_glow = Color(0, 0.48, 0.85, 1)
-shader_parameter/deep_purple = Color(0.08, 0.35, 0.65, 1)
-shader_parameter/speed = 0.25
-shader_parameter/scale = 4.0
-shader_parameter/wave_intensity = 1.2
+shader_parameter/water_deep = Color(0.02, 0.48, 0.52, 1)
+shader_parameter/water_mid = Color(0.06, 0.7, 0.68, 1)
+shader_parameter/water_bright = Color(0.18, 0.9, 0.84, 1)
+shader_parameter/caustic_color = Color(0.8, 1, 0.96, 0.55)
+shader_parameter/speed = 0.22
+shader_parameter/scale = 5.2
+shader_parameter/caustic_strength = 0.5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_bar"]
-content_margin_left = 30.0
-content_margin_top = 16.0
-content_margin_right = 30.0
-content_margin_bottom = 16.0
-bg_color = Color(0.04, 0.09, 0.18, 0.9)
-border_width_bottom = 2
-border_color = Color(0.2, 0.5, 0.72, 0.55)
-shadow_color = Color(0.01, 0.03, 0.08, 0.65)
-shadow_size = 12
+[sub_resource type="AtlasTexture" id="AtlasTexture_rock_duo"]
+atlas = ExtResource("15_tiles")
+region = Rect2(1440, 960, 480, 480)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_back"]
-content_margin_left = 26.0
-content_margin_top = 10.0
-content_margin_right = 26.0
-content_margin_bottom = 10.0
-bg_color = Color(0.08, 0.18, 0.32, 0.88)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.35, 0.75, 0.95, 0.7)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
-shadow_color = Color(0.02, 0.05, 0.1, 0.4)
-shadow_size = 6
+[sub_resource type="AtlasTexture" id="AtlasTexture_lotus_duo"]
+atlas = ExtResource("15_tiles")
+region = Rect2(0, 960, 480, 480)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_back_hover"]
-content_margin_left = 26.0
-content_margin_top = 10.0
-content_margin_right = 26.0
-content_margin_bottom = 10.0
-bg_color = Color(0.14, 0.3, 0.5, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.5, 0.95, 1, 0.95)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
-shadow_color = Color(0.2, 0.7, 0.9, 0.45)
-shadow_size = 10
+[sub_resource type="AtlasTexture" id="AtlasTexture_pad_with_lotus"]
+atlas = ExtResource("15_tiles")
+region = Rect2(960, 1440, 480, 480)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_rock_single"]
+atlas = ExtResource("15_tiles")
+region = Rect2(960, 960, 480, 480)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lotus_single"]
+atlas = ExtResource("15_tiles")
+region = Rect2(0, 1440, 480, 480)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pad_lotus"]
+atlas = ExtResource("15_tiles")
+region = Rect2(480, 960, 480, 480)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_top_bar"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green"]
+texture = ExtResource("3_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_pressed"]
+texture = ExtResource("3_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(0.78, 0.78, 0.78, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_hover"]
+texture = ExtResource("3_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(1.15, 1.1, 0.85, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge"]
 content_margin_left = 22.0
-content_margin_top = 10.0
+content_margin_top = 8.0
 content_margin_right = 22.0
-content_margin_bottom = 10.0
-bg_color = Color(0.05, 0.14, 0.26, 0.88)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.3, 0.75, 0.9, 0.6)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
-shadow_color = Color(0.02, 0.06, 0.12, 0.45)
-shadow_size = 6
+content_margin_bottom = 8.0
+texture = ExtResource("7_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_action"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge_pressed"]
 content_margin_left = 22.0
-content_margin_top = 10.0
+content_margin_top = 8.0
 content_margin_right = 22.0
-content_margin_bottom = 10.0
-bg_color = Color(0.07, 0.16, 0.28, 0.88)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.32, 0.7, 0.88, 0.65)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
-shadow_color = Color(0.02, 0.05, 0.1, 0.4)
-shadow_size = 6
+content_margin_bottom = 8.0
+texture = ExtResource("7_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(0.8, 0.8, 0.8, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_action_hover"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge_hover"]
 content_margin_left = 22.0
-content_margin_top = 10.0
+content_margin_top = 8.0
 content_margin_right = 22.0
-content_margin_bottom = 10.0
-bg_color = Color(0.12, 0.28, 0.46, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.45, 0.92, 1, 0.95)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
-shadow_color = Color(0.18, 0.65, 0.88, 0.45)
-shadow_size = 10
+content_margin_bottom = 8.0
+texture = ExtResource("7_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(1.18, 1.12, 0.9, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quick_play"]
-content_margin_left = 38.0
-content_margin_top = 16.0
-content_margin_right = 38.0
-content_margin_bottom = 16.0
-bg_color = Color(0.1, 0.58, 0.32, 0.95)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.35, 1, 0.65, 0.9)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.05, 0.38, 0.2, 0.55)
-shadow_size = 14
-shadow_offset = Vector2(0, 5)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pip"]
+bg_color = Color(1, 0.38, 0.68, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(1, 0.3, 0.6, 0.6)
+shadow_size = 4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quick_play_hover"]
-content_margin_left = 38.0
-content_margin_top = 16.0
-content_margin_right = 38.0
-content_margin_bottom = 16.0
-bg_color = Color(0.14, 0.72, 0.4, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.6, 1, 0.8, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.1, 0.75, 0.38, 0.7)
-shadow_size = 20
-shadow_offset = Vector2(0, 5)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal_outer"]
+texture = ExtResource("5_modal_bg")
+expand_margin_left = 25.0
+expand_margin_top = 35.0
+expand_margin_right = 35.0
+expand_margin_bottom = 25.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
-content_margin_left = 28.0
-content_margin_top = 14.0
-content_margin_right = 28.0
-content_margin_bottom = 14.0
-bg_color = Color(0.05, 0.13, 0.24, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.35, 0.8, 0.95, 0.8)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
-shadow_color = Color(0.01, 0.04, 0.1, 0.6)
-shadow_size = 12
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal_inner"]
+texture = ExtResource("4_table")
+expand_margin_left = 10.0
+expand_margin_top = 20.0
+expand_margin_right = 20.0
+expand_margin_bottom = 20.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_panel"]
-bg_color = Color(0.05, 0.12, 0.22, 0.97)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.32, 0.78, 0.92, 0.85)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
-shadow_color = Color(0.01, 0.03, 0.08, 0.7)
-shadow_size = 24
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_track"]
+bg_color = Color(0.12, 0.06, 0.02, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_start"]
-content_margin_left = 36.0
-content_margin_top = 14.0
-content_margin_right = 36.0
-content_margin_bottom = 14.0
-bg_color = Color(0.1, 0.58, 0.32, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.38, 1, 0.65, 0.9)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-shadow_color = Color(0.05, 0.35, 0.2, 0.5)
-shadow_size = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_start_hover"]
-content_margin_left = 36.0
-content_margin_top = 14.0
-content_margin_right = 36.0
-content_margin_bottom = 14.0
-bg_color = Color(0.15, 0.72, 0.4, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.6, 1, 0.8, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-shadow_color = Color(0.1, 0.65, 0.35, 0.6)
-shadow_size = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_close"]
-content_margin_left = 28.0
-content_margin_top = 12.0
-content_margin_right = 28.0
-content_margin_bottom = 12.0
-bg_color = Color(0.08, 0.16, 0.26, 0.85)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.3, 0.5, 0.65, 0.6)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_close_hover"]
-content_margin_left = 28.0
-content_margin_top = 12.0
-content_margin_right = 28.0
-content_margin_bottom = 12.0
-bg_color = Color(0.14, 0.24, 0.38, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.4, 0.75, 0.95, 0.85)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_fill"]
+bg_color = Color(0.42, 0.82, 0.28, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="MainHome" type="Control" unique_id=911861562]
 layout_mode = 3
@@ -280,6 +177,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -28.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -299,16 +197,111 @@ custom_minimum_size = Vector2(1920, 3500)
 layout_mode = 2
 mouse_filter = 1
 
+[node name="PropsContainer" type="Control" parent="ScrollContainer/MapCanvas" unique_id=145920180]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Waterfall" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=175889928]
+position = Vector2(960, 240)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("14_waterfall")
+
+[node name="Shrine1" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=2118816108]
+position = Vector2(1650, 1880)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("13_shrine")
+
+[node name="Shrine2" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=499407683]
+position = Vector2(300, 1070)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("13_shrine")
+
+[node name="Rock1" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=929430316]
+position = Vector2(740, 3290)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_rock_duo")
+
+[node name="Lotus1" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=1589265266]
+position = Vector2(1170, 3240)
+scale = Vector2(0.55, 0.55)
+texture = SubResource("AtlasTexture_lotus_duo")
+
+[node name="PadLotus1" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=1483563667]
+position = Vector2(610, 3080)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_pad_with_lotus")
+
+[node name="Rock2" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=1001618279]
+position = Vector2(360, 2780)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_rock_single")
+
+[node name="Lotus2" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=1868832866]
+position = Vector2(860, 2850)
+scale = Vector2(0.55, 0.55)
+texture = SubResource("AtlasTexture_lotus_single")
+
+[node name="PadLotus2" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=1922216129]
+position = Vector2(1290, 2380)
+scale = Vector2(0.55, 0.55)
+texture = SubResource("AtlasTexture_pad_lotus")
+
+[node name="Rock3" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=372430525]
+position = Vector2(540, 2340)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_rock_duo")
+
+[node name="Lotus3" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=2042021541]
+position = Vector2(1190, 1890)
+scale = Vector2(0.55, 0.55)
+texture = SubResource("AtlasTexture_lotus_duo")
+
+[node name="PadLotus3" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=1437503910]
+position = Vector2(670, 1490)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_pad_with_lotus")
+
+[node name="Rock4" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=1180488944]
+position = Vector2(1070, 1440)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_rock_single")
+
+[node name="Lotus4" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=387744673]
+position = Vector2(730, 1010)
+scale = Vector2(0.55, 0.55)
+texture = SubResource("AtlasTexture_lotus_single")
+
+[node name="Rock5" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=1515362922]
+position = Vector2(1010, 690)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_rock_duo")
+
+[node name="PadLotus4" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=1647858394]
+position = Vector2(1430, 640)
+scale = Vector2(0.55, 0.55)
+texture = SubResource("AtlasTexture_pad_lotus")
+
+[node name="Lotus5" type="Sprite2D" parent="ScrollContainer/MapCanvas/PropsContainer" unique_id=828686623]
+position = Vector2(690, 610)
+scale = Vector2(0.55, 0.55)
+texture = SubResource("AtlasTexture_lotus_duo")
+
 [node name="PathGlow" type="Line2D" parent="ScrollContainer/MapCanvas" unique_id=145920105]
-width = 86.0
-default_color = Color(0.04, 0.42, 0.65, 0.5)
+width = 50.0
+default_color = Color(0, 0.32, 0.35, 0.35)
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
 [node name="PathLine" type="Line2D" parent="ScrollContainer/MapCanvas" unique_id=145920106]
-width = 44.0
-default_color = Color(0.2, 0.82, 0.95, 0.75)
+width = 56.0
+texture = ExtResource("6_vine")
+texture_mode = 2
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
@@ -332,34 +325,39 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="TopBar" type="PanelContainer" parent="UI" unique_id=145920109]
-custom_minimum_size = Vector2(1920, 92)
+custom_minimum_size = Vector2(1920, 96)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 92.0
+offset_bottom = 96.0
 grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_hud_bar")
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_top_bar")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/TopBar" unique_id=145920110]
 layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 4
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/TopBar/MarginContainer" unique_id=145920111]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 16
 
 [node name="BackButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920112]
+custom_minimum_size = Vector2(170, 60)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.92, 0.35, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(1, 0.94, 0.3, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_back")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_back_hover")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_back_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
 text = "←  MENU"
 
 [node name="Spacer" type="Control" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920113]
@@ -367,47 +365,64 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="StarsBadge" type="PanelContainer" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920114]
+custom_minimum_size = Vector2(140, 56)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
 
 [node name="StarsLabel" type="Label" parent="UI/TopBar/MarginContainer/HBoxContainer/StarsBadge" unique_id=145920115]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.88, 0.28, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(1, 0.9, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 22
 text = "⭐ 0 / 45"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="CoinsBadge" type="PanelContainer" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920116]
+custom_minimum_size = Vector2(120, 56)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
 
 [node name="CoinsLabel" type="Label" parent="UI/TopBar/MarginContainer/HBoxContainer/CoinsBadge" unique_id=145920117]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 22
 text = "🪙 0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="LeaderboardButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920118]
+custom_minimum_size = Vector2(130, 56)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.9, 0.35, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_action")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_action_hover")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_action_hover")
+theme_override_colors/font_color = Color(1, 0.92, 0.35, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.8, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "🏆  RANK"
 
 [node name="SettingsButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920119]
+custom_minimum_size = Vector2(68, 56)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.9, 0.35, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.75, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_action")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_action_hover")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_action_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "⚙️"
 
 [node name="BottomBar" type="Control" parent="UI" unique_id=145920120]
@@ -416,33 +431,48 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -120.0
+offset_top = -140.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
 [node name="QuickPlayButton" type="Button" parent="UI/BottomBar" unique_id=145920121]
-custom_minimum_size = Vector2(340, 72)
+custom_minimum_size = Vector2(420, 104)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -170.0
-offset_top = -36.0
-offset_right = 170.0
-offset_bottom = 36.0
+offset_left = -210.0
+offset_top = -52.0
+offset_right = 210.0
+offset_bottom = 52.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.95, 0.4, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 26
-theme_override_styles/normal = SubResource("StyleBoxFlat_quick_play")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_quick_play_hover")
-theme_override_styles/hover = SubResource("StyleBoxFlat_quick_play_hover")
-text = "▶  PLAY LEVEL 1"
+pivot_offset = Vector2(210, 52)
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.8, 0.2, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "    ▶  PLAY LEVEL 1"
+
+[node name="Pip" type="Panel" parent="UI/BottomBar/QuickPlayButton" unique_id=145920199]
+modulate = Color(1, 0.45, 0.7, 0.7)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.08
+anchor_top = 0.42
+anchor_right = 0.12
+anchor_bottom = 0.58
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pip")
 
 [node name="ToastPanel" type="PanelContainer" parent="UI" unique_id=145920122]
 visible = false
@@ -453,22 +483,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
+offset_left = -320.0
 offset_top = 180.0
-offset_right = 300.0
-offset_bottom = 240.0
+offset_right = 320.0
+offset_bottom = 244.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_toast")
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
 
 [node name="ToastLabel" type="Label" parent="UI/ToastPanel" unique_id=145920123]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 20
 text = "Sign in via Google Play in Settings to view Leaderboards!"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="LevelModal" type="Control" parent="." unique_id=145920124]
 visible = false
@@ -487,7 +520,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.02, 0.05, 0.1, 0.76)
+color = Color(0.02, 0.05, 0.08, 0.76)
 
 [node name="CenterContainer" type="CenterContainer" parent="LevelModal" unique_id=145920126]
 layout_mode = 1
@@ -498,27 +531,34 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="LevelModal/CenterContainer" unique_id=145920127]
-custom_minimum_size = Vector2(560, 440)
+custom_minimum_size = Vector2(620, 500)
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")
+
+[node name="TablePanel" type="Panel" parent="LevelModal/CenterContainer/PanelContainer" unique_id=145920198]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_inner")
 
 [node name="MarginContainer" type="MarginContainer" parent="LevelModal/CenterContainer/PanelContainer" unique_id=145920128]
 layout_mode = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer" unique_id=145920129]
 layout_mode = 2
-theme_override_constants/separation = 18
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="ModalTitle" type="Label" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920130]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 48
 text = "LEVEL 1"
 horizontal_alignment = 1
@@ -531,29 +571,36 @@ alignment = 1
 [node name="Star1" type="Label" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=145920132]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.88, 0.25, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 48
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 50
 text = "★"
 
 [node name="Star2" type="Label" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=145920133]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.88, 0.25, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 48
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 50
 text = "★"
 
 [node name="Star3" type="Label" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=145920134]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.88, 0.25, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 48
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 50
 text = "★"
 
 [node name="StatusLabel" type="Label" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920135]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.65, 0.85, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 22
 text = "Ready to leap!"
 horizontal_alignment = 1
 
@@ -562,28 +609,34 @@ custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
 [node name="StartButton" type="Button" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920137]
-custom_minimum_size = Vector2(300, 62)
+custom_minimum_size = Vector2(340, 78)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.95, 0.4, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 26
-theme_override_styles/normal = SubResource("StyleBoxFlat_modal_start")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_modal_start_hover")
-theme_override_styles/hover = SubResource("StyleBoxFlat_modal_start_hover")
-text = "START LEAP  ▶"
+theme_override_colors/font_color = Color(1, 0.94, 0.3, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.8, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "LEAP IN  ▶"
 
 [node name="CloseButton" type="Button" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920138]
-custom_minimum_size = Vector2(180, 48)
+custom_minimum_size = Vector2(180, 52)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(1, 0.9, 0.8, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_modal_close")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_modal_close_hover")
-theme_override_styles/hover = SubResource("StyleBoxFlat_modal_close_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "✕  CLOSE"
 
 [node name="SettingsModal" type="Control" parent="." unique_id=145920139]
@@ -603,7 +656,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.02, 0.05, 0.1, 0.72)
+color = Color(0.02, 0.05, 0.08, 0.72)
 
 [node name="CenterContainer" type="CenterContainer" parent="SettingsModal" unique_id=145920141]
 layout_mode = 1
@@ -614,17 +667,22 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="SettingsModal/CenterContainer" unique_id=145920142]
-custom_minimum_size = Vector2(620, 520)
+custom_minimum_size = Vector2(620, 540)
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")
+
+[node name="TablePanel" type="Panel" parent="SettingsModal/CenterContainer/PanelContainer" unique_id=145920197]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_inner")
 
 [node name="MarginContainer" type="MarginContainer" parent="SettingsModal/CenterContainer/PanelContainer" unique_id=145920143]
 layout_mode = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer" unique_id=145920144]
 layout_mode = 2
@@ -633,8 +691,10 @@ theme_override_constants/separation = 22
 [node name="ModalTitle" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920145]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 40
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 44
 text = "SETTINGS"
 horizontal_alignment = 1
 
@@ -650,23 +710,28 @@ layout_mode = 2
 
 [node name="VolLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow" unique_id=145920149]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 22
 text = "MASTER VOLUME"
 
 [node name="VolumeValue" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow" unique_id=145920150]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.35, 0.85, 0.95, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(0.2, 0.58, 0.15, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 22
 text = "100%"
 horizontal_alignment = 2
 
 [node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow" unique_id=145920151]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider_track")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_slider_fill")
 max_value = 1.0
 step = 0.05
 value = 1.0
@@ -677,8 +742,9 @@ layout_mode = 2
 [node name="FSLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow" unique_id=145920153]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 22
 text = "FULLSCREEN MODE"
 
@@ -691,8 +757,9 @@ layout_mode = 2
 [node name="CRTLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow" unique_id=145920156]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 22
 text = "CRT RETRO SHADER"
 
@@ -706,18 +773,23 @@ layout_mode = 2
 [node name="PGLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow" unique_id=145920159]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 22
 text = "GOOGLE PLAY GAMES"
 
 [node name="PlayGamesButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow" unique_id=145920160]
-custom_minimum_size = Vector2(170, 44)
+custom_minimum_size = Vector2(170, 48)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("StyleBoxFlat_modal_close")
-theme_override_styles/hover = SubResource("StyleBoxFlat_modal_close_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "SIGN IN"
 
 [node name="Spacer" type="Control" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920161]
@@ -725,27 +797,31 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="SettingsBackButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920162]
-custom_minimum_size = Vector2(220, 56)
+custom_minimum_size = Vector2(220, 60)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.93, 0.35, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_colors/font_color = Color(1, 0.94, 0.3, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.8, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 26
-theme_override_styles/normal = SubResource("StyleBoxFlat_modal_close")
-theme_override_styles/hover = SubResource("StyleBoxFlat_modal_close_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
 text = "BACK"
 
 [node name="Audio" type="Node" parent="." unique_id=145920165]
 
 [node name="HoverSFX" type="AudioStreamPlayer" parent="Audio" unique_id=145920166]
-stream = ExtResource("5_hover")
+stream = ExtResource("9_hover")
 
 [node name="ClickSFX" type="AudioStreamPlayer" parent="Audio" unique_id=145920167]
-stream = ExtResource("6_click")
+stream = ExtResource("10_click")
 
 [node name="BackSFX" type="AudioStreamPlayer" parent="Audio" unique_id=145920168]
-stream = ExtResource("7_back")
+stream = ExtResource("11_back")
 
 [node name="BGMPlayer" type="AudioStreamPlayer" parent="Audio" unique_id=145920169]
-stream = ExtResource("8_bgm")
+stream = ExtResource("12_bgm")

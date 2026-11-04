@@ -1,83 +1,66 @@
-
 shader_type canvas_item;
 
-// Color Palette Controls
-uniform vec4 base_dark_blue : source_color = vec4(0.02, 0.04, 0.12, 1.0);
-uniform vec4 cyan_glow : source_color = vec4(0.0, 0.4, 0.8, 1.0);
-uniform vec4 deep_purple : source_color = vec4(0.08, 0.02, 0.2, 1.0);
+// Bright, vibrant, cute tropical lagoon palette
+uniform vec4 water_deep : source_color = vec4(0.01, 0.42, 0.48, 1.0);
+uniform vec4 water_mid : source_color = vec4(0.04, 0.68, 0.68, 1.0);
+uniform vec4 water_bright : source_color = vec4(0.14, 0.88, 0.84, 1.0);
+uniform vec4 caustic_color : source_color = vec4(0.85, 1.0, 0.96, 0.45);
 
 // Animation Controls
-uniform float speed : hint_range(0.1, 2.0) = 0.3;
-uniform float scale : hint_range(1.0, 20.0) = 4.0;
-uniform float wave_intensity : hint_range(0.1, 2.0) = 0.6;
+uniform float speed : hint_range(0.05, 1.0) = 0.22;
+uniform float scale : hint_range(1.0, 15.0) = 4.2;
+uniform float caustic_strength : hint_range(0.0, 1.0) = 0.45;
 
-// Pseudo-random helper function
-vec2 hash(vec2 p) {
+vec2 hash2(vec2 p) {
 	p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
-	return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
+	return fract(sin(p) * 43758.5453123);
 }
 
-// 2D Perlin Noise
-float noise(vec2 p) {
-	vec2 i = floor(p);
-	vec2 f = fract(p);
-	vec2 u = f * f * (3.0 - 2.0 * f);
-
-	return mix(
-		mix(dot(hash(i + vec2(0.0, 0.0)), f - vec2(0.0, 0.0)),
-		    dot(hash(i + vec2(1.0, 0.0)), f - vec2(1.0, 0.0)), u.x),
-		mix(dot(hash(i + vec2(0.0, 1.0)), f - vec2(0.0, 1.0)),
-		    dot(hash(i + vec2(1.0, 1.0)), f - vec2(1.0, 1.0)), u.x),
-		u.y
-	);
-}
-
-// Fractional Brownian Motion (FBM) for smooth layered organic textures
-float fbm(vec2 uv) {
-	float val = 0.0;
-	float amp = 0.5;
-	vec2 shift = vec2(100.0);
-	// Rotate matrix to reduce axis alignment artifacts
-	mat2 rot = mat2(vec2(0.8, 0.6), vec2(-0.6, 0.8));
-
-	for (int i = 0; i < 4; i++) {
-		val += amp * noise(uv);
-		uv = rot * uv * 2.0 + shift;
-		amp *= 0.5;
+// 2D Organic Voronoi Caustics
+float voronoi_caustic(vec2 uv, float t) {
+	vec2 g = floor(uv);
+	vec2 f = fract(uv);
+	float m_dist = 1.0;
+	for (int y = -1; y <= 1; y++) {
+		for (int x = -1; x <= 1; x++) {
+			vec2 neighbor = vec2(float(x), float(y));
+			vec2 p = hash2(g + neighbor);
+			p = 0.5 + 0.4 * sin(t + 6.2831 * p);
+			vec2 diff = neighbor + p - f;
+			float dist = length(diff);
+			m_dist = min(m_dist, dist);
+		}
 	}
-	return val;
+	return smoothstep(0.04, 0.38, m_dist);
 }
 
 void fragment() {
-	// Normalize coordinates and account for aspect ratio distortion
 	vec2 uv = UV * scale;
-	
-	// Animate time factor
 	float t = TIME * speed;
 
-	// Distort coordinates dynamically (domain warping)
-	vec2 q = vec2(
-		fbm(uv + vec2(0.0, 0.0) + vec2(t * 0.2, t * 0.1)),
-		fbm(uv + vec2(5.2, 1.3) + vec2(t * 0.1, t * 0.3))
-	);
+	// Smooth dual-layered fluid currents
+	vec2 flow1 = vec2(sin(uv.y * 1.4 + t * 0.7), cos(uv.x * 1.4 + t * 0.5)) * 0.18;
+	vec2 flow2 = vec2(cos(uv.y * 1.8 - t * 0.6), sin(uv.x * 1.8 - t * 0.4)) * 0.15;
 
-	vec2 r = vec2(
-		fbm(uv + 4.0 * q + vec2(1.7 - t * 0.15, 9.2 + t * 0.1)),
-		fbm(uv + 4.0 * q + vec2(8.3 + t * 0.1, 2.8 - t * 0.2))
-	);
+	// Deep emerald/lagoon foundation
+	float depth_wave = 0.5 + 0.5 * sin(uv.y * 1.0 + flow1.x * 2.5 + t * 0.8);
+	vec4 base_col = mix(water_deep, water_mid, depth_wave);
+	
+	// Sunlit clear turquoise shallows
+	float shallow_wave = 0.5 + 0.5 * sin(uv.x * 1.4 - uv.y * 0.9 + flow2.y * 3.0 + t * 1.0);
+	base_col = mix(base_col, water_bright, shallow_wave * 0.6);
 
-	float f = fbm(uv + 4.0 * r);
+	// Organic dancing caustic webs
+	float c1 = voronoi_caustic((uv + flow1) * 1.4, t * 1.2);
+	float c2 = voronoi_caustic((uv + flow2) * 2.0 + vec2(2.3, 1.8), t * 1.5);
+	float caustic_web = (1.0 - c1) * 0.55 + (1.0 - c2) * 0.45;
+	caustic_web = smoothstep(0.18, 0.62, caustic_web);
 
-	// Base color blending
-	vec4 final_color = mix(base_dark_blue, deep_purple, clamp(f * f * 4.0, 0.0, 1.0));
+	// Subtle sun sparkle shimmer at wave intersections (soft natural highlights)
+	float shimmer = smoothstep(0.70, 0.92, (1.0 - c2) * (1.0 - c1));
 
-	// Add glowing highlights where waves warp closer together
-	final_color = mix(final_color, cyan_glow, clamp(length(q) * wave_intensity, 0.0, 1.0));
-	final_color = mix(final_color, vec4(0.2, 0.7, 1.0, 1.0), clamp(length(r.x) * 0.5, 0.0, 1.0));
+	vec4 final_col = mix(base_col, caustic_color, caustic_web * caustic_strength);
+	final_col += vec4(0.85, 1.0, 0.95, 0.0) * shimmer * 0.35;
 
-	// Add soft radial vignette to keep center lit and edges subtle
-	float dist_from_center = length(UV - vec2(0.5));
-	final_color.rgb *= smoothstep(0.8, 0.2, dist_from_center * 0.8);
-
-	COLOR = vec4(final_color.rgb, 1.0);
+	COLOR = final_col;
 }

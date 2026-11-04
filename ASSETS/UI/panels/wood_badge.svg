@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 64" width="160" height="64">
+  <defs>
+    <linearGradient id="woodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#734720"/>
+      <stop offset="40%" stop-color="#553114"/>
+      <stop offset="100%" stop-color="#3b1f09"/>
+    </linearGradient>
+    <linearGradient id="innerPlate" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#241305"/>
+      <stop offset="100%" stop-color="#180b03"/>
+    </linearGradient>
+    <linearGradient id="goldRivet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe46b"/>
+      <stop offset="100%" stop-color="#b58718"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Drop Shadow -->
+  <rect x="3" y="5" width="154" height="56" rx="20" ry="20" fill="#0c160a" opacity="0.45"/>
+
+  <!-- Thick Dark Cartoon Outline -->
+  <rect x="2" y="2" width="156" height="56" rx="20" ry="20" fill="#140a03" stroke="#140a03" stroke-width="2"/>
+
+  <!-- Main Carved Wood Body -->
+  <rect x="4" y="4" width="152" height="52" rx="18" ry="18" fill="url(#woodGrad)"/>
+
+  <!-- Wood Grain Highlights (Horizontal subtle carved strokes) -->
+  <path d="M 18,12 Q 80,10 142,13" fill="none" stroke="#8d592b" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  <path d="M 28,48 Q 90,49 132,47" fill="none" stroke="#2a1405" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Recessed Dark Inner Cavity (where text/icons sit) -->
+  <rect x="12" y="10" width="136" height="40" rx="14" ry="14" fill="url(#innerPlate)" stroke="#160902" stroke-width="2"/>
+
+  <!-- Top Inset Highlight -->
+  <path d="M 24,12 L 136,12" stroke="#42250d" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Left & Right Gold Rivet Accents -->
+  <circle cx="18" cy="30" r="3" fill="url(#goldRivet)"/>
+  <circle cx="18" cy="30" r="3" fill="none" stroke="#120802" stroke-width="1"/>
+  <circle cx="142" cy="30" r="3" fill="url(#goldRivet)"/>
+  <circle cx="142" cy="30" r="3" fill="none" stroke="#120802" stroke-width="1"/>
+</svg>

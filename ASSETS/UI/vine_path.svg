@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 96" width="256" height="96">
+  <defs>
+    <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6ec844"/>
+      <stop offset="30%" stop-color="#4ea632"/>
+      <stop offset="75%" stop-color="#347d1f"/>
+      <stop offset="100%" stop-color="#1f5411"/>
+    </linearGradient>
+    <linearGradient id="leafGradTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9bf254"/>
+      <stop offset="50%" stop-color="#69c836"/>
+      <stop offset="100%" stop-color="#3b7d1c"/>
+    </linearGradient>
+    <linearGradient id="leafGradBot" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8ae647"/>
+      <stop offset="50%" stop-color="#5bb32d"/>
+      <stop offset="100%" stop-color="#2d6915"/>
+    </linearGradient>
+    <linearGradient id="goldVein" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fffa8a"/>
+      <stop offset="100%" stop-color="#b8e858"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dark Cartoon Underlay / Outline for the winding stem -->
+  <path d="M 0,48 C 64,36 128,60 192,40 C 224,30 240,48 256,48"
+        fill="none" stroke="#0e230b" stroke-width="22" stroke-linecap="round"/>
+
+  <!-- Main organic vine stem body -->
+  <path d="M 0,48 C 64,36 128,60 192,40 C 224,30 240,48 256,48"
+        fill="none" stroke="url(#stemGrad)" stroke-width="15" stroke-linecap="round"/>
+
+  <!-- High-contrast glossy top highlight on stem -->
+  <path d="M 0,45 C 64,33 128,57 192,37 C 224,27 240,45 256,45"
+        fill="none" stroke="#bbf86e" stroke-width="3.5" opacity="0.8" stroke-linecap="round"/>
+
+  <!-- Leaf 1 (Top-Left sprouting at x=65) -->
+  <g transform="translate(65, 38) rotate(-38)">
+    <!-- Dark cartoon outline -->
+    <path d="M 0,0 C 10,-24 34,-28 48,-14 C 58,-2 42,20 0,0 Z"
+          fill="#0e230b" stroke="#0e230b" stroke-width="5" stroke-linejoin="round"/>
+    <!-- Leaf body -->
+    <path d="M 0,0 C 10,-24 34,-28 48,-14 C 58,-2 42,20 0,0 Z"
+          fill="url(#leafGradTop)"/>
+    <!-- Golden leaf vein -->
+    <path d="M 2,0 Q 24,-8 44,-11"
+          fill="none" stroke="url(#goldVein)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 18,-4 Q 28,-14 34,-18"
+          fill="none" stroke="#fffa8a" stroke-width="1.8" opacity="0.8"/>
+  </g>
+
+  <!-- Leaf 2 (Bottom-Center sprouting at x=135) -->
+  <g transform="translate(135, 54) rotate(42)">
+    <path d="M 0,0 C 10,24 34,28 46,14 C 56,2 40,-18 0,0 Z"
+          fill="#0e230b" stroke="#0e230b" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M 0,0 C 10,24 34,28 46,14 C 56,2 40,-18 0,0 Z"
+          fill="url(#leafGradBot)"/>
+    <path d="M 2,0 Q 22,8 42,11"
+          fill="none" stroke="url(#goldVein)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 16,4 Q 26,14 32,18"
+          fill="none" stroke="#fffa8a" stroke-width="1.8" opacity="0.8"/>
+  </g>
+
+  <!-- Leaf 3 (Top-Right sprouting at x=205) -->
+  <g transform="translate(205, 41) rotate(-30)">
+    <path d="M 0,0 C 8,-20 30,-24 42,-12 C 50,-2 36,16 0,0 Z"
+          fill="#0e230b" stroke="#0e230b" stroke-width="4.5" stroke-linejoin="round"/>
+    <path d="M 0,0 C 8,-20 30,-24 42,-12 C 50,-2 36,16 0,0 Z"
+          fill="url(#leafGradTop)"/>
+    <path d="M 2,0 Q 20,-7 38,-9"
+          fill="none" stroke="url(#goldVein)" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Curly playful tendril at x=25 -->
+  <path d="M 24,45 C 22,30 36,22 42,28 C 46,33 40,38 34,36"
+        fill="none" stroke="#0e230b" stroke-width="5.5" stroke-linecap="round"/>
+  <path d="M 24,45 C 22,30 36,22 42,28 C 46,33 40,38 34,36"
+        fill="none" stroke="#6ec844" stroke-width="3" stroke-linecap="round"/>
+</svg>

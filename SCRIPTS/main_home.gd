@@ -6,6 +6,7 @@ extends Control
 # Scroll & Map
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var map_canvas: Control = $ScrollContainer/MapCanvas
+@onready var props_container: Control = $ScrollContainer/MapCanvas/PropsContainer
 @onready var path_glow: Line2D = $ScrollContainer/MapCanvas/PathGlow
 @onready var path_line: Line2D = $ScrollContainer/MapCanvas/PathLine
 @onready var nodes_container: Control = $ScrollContainer/MapCanvas/NodesContainer
@@ -99,19 +100,21 @@ func _ready() -> void:
 
 	# Connect Top & Bottom HUD
 	back_btn.pressed.connect(_on_back_pressed)
-	back_btn.mouse_entered.connect(_play_hover)
 	leaderboard_btn.pressed.connect(_on_leaderboard_pressed)
-	leaderboard_btn.mouse_entered.connect(_play_hover)
 	settings_btn.pressed.connect(_on_settings_pressed)
-	settings_btn.mouse_entered.connect(_play_hover)
 	quick_play_btn.pressed.connect(_on_quick_play_pressed)
-	quick_play_btn.mouse_entered.connect(_play_hover)
+
+	_hook_btn_animations(back_btn)
+	_hook_btn_animations(leaderboard_btn)
+	_hook_btn_animations(settings_btn)
+	_hook_btn_animations(quick_play_btn)
 
 	# Connect Level Modal
 	modal_start_btn.pressed.connect(_on_modal_start_pressed)
-	modal_start_btn.mouse_entered.connect(_play_hover)
 	modal_close_btn.pressed.connect(_close_level_modal)
-	modal_close_btn.mouse_entered.connect(_play_hover)
+	_hook_btn_animations(modal_start_btn)
+	_hook_btn_animations(modal_close_btn)
+
 	var dimmer := level_modal.get_node_or_null("Dimmer") as Control
 	if dimmer:
 		dimmer.gui_input.connect(func(event: InputEvent):
@@ -121,7 +124,8 @@ func _ready() -> void:
 
 	# Connect Settings Modal
 	settings_back_btn.pressed.connect(_on_settings_back_pressed)
-	settings_back_btn.mouse_entered.connect(_play_hover)
+	_hook_btn_animations(settings_back_btn)
+	_hook_btn_animations(play_games_btn)
 	volume_slider.value_changed.connect(_on_volume_changed)
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
 
@@ -143,6 +147,20 @@ func _ready() -> void:
 	if transition_layer and transition_layer.has_method("transition_in"):
 		transition_layer.transition_in()
 
+func _hook_btn_animations(btn: Control) -> void:
+	if not is_instance_valid(btn):
+		return
+	btn.pivot_offset = btn.custom_minimum_size * 0.5 if btn.custom_minimum_size != Vector2.ZERO else btn.size * 0.5
+	btn.mouse_entered.connect(func():
+		_play_hover()
+		var tw := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		tw.tween_property(btn, "scale", Vector2(1.08, 1.08), 0.16)
+	)
+	btn.mouse_exited.connect(func():
+		var tw := create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tw.tween_property(btn, "scale", Vector2.ONE, 0.16)
+	)
+
 func _process(delta: float) -> void:
 	elapsed_time += delta
 
@@ -159,6 +177,16 @@ func _process(delta: float) -> void:
 		var breath := sin(elapsed_time * 4.0) * 0.04
 		active_frog_sprite.position.y = active_frog_sprite.get_meta("base_y", 0.0) + bob
 		active_frog_sprite.scale = Vector2(1.3 * (1.0 + breath), 1.3 * (1.0 - breath))
+
+	# 3. Animate ambient floating props (lotus flowers & pads)
+	if is_instance_valid(props_container):
+		for prop in props_container.get_children():
+			if prop.name.begins_with("Lotus") or prop.name.begins_with("PadLotus"):
+				var base_y = prop.get_meta("base_y", -999.0)
+				if base_y == -999.0:
+					base_y = prop.position.y
+					prop.set_meta("base_y", base_y)
+				prop.position.y = base_y + sin(elapsed_time * 2.2 + prop.position.x * 0.02) * 4.0
 
 # --- Touch & Mouse Inertia Dragging ---
 
@@ -219,7 +247,7 @@ func _build_winding_path() -> void:
 	# Bake smoothed curve points into lines
 	var baked_pts := curve.get_baked_points()
 	for pt in baked_pts:
-		path_glow.add_point(pt)
+		path_glow.add_point(pt + Vector2(0, 8))
 		path_line.add_point(pt)
 
 func _build_level_nodes() -> void:
@@ -251,7 +279,7 @@ func _build_level_nodes() -> void:
 		pad_sprite.name = "PadSprite"
 
 		if not is_unlocked:
-			pad_sprite.modulate = Color(0.35, 0.45, 0.55, 0.72)
+			pad_sprite.modulate = Color(0.42, 0.52, 0.48, 0.72)
 		else:
 			pad_sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
 		node_btn.add_child(pad_sprite)
@@ -300,13 +328,15 @@ func _build_level_nodes() -> void:
 
 		if is_unlocked:
 			label.text = str(i + 1)
-			label.add_theme_color_override("font_color", Color(1.0, 0.95, 0.35, 1.0) if is_current else Color(0.95, 0.98, 1.0, 1.0))
-			label.add_theme_color_override("font_outline_color", Color(0.04, 0.12, 0.22, 1.0))
+			label.add_theme_color_override("font_color", Color(1.0, 0.95, 0.35, 1.0) if is_current else Color(1.0, 1.0, 1.0, 1.0))
+			label.add_theme_color_override("font_outline_color", Color(0.12, 0.05, 0.02, 1.0))
 			label.add_theme_constant_override("outline_size", 10)
 		else:
 			label.text = "🔒"
 			label.add_theme_font_size_override("font_size", 28)
-			label.add_theme_color_override("font_color", Color(0.7, 0.8, 0.9, 0.7))
+			label.add_theme_color_override("font_color", Color(0.85, 0.88, 0.8, 0.75))
+			label.add_theme_color_override("font_outline_color", Color(0.12, 0.05, 0.02, 1.0))
+			label.add_theme_constant_override("outline_size", 6)
 		node_btn.add_child(label)
 
 		# 5. Stars earned badge (under lilypad)
@@ -322,15 +352,15 @@ func _build_level_nodes() -> void:
 				var star_lbl := Label.new()
 				star_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				star_lbl.add_theme_font_override("font", FONT_GORDITAS)
-				star_lbl.add_theme_font_size_override("font_size", 20)
+				star_lbl.add_theme_font_size_override("font_size", 22)
 				if s < stars:
 					star_lbl.text = "★"
-					star_lbl.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2, 1.0))
-					star_lbl.add_theme_color_override("font_outline_color", Color(0.2, 0.12, 0.02, 0.9))
+					star_lbl.add_theme_color_override("font_color", Color(1.0, 0.88, 0.22, 1.0))
+					star_lbl.add_theme_color_override("font_outline_color", Color(0.2, 0.1, 0.02, 1.0))
 					star_lbl.add_theme_constant_override("outline_size", 6)
 				else:
 					star_lbl.text = "★"
-					star_lbl.add_theme_color_override("font_color", Color(0.3, 0.45, 0.55, 0.45))
+					star_lbl.add_theme_color_override("font_color", Color(0.2, 0.32, 0.26, 0.45))
 				stars_box.add_child(star_lbl)
 
 			node_btn.add_child(stars_box)
@@ -391,7 +421,7 @@ func _update_hud_counters() -> void:
 	var next_lvl := GameManager.unlocked_level + 1
 	if next_lvl > GameManager.levels.size():
 		next_lvl = GameManager.levels.size()
-	quick_play_btn.text = "▶  PLAY LEVEL %d" % next_lvl
+	quick_play_btn.text = "    ▶  PLAY LEVEL %d" % next_lvl
 
 # --- Level Modal Dialog ---
 
@@ -406,17 +436,17 @@ func _open_level_modal(level_idx: int) -> void:
 			if i < stars:
 				star_lbl.modulate = Color(1.0, 0.88, 0.2, 1.0)
 			else:
-				star_lbl.modulate = Color(0.35, 0.45, 0.55, 0.45)
+				star_lbl.modulate = Color(0.25, 0.35, 0.3, 0.45)
 
 	if stars >= 3:
 		modal_status_label.text = "Mastered! (3 Stars)"
-		modal_status_label.modulate = Color(0.4, 1.0, 0.6)
+		modal_status_label.modulate = Color(0.18, 0.58, 0.16)
 	elif stars > 0:
 		modal_status_label.text = "Completed (%d Stars)" % stars
-		modal_status_label.modulate = Color(1.0, 0.9, 0.4)
+		modal_status_label.modulate = Color(0.68, 0.44, 0.08)
 	else:
 		modal_status_label.text = "Ready to leap!"
-		modal_status_label.modulate = Color(0.6, 0.85, 1.0)
+		modal_status_label.modulate = Color(0.32, 0.2, 0.1)
 
 	level_modal.visible = true
 	level_modal.modulate.a = 0.0
@@ -476,7 +506,7 @@ func _on_back_pressed() -> void:
 func _on_leaderboard_pressed() -> void:
 	click_sfx.play()
 	if GodotPlayGameServices.is_signed_in:
-		GodotPlayGameServices.show_all_leaderboards()
+		LeaderboardsClient.show_leaderboard("CgkI5IC_49ABEAIQAQ")
 	else:
 		_show_toast("Sign in to Google Play Games in Settings to view Leaderboards!")
 

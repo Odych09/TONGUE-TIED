@@ -82,6 +82,8 @@ func save_game(
 	progress_value: int = 0,
 ) -> void:
 	SnapshotsClient.save_game(file_name, description, save_data, played_time_millis, progress_value)
+	var leaderboardStars : int = GameManager.level_stars.values().reduce(func(accum, number): return accum + number, 0)
+	LeaderboardsClient.submit_score("CgkI5IC_49ABEAIQAQ",leaderboardStars)
 
 func load_game(create_if_not_found := false, file_name: String = CLOUD_FILE_NAME) -> void:
 	if GodotPlayGameServices.android_plugin:
