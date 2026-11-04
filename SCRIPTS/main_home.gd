@@ -560,11 +560,6 @@ func _on_fullscreen_toggled(pressed: bool) -> void:
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
-func _on_crt_toggled(toggled: bool) -> void:
-	click_sfx.play()
-	#crt_overlay.visible = toggled
-	#GameManager.set_crt_enabled(toggled)
-
 func _play_hover() -> void:
 	hover_sfx.pitch_scale = randf_range(0.96, 1.08)
 	hover_sfx.play()
