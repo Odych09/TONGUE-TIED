@@ -106,11 +106,17 @@ func _trigger_blink() -> void:
 	tween.tween_callback(func(): is_blinking = false)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if ui_node and ui_node.get("is_paused") == true:
-		return
+	if event.is_action_pressed("ui_cancel"):
+		if ui_node and ui_node.has_method("toggle_pause"):
+			ui_node.toggle_pause()
+			return
 
-	if event.is_action_pressed("ui_cancel") or Input.is_key_pressed(KEY_R):
-		GameManager.restart_level()
+	if Input.is_key_pressed(KEY_R):
+		if not (ui_node and ui_node.get("is_paused") == true):
+			GameManager.restart_level()
+			return
+
+	if ui_node and ui_node.get("is_paused") == true:
 		return
 
 	if is_latching or is_dead:

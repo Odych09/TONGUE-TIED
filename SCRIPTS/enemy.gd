@@ -28,7 +28,9 @@ func update_facing(dir: Vector2):
 		sprite.rotation = target_rotation
 
 func _on_move_timer_timeout():
-	if is_moving or (player and player.is_dead):
+	if not player:
+		player = get_parent().find_child("Player", true, false) as Frog
+	if is_moving or (player and (player.is_dead or (player.ui_node and player.ui_node.get("is_paused") == true))):
 		return
 		
 	var step_dir = patrol_direction if moving_forward else -patrol_direction
@@ -58,7 +60,7 @@ func _on_move_timer_timeout():
 	tween.chain().tween_callback(func():
 		is_moving = false
 		
-		if player and not player.is_dead:
+		if player and not player.is_dead and not (player.ui_node and player.ui_node.get("is_paused") == true):
 			# Check if the enemy hit the frog's body OR any part of its tongue path!
 			var hit_target = position.is_equal_approx(player.position)
 			

@@ -68,6 +68,10 @@ func load_local_fallback() -> bool:
 				isPrevSnapShot = true
 				GameManager.load_progress()
 				return true
+	# If no local save file exists, still initialize default GameManager progress
+	isPrevSnapShot = false
+	oldSnapShot = {}
+	GameManager.load_progress()
 	return false
 
 func save_game(

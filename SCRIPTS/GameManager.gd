@@ -35,6 +35,8 @@ var level_stars: Dictionary = {} # int -> int (1..3)
 var haptics_enabled: bool = true
 var music_enabled: bool = true
 var sfx_enabled: bool = true
+var crt_enabled: bool = true
+var master_volume: float = 1.0
 
 signal settings_changed
 
@@ -56,6 +58,13 @@ func restart_level() -> void:
 	load_level(current_level_index, true)
 
 func return_to_menu() -> void:
+	if TransitionLayer:
+		await TransitionLayer.transition_out()
+	get_tree().change_scene_to_file("res://SCENES/main_home.tscn")
+	if TransitionLayer:
+		TransitionLayer.transition_in()
+
+func return_to_title() -> void:
 	if TransitionLayer:
 		await TransitionLayer.transition_out()
 	get_tree().change_scene_to_file("res://SCENES/LEVELS/MainMenu.tscn")
@@ -108,7 +117,9 @@ func save_progress() -> void:
 		"level_stars": level_stars,
 		"haptics_enabled": haptics_enabled,
 		"music_enabled": music_enabled,
-		"sfx_enabled": sfx_enabled
+		"sfx_enabled": sfx_enabled,
+		"crt_enabled": crt_enabled,
+		"master_volume": master_volume
 	}
 	#cloud
 	var bytes = JSON.stringify(data).to_utf8_buffer()
@@ -135,28 +146,14 @@ func load_progress() -> void:
 		haptics_enabled = bool(save_data_bytes.get("haptics_enabled", true))
 		music_enabled = bool(save_data_bytes.get("music_enabled", true))
 		sfx_enabled = bool(save_data_bytes.get("sfx_enabled", true))
+		crt_enabled = bool(save_data_bytes.get("crt_enabled", true))
+		master_volume = float(save_data_bytes.get("master_volume", 1.0))
+		var db := linear_to_db(master_volume) if master_volume > 0.001 else -80.0
+		AudioServer.set_bus_volume_db(0, db)
 		unlocked_level = clamp(unlocked_level, 0, levels.size() - 1)
 		current_level_index = unlocked_level
 		progress_updated.emit()
 		settings_changed.emit()
-		
-	#if not FileAccess.file_exists(SAVE_PATH):
-		#unlocked_level = 0
-		#current_level_index = 0
-		#return
-	#var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
-	#if file:
-		#var json := JSON.new()
-		#var parse_result := json.parse(file.get_as_text())
-		#if parse_result == OK and json.data is Dictionary:
-			#var data: Dictionary = json.data
-			#unlocked_level = int(data.get("unlocked_level", 0))
-			#level_stars = data.get("level_stars", {})
-			#haptics_enabled = bool(data.get("haptics_enabled", true))
-			#music_enabled = bool(data.get("music_enabled", true))
-			#sfx_enabled = bool(data.get("sfx_enabled", true))
-			#unlocked_level = clamp(unlocked_level, 0, levels.size() - 1)
-			#current_level_index = unlocked_level
 
 func set_music_enabled(val: bool) -> void:
 	music_enabled = val
@@ -170,5 +167,17 @@ func set_haptics_enabled(val: bool) -> void:
 
 func set_sfx_enabled(val: bool) -> void:
 	sfx_enabled = val
+	save_progress()
+	settings_changed.emit()
+
+func set_crt_enabled(val: bool) -> void:
+	crt_enabled = val
+	save_progress()
+	settings_changed.emit()
+
+func set_master_volume(val: float) -> void:
+	master_volume = clampf(val, 0.0, 1.0)
+	var db := linear_to_db(master_volume) if master_volume > 0.001 else -80.0
+	AudioServer.set_bus_volume_db(0, db)
 	save_progress()
 	settings_changed.emit()

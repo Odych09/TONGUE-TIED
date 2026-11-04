@@ -31,6 +31,7 @@ extends CanvasLayer
 @onready var pause_restart_btn: Button = $UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2/PauseRestartBtn
 @onready var pause_levels_btn: Button = $UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2/PauseLevelsBtn
 @onready var pause_home_btn: Button = $UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2/PauseHomeBtn
+@onready var crt_rect: ColorRect = $ColorRect
 
 var shake_timer := 0.0
 var base_position: Vector2
@@ -47,6 +48,7 @@ func _ready() -> void:
 	GameManager.level_changed.connect(_on_level_changed)
 	GameManager.settings_changed.connect(_update_settings_ui)
 	update_level_label(GameManager.current_level_index)
+	_update_settings_ui()
 
 	# Hook up HUD buttons
 	if restart_btn:
@@ -103,7 +105,7 @@ func _ready() -> void:
 	if pause_home_btn:
 		pause_home_btn.pressed.connect(func():
 			toggle_pause(false)
-			GameManager.return_to_menu()
+			GameManager.return_to_title()
 		)
 
 	if music_toggle_btn:
@@ -145,6 +147,8 @@ func toggle_pause(paused: Variant = null) -> void:
 				tw.tween_property(panel, "scale", Vector2.ONE, 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _update_settings_ui() -> void:
+	if crt_rect:
+		crt_rect.visible = GameManager.crt_enabled
 	if music_toggle_btn:
 		music_toggle_btn.text = "🎵 MUSIC: " + ("ON" if GameManager.music_enabled else "OFF")
 	if sfx_toggle_btn:

@@ -384,33 +384,6 @@ offset_bottom = 49.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pip")
 
-[node name="LevelsButton" type="Button" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack" unique_id=982817121]
-custom_minimum_size = Vector2(400, 82)
-layout_mode = 2
-size_flags_horizontal = 0
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
-theme_override_colors/font_focus_color = Color(1, 0.93, 0.35, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
-theme_override_colors/font_hover_color = Color(1, 0.93, 0.35, 1)
-theme_override_fonts/font = ExtResource("4_cvoun")
-theme_override_font_sizes/font_size = 36
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
-theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
-text = "   LEVELS"
-alignment = 0
-
-[node name="Pip" type="Panel" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/LevelsButton" unique_id=1765990588]
-modulate = Color(1, 0.45, 0.7, 0.65)
-layout_mode = 0
-offset_left = 26.0
-offset_top = 33.0
-offset_right = 42.0
-offset_bottom = 49.0
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_pip")
-
 [node name="SettingsButton" type="Button" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack" unique_id=982817120]
 custom_minimum_size = Vector2(400, 82)
 layout_mode = 2
@@ -637,83 +610,6 @@ size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
 theme_override_colors/font_hover_color = Color(1, 0.93, 0.35, 1)
-theme_override_fonts/font = ExtResource("4_cvoun")
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxFlat_back_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_back_hover")
-text = "BACK"
-
-[node name="LevelSelectModal" type="Control" parent="." unique_id=1849204932]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-
-[node name="Dimmer" type="ColorRect" parent="LevelSelectModal" unique_id=1849204933]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.02, 0.05, 0.1, 0.78)
-
-[node name="CenterContainer" type="CenterContainer" parent="LevelSelectModal" unique_id=1849204934]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="LevelSelectModal/CenterContainer" unique_id=1849204935]
-custom_minimum_size = Vector2(880, 640)
-layout_mode = 2
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
-
-[node name="MarginContainer" type="MarginContainer" parent="LevelSelectModal/CenterContainer/PanelContainer" unique_id=1849204936]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="VBoxContainer" type="VBoxContainer" parent="LevelSelectModal/CenterContainer/PanelContainer/MarginContainer" unique_id=1849204937]
-layout_mode = 2
-theme_override_constants/separation = 22
-
-[node name="ModalTitle" type="Label" parent="LevelSelectModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204938]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
-theme_override_fonts/font = ExtResource("4_cvoun")
-theme_override_font_sizes/font_size = 46
-text = "SELECT LEVEL"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="LevelSelectModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204939]
-layout_mode = 2
-
-[node name="GridContainer" type="GridContainer" parent="LevelSelectModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204940]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/h_separation = 16
-theme_override_constants/v_separation = 16
-columns = 5
-
-[node name="Spacer" type="Control" parent="LevelSelectModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204941]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="LevelSelectBackButton" type="Button" parent="LevelSelectModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204942]
-custom_minimum_size = Vector2(220, 58)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_back_normal")

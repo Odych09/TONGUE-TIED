@@ -1,6 +1,260 @@
 [gd_scene format=3 uid="uid://dh8p4qi6w6h2t"]
 
 [ext_resource type="Script" uid="uid://bw67b6vxffnuh" path="res://SCRIPTS/main_home.gd" id="1_7aww7"]
+[ext_resource type="Shader" uid="uid://3d76p6tuxky3" path="res://SCRIPTS/SHADERS/Bg.gdshader" id="2_bg"]
+[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="4_font"]
+[ext_resource type="AudioStream" uid="uid://canah35uobihe" path="res://AUDIO/ui_hover.wav" id="5_hover"]
+[ext_resource type="AudioStream" uid="uid://bsolub8tb4qun" path="res://AUDIO/ui_click.wav" id="6_click"]
+[ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="7_back"]
+[ext_resource type="AudioStream" uid="uid://bbiw763y2alxy" path="res://Froggy2(1).mp3" id="8_bgm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bg"]
+shader = ExtResource("2_bg")
+shader_parameter/base_dark_blue = Color(0.04, 0.1, 0.22, 1)
+shader_parameter/cyan_glow = Color(0, 0.48, 0.85, 1)
+shader_parameter/deep_purple = Color(0.08, 0.35, 0.65, 1)
+shader_parameter/speed = 0.25
+shader_parameter/scale = 4.0
+shader_parameter/wave_intensity = 1.2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_bar"]
+content_margin_left = 30.0
+content_margin_top = 16.0
+content_margin_right = 30.0
+content_margin_bottom = 16.0
+bg_color = Color(0.04, 0.09, 0.18, 0.9)
+border_width_bottom = 2
+border_color = Color(0.2, 0.5, 0.72, 0.55)
+shadow_color = Color(0.01, 0.03, 0.08, 0.65)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_back"]
+content_margin_left = 26.0
+content_margin_top = 10.0
+content_margin_right = 26.0
+content_margin_bottom = 10.0
+bg_color = Color(0.08, 0.18, 0.32, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.75, 0.95, 0.7)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.02, 0.05, 0.1, 0.4)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_back_hover"]
+content_margin_left = 26.0
+content_margin_top = 10.0
+content_margin_right = 26.0
+content_margin_bottom = 10.0
+bg_color = Color(0.14, 0.3, 0.5, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.95, 1, 0.95)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.2, 0.7, 0.9, 0.45)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
+content_margin_left = 22.0
+content_margin_top = 10.0
+content_margin_right = 22.0
+content_margin_bottom = 10.0
+bg_color = Color(0.05, 0.14, 0.26, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.75, 0.9, 0.6)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.02, 0.06, 0.12, 0.45)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_action"]
+content_margin_left = 22.0
+content_margin_top = 10.0
+content_margin_right = 22.0
+content_margin_bottom = 10.0
+bg_color = Color(0.07, 0.16, 0.28, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.32, 0.7, 0.88, 0.65)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.02, 0.05, 0.1, 0.4)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_action_hover"]
+content_margin_left = 22.0
+content_margin_top = 10.0
+content_margin_right = 22.0
+content_margin_bottom = 10.0
+bg_color = Color(0.12, 0.28, 0.46, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.92, 1, 0.95)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.18, 0.65, 0.88, 0.45)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quick_play"]
+content_margin_left = 38.0
+content_margin_top = 16.0
+content_margin_right = 38.0
+content_margin_bottom = 16.0
+bg_color = Color(0.1, 0.58, 0.32, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.35, 1, 0.65, 0.9)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.05, 0.38, 0.2, 0.55)
+shadow_size = 14
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quick_play_hover"]
+content_margin_left = 38.0
+content_margin_top = 16.0
+content_margin_right = 38.0
+content_margin_bottom = 16.0
+bg_color = Color(0.14, 0.72, 0.4, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.6, 1, 0.8, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.1, 0.75, 0.38, 0.7)
+shadow_size = 20
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
+content_margin_left = 28.0
+content_margin_top = 14.0
+content_margin_right = 28.0
+content_margin_bottom = 14.0
+bg_color = Color(0.05, 0.13, 0.24, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.8, 0.95, 0.8)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.01, 0.04, 0.1, 0.6)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_panel"]
+bg_color = Color(0.05, 0.12, 0.22, 0.97)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.32, 0.78, 0.92, 0.85)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.01, 0.03, 0.08, 0.7)
+shadow_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_start"]
+content_margin_left = 36.0
+content_margin_top = 14.0
+content_margin_right = 36.0
+content_margin_bottom = 14.0
+bg_color = Color(0.1, 0.58, 0.32, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.38, 1, 0.65, 0.9)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(0.05, 0.35, 0.2, 0.5)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_start_hover"]
+content_margin_left = 36.0
+content_margin_top = 14.0
+content_margin_right = 36.0
+content_margin_bottom = 14.0
+bg_color = Color(0.15, 0.72, 0.4, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 1, 0.8, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(0.1, 0.65, 0.35, 0.6)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_close"]
+content_margin_left = 28.0
+content_margin_top = 12.0
+content_margin_right = 28.0
+content_margin_bottom = 12.0
+bg_color = Color(0.08, 0.16, 0.26, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.5, 0.65, 0.6)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_close_hover"]
+content_margin_left = 28.0
+content_margin_top = 12.0
+content_margin_right = 28.0
+content_margin_bottom = 12.0
+bg_color = Color(0.14, 0.24, 0.38, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.75, 0.95, 0.85)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
 
 [node name="MainHome" type="Control" unique_id=911861562]
 layout_mode = 3
@@ -10,3 +264,488 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7aww7")
+
+[node name="BG" type="Control" parent="." unique_id=145920101]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="BG" unique_id=145920102]
+material = SubResource("ShaderMaterial_bg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=145920103]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="MapCanvas" type="Control" parent="ScrollContainer" unique_id=145920104]
+custom_minimum_size = Vector2(1920, 3500)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="PathGlow" type="Line2D" parent="ScrollContainer/MapCanvas" unique_id=145920105]
+width = 86.0
+default_color = Color(0.04, 0.42, 0.65, 0.5)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="PathLine" type="Line2D" parent="ScrollContainer/MapCanvas" unique_id=145920106]
+width = 44.0
+default_color = Color(0.2, 0.82, 0.95, 0.75)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="NodesContainer" type="Control" parent="ScrollContainer/MapCanvas" unique_id=145920107]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="UI" type="Control" parent="." unique_id=145920108]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopBar" type="PanelContainer" parent="UI" unique_id=145920109]
+custom_minimum_size = Vector2(1920, 92)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 92.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_bar")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/TopBar" unique_id=145920110]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/TopBar/MarginContainer" unique_id=145920111]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BackButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920112]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.92, 0.35, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_back")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_back_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_back_hover")
+text = "←  MENU"
+
+[node name="Spacer" type="Control" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920113]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StarsBadge" type="PanelContainer" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920114]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
+
+[node name="StarsLabel" type="Label" parent="UI/TopBar/MarginContainer/HBoxContainer/StarsBadge" unique_id=145920115]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.28, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+text = "⭐ 0 / 45"
+
+[node name="CoinsBadge" type="PanelContainer" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920116]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
+
+[node name="CoinsLabel" type="Label" parent="UI/TopBar/MarginContainer/HBoxContainer/CoinsBadge" unique_id=145920117]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+text = "🪙 0"
+
+[node name="LeaderboardButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920118]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.9, 0.35, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_action")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_action_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_action_hover")
+text = "🏆  RANK"
+
+[node name="SettingsButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920119]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.9, 0.35, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_action")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_action_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_action_hover")
+text = "⚙️"
+
+[node name="BottomBar" type="Control" parent="UI" unique_id=145920120]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -120.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="QuickPlayButton" type="Button" parent="UI/BottomBar" unique_id=145920121]
+custom_minimum_size = Vector2(340, 72)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -170.0
+offset_top = -36.0
+offset_right = 170.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.95, 0.4, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_quick_play")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_quick_play_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_quick_play_hover")
+text = "▶  PLAY LEVEL 1"
+
+[node name="ToastPanel" type="PanelContainer" parent="UI" unique_id=145920122]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = 180.0
+offset_right = 300.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_toast")
+
+[node name="ToastLabel" type="Label" parent="UI/ToastPanel" unique_id=145920123]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 20
+text = "Sign in via Google Play in Settings to view Leaderboards!"
+horizontal_alignment = 1
+
+[node name="LevelModal" type="Control" parent="." unique_id=145920124]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Dimmer" type="ColorRect" parent="LevelModal" unique_id=145920125]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.05, 0.1, 0.76)
+
+[node name="CenterContainer" type="CenterContainer" parent="LevelModal" unique_id=145920126]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="LevelModal/CenterContainer" unique_id=145920127]
+custom_minimum_size = Vector2(560, 440)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="LevelModal/CenterContainer/PanelContainer" unique_id=145920128]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer" unique_id=145920129]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="ModalTitle" type="Label" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920130]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 48
+text = "LEVEL 1"
+horizontal_alignment = 1
+
+[node name="StarsRow" type="HBoxContainer" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920131]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Star1" type="Label" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=145920132]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.25, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 48
+text = "★"
+
+[node name="Star2" type="Label" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=145920133]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.25, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 48
+text = "★"
+
+[node name="Star3" type="Label" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=145920134]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.25, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 48
+text = "★"
+
+[node name="StatusLabel" type="Label" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920135]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 20
+text = "Ready to leap!"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920136]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920137]
+custom_minimum_size = Vector2(300, 62)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.95, 0.4, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_modal_start")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_modal_start_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_modal_start_hover")
+text = "START LEAP  ▶"
+
+[node name="CloseButton" type="Button" parent="LevelModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920138]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_modal_close")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_modal_close_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_modal_close_hover")
+text = "✕  CLOSE"
+
+[node name="SettingsModal" type="Control" parent="." unique_id=145920139]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Dimmer" type="ColorRect" parent="SettingsModal" unique_id=145920140]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.05, 0.1, 0.72)
+
+[node name="CenterContainer" type="CenterContainer" parent="SettingsModal" unique_id=145920141]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="SettingsModal/CenterContainer" unique_id=145920142]
+custom_minimum_size = Vector2(620, 520)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="SettingsModal/CenterContainer/PanelContainer" unique_id=145920143]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer" unique_id=145920144]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="ModalTitle" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920145]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 40
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920146]
+layout_mode = 2
+
+[node name="VolumeRow" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920147]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HeaderRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow" unique_id=145920148]
+layout_mode = 2
+
+[node name="VolLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow" unique_id=145920149]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+text = "MASTER VOLUME"
+
+[node name="VolumeValue" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow" unique_id=145920150]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.35, 0.85, 0.95, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+text = "100%"
+horizontal_alignment = 2
+
+[node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow" unique_id=145920151]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="FullscreenRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920152]
+layout_mode = 2
+
+[node name="FSLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow" unique_id=145920153]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+text = "FULLSCREEN MODE"
+
+[node name="FullscreenCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow" unique_id=145920154]
+layout_mode = 2
+
+[node name="CRTRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920155]
+layout_mode = 2
+
+[node name="CRTLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow" unique_id=145920156]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+text = "CRT RETRO SHADER"
+
+[node name="CRTCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow" unique_id=145920157]
+layout_mode = 2
+button_pressed = true
+
+[node name="PlayGamesRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920158]
+layout_mode = 2
+
+[node name="PGLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow" unique_id=145920159]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+text = "GOOGLE PLAY GAMES"
+
+[node name="PlayGamesButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow" unique_id=145920160]
+custom_minimum_size = Vector2(170, 44)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_modal_close")
+theme_override_styles/hover = SubResource("StyleBoxFlat_modal_close_hover")
+text = "SIGN IN"
+
+[node name="Spacer" type="Control" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920161]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SettingsBackButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920162]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.93, 0.35, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_modal_close")
+theme_override_styles/hover = SubResource("StyleBoxFlat_modal_close_hover")
+text = "BACK"
+
+[node name="Audio" type="Node" parent="." unique_id=145920165]
+
+[node name="HoverSFX" type="AudioStreamPlayer" parent="Audio" unique_id=145920166]
+stream = ExtResource("5_hover")
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="Audio" unique_id=145920167]
+stream = ExtResource("6_click")
+
+[node name="BackSFX" type="AudioStreamPlayer" parent="Audio" unique_id=145920168]
+stream = ExtResource("7_back")
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="Audio" unique_id=145920169]
+stream = ExtResource("8_bgm")
