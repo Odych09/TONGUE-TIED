@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dtxs3i0i7bfvf"
-path="res://.godot/imported/Decoration1.png-24fc2be08dd101f46e1c187d9d47d22f.ctex"
+path.s3tc="res://.godot/imported/Decoration1.png-24fc2be08dd101f46e1c187d9d47d22f.s3tc.ctex"
+path.etc2="res://.godot/imported/Decoration1.png-24fc2be08dd101f46e1c187d9d47d22f.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://ASSETS/UI/background/home/Decoration1.png"
-dest_files=["res://.godot/imported/Decoration1.png-24fc2be08dd101f46e1c187d9d47d22f.ctex"]
+dest_files=["res://.godot/imported/Decoration1.png-24fc2be08dd101f46e1c187d9d47d22f.s3tc.ctex", "res://.godot/imported/Decoration1.png-24fc2be08dd101f46e1c187d9d47d22f.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

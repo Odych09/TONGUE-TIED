@@ -492,15 +492,7 @@ func _launch_level(level_idx: int) -> void:
 # --- Top Bar Actions ---
 
 func _on_back_pressed() -> void:
-	if is_transitioning:
-		return
-	is_transitioning = true
 	back_sfx.play()
-
-	var transition_layer := get_node_or_null("/root/TransitionLayer")
-	if transition_layer and transition_layer.has_method("transition_out"):
-		await transition_layer.transition_out()
-
 	get_tree().change_scene_to_file("res://SCENES/LEVELS/MainMenu.tscn")
 
 func _on_leaderboard_pressed() -> void:

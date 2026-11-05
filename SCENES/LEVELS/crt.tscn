@@ -3,126 +3,126 @@
 [ext_resource type="Script" uid="uid://c36ckv5ttxw5b" path="res://SCENES/UI/crt.gd" id="1_jc5x0"]
 [ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="2_t1itu"]
 [ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="3_1tjdh"]
+[ext_resource type="Texture2D" uid="uid://buq313i42uq61" path="res://ASSETS/UI/buttons/btn.png" id="4_btn"]
+[ext_resource type="Texture2D" uid="uid://c18m8cw2vyx4u" path="res://ASSETS/UI/panels/wood_badge.svg" id="5_wood_badge"]
+[ext_resource type="Texture2D" uid="uid://b5qgj67gloq4x" path="res://ASSETS/UI/panels/bg.png" id="6_modal_bg"]
+[ext_resource type="Texture2D" uid="uid://df0gekcm0q0s8" path="res://ASSETS/UI/panels/table.png" id="7_table"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_btn"]
-bg_color = Color(0.06, 0.14, 0.24, 0.85)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.3, 0.75, 0.85, 0.7)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
-shadow_color = Color(0.01, 0.04, 0.08, 0.5)
-shadow_size = 6
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_btn"]
+content_margin_left = 16.0
+content_margin_top = 2.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_btn_pressed"]
-bg_color = Color(0.12, 0.28, 0.45, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.4, 0.95, 1, 0.9)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_btn_pressed"]
+content_margin_left = 16.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(0.8, 0.8, 0.8, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
-content_margin_left = 18.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_btn_hover"]
+content_margin_left = 16.0
+content_margin_top = 2.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(1.15, 1.1, 0.85, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge"]
+content_margin_left = 20.0
 content_margin_top = 8.0
-content_margin_right = 18.0
+content_margin_right = 20.0
 content_margin_bottom = 8.0
-bg_color = Color(0.05, 0.12, 0.22, 0.82)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.25, 0.75, 0.85, 0.5)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pull_btn"]
-bg_color = Color(0.08, 0.45, 0.35, 0.9)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.35, 0.95, 0.75, 0.9)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-shadow_color = Color(0.05, 0.35, 0.25, 0.6)
-shadow_size = 14
-shadow_offset = Vector2(0, 4)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green"]
+texture = ExtResource("4_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pull_btn_pressed"]
-bg_color = Color(0.04, 0.32, 0.24, 0.98)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.6, 1, 0.85, 1)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_pressed"]
+texture = ExtResource("4_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(0.78, 0.78, 0.78, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_win_panel"]
-content_margin_left = 40.0
-content_margin_top = 36.0
-content_margin_right = 40.0
-content_margin_bottom = 36.0
-bg_color = Color(0.05, 0.11, 0.2, 0.98)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.35, 0.85, 0.95, 0.85)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
-shadow_color = Color(0.01, 0.03, 0.08, 0.85)
-shadow_size = 36
-shadow_offset = Vector2(0, 10)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_hover"]
+texture = ExtResource("4_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(1.15, 1.1, 0.85, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_btn"]
-content_margin_left = 24.0
-content_margin_top = 14.0
-content_margin_right = 24.0
-content_margin_bottom = 14.0
-bg_color = Color(0.09, 0.22, 0.36, 0.9)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.35, 0.75, 0.9, 0.6)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal_outer"]
+texture = ExtResource("6_modal_bg")
+expand_margin_left = 25.0
+expand_margin_top = 35.0
+expand_margin_right = 35.0
+expand_margin_bottom = 25.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_btn_hover"]
-content_margin_left = 24.0
-content_margin_top = 14.0
-content_margin_right = 24.0
-content_margin_bottom = 14.0
-bg_color = Color(0.15, 0.36, 0.55, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.5, 0.95, 1, 0.95)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal_inner"]
+texture = ExtResource("7_table")
+expand_margin_left = 10.0
+expand_margin_top = 20.0
+expand_margin_right = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge_pressed"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(0.8, 0.8, 0.8, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge_hover"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(1.15, 1.1, 0.85, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7iixq"]
 shader = ExtResource("3_1tjdh")
@@ -164,111 +164,131 @@ mouse_filter = 1
 
 [node name="TopLeftBar" type="HBoxContainer" parent="UI" unique_id=1849204910]
 layout_mode = 0
-offset_left = 32.0
-offset_top = 24.0
-offset_right = 450.0
-offset_bottom = 96.0
-theme_override_constants/separation = 14
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 440.0
+offset_bottom = 78.0
+theme_override_constants/separation = 12
 
 [node name="RestartBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204911]
-custom_minimum_size = Vector2(72, 72)
+custom_minimum_size = Vector2(62, 58)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.9, 0.3, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 38
-theme_override_styles/normal = SubResource("StyleBoxFlat_hud_btn")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_hud_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hud_btn_pressed")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxTexture_icon_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_icon_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_icon_btn_hover")
 text = "↺"
 
 [node name="MenuBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204912]
-custom_minimum_size = Vector2(72, 72)
+custom_minimum_size = Vector2(62, 58)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.9, 0.3, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_hud_btn")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_hud_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hud_btn_pressed")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxTexture_icon_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_icon_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_icon_btn_hover")
 text = "☰"
 
 [node name="LevelBadge" type="PanelContainer" parent="UI/TopLeftBar" unique_id=1849204913]
+custom_minimum_size = Vector2(175, 58)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
 
 [node name="LevelLabel" type="Label" parent="UI/TopLeftBar/LevelBadge" unique_id=1849204914]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_colors/font_color = Color(1, 0.94, 0.72, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 22
 text = "LEVEL 1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FLIES_LEFT" type="RichTextLabel" parent="UI" unique_id=952952309]
+[node name="FliesBadge" type="PanelContainer" parent="UI" unique_id=1849204940]
+custom_minimum_size = Vector2(290, 58)
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -341.5
-offset_right = 341.5
-offset_bottom = 90.0
+offset_left = -145.0
+offset_top = 20.0
+offset_right = 145.0
+offset_bottom = 78.0
 grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
+
+[node name="FLIES_LEFT" type="RichTextLabel" parent="UI/FliesBadge" unique_id=952952309]
+layout_mode = 2
 mouse_filter = 2
-theme_override_constants/outline_size = 23
+theme_override_colors/default_color = Color(1, 0.96, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/normal_font = ExtResource("2_t1itu")
 theme_override_fonts/bold_font = ExtResource("2_t1itu")
-theme_override_font_sizes/normal_font_size = 58
+theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
-text = "BUGS:"
+text = "[center]🪰 FLIES: [color=#ffd23f]0/6[/color][/center]"
 scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="PULLS_LEFT" type="RichTextLabel" parent="UI" unique_id=259030708]
+[node name="PullsBadge" type="PanelContainer" parent="UI" unique_id=1849204941]
+custom_minimum_size = Vector2(243, 58)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -580.0
-offset_top = 18.0
-offset_right = -40.0
-offset_bottom = 108.0
+offset_left = -275.0
+offset_top = 20.0
+offset_right = -32.0
+offset_bottom = 78.0
 grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
+
+[node name="PULLS_LEFT" type="RichTextLabel" parent="UI/PullsBadge" unique_id=259030708]
+layout_mode = 2
 mouse_filter = 2
-theme_override_constants/outline_size = 23
+theme_override_colors/default_color = Color(1, 0.96, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/normal_font = ExtResource("2_t1itu")
 theme_override_fonts/bold_font = ExtResource("2_t1itu")
-theme_override_font_sizes/normal_font_size = 58
+theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
-text = "PULLS: 5"
+text = "[center]⚡ PULLS: [color=white]15[/color][/center]"
 scroll_active = false
-horizontal_alignment = 2
-vertical_alignment = 1
 
 [node name="BigPullBtn" type="Button" parent="UI" unique_id=1849204915]
+custom_minimum_size = Vector2(235, 100)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -260.0
-offset_top = -140.0
-offset_right = -40.0
-offset_bottom = -35.0
+offset_left = -270.0
+offset_top = -128.0
+offset_right = -35.0
+offset_bottom = -28.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.95, 1, 0.98, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.95, 0.4, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 1, 0.95, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.35, 0.05, 1)
+theme_override_constants/outline_size = 9
 theme_override_fonts/font = ExtResource("2_t1itu")
 theme_override_font_sizes/font_size = 38
-theme_override_styles/normal = SubResource("StyleBoxFlat_pull_btn")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_pull_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_pull_btn_pressed")
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
 text = "⚡ PULL"
 
 [node name="WinModal" type="Control" parent="UI" unique_id=1849204916]
@@ -287,7 +307,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.02, 0.05, 0.1, 0.75)
+color = Color(0.02, 0.05, 0.04, 0.76)
 
 [node name="CenterContainer" type="CenterContainer" parent="UI/WinModal" unique_id=1849204918]
 layout_mode = 1
@@ -298,93 +318,127 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="UI/WinModal/CenterContainer" unique_id=1849204919]
-custom_minimum_size = Vector2(620, 480)
+custom_minimum_size = Vector2(620, 490)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_win_panel")
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer" unique_id=1849204920]
+[node name="TablePanel" type="Panel" parent="UI/WinModal/CenterContainer/PanelContainer" unique_id=1849204980]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_inner")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/WinModal/CenterContainer/PanelContainer" unique_id=1849204981]
+layout_mode = 2
+theme_override_constants/margin_left = 46
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 46
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer" unique_id=1849204920]
 layout_mode = 2
 theme_override_constants/separation = 22
 
-[node name="WinTitle" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204921]
+[node name="WinTitle" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204921]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 46
 text = "★ LEVEL CLEAR! ★"
 horizontal_alignment = 1
 
-[node name="StarsRow" type="HBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204922]
+[node name="StarsRow" type="HBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204922]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 22
 alignment = 1
 
-[node name="Star1" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/StarsRow" unique_id=1849204923]
+[node name="Star1" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=1849204923]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.15, 1)
+theme_override_colors/font_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.3, 0.15, 0.02, 1)
+theme_override_constants/outline_size = 12
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 68
 text = "★"
 
-[node name="Star2" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/StarsRow" unique_id=1849204924]
+[node name="Star2" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=1849204924]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.15, 1)
+theme_override_colors/font_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.3, 0.15, 0.02, 1)
+theme_override_constants/outline_size = 12
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 68
 text = "★"
 
-[node name="Star3" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/StarsRow" unique_id=1849204925]
+[node name="Star3" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=1849204925]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.15, 1)
+theme_override_colors/font_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.3, 0.15, 0.02, 1)
+theme_override_constants/outline_size = 12
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 68
 text = "★"
 
-[node name="StatsLabel" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204926]
+[node name="StatsLabel" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204926]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.9, 1, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 24
 text = "Pulls Left: 4"
 horizontal_alignment = 1
 
-[node name="Spacer" type="Control" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204927]
+[node name="Spacer" type="Control" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204927]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ActionsRow" type="HBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204928]
+[node name="ActionsRow" type="HBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204928]
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="ReplayBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow" unique_id=1849204929]
-custom_minimum_size = Vector2(150, 56)
+[node name="ReplayBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204929]
+custom_minimum_size = Vector2(160, 58)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
-text = "↻ REPLAY"
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "↺ REPLAY"
 
-[node name="LevelsBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow" unique_id=1849204930]
-custom_minimum_size = Vector2(150, 56)
+[node name="LevelsBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204930]
+custom_minimum_size = Vector2(160, 58)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "☰ LEVELS"
 
-[node name="NextBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow" unique_id=1849204931]
-custom_minimum_size = Vector2(160, 56)
+[node name="NextBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204931]
+custom_minimum_size = Vector2(175, 58)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.1, 0.25, 0.2, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.35, 0.05, 1)
+theme_override_constants/outline_size = 7
 theme_override_fonts/font = ExtResource("2_t1itu")
 theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_pull_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_pull_btn_pressed")
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
 text = "NEXT ➔"
 
 [node name="PauseModal" type="Control" parent="UI" unique_id=1849204960]
@@ -403,7 +457,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.02, 0.05, 0.1, 0.8)
+color = Color(0.02, 0.05, 0.04, 0.76)
 
 [node name="CenterContainer" type="CenterContainer" parent="UI/PauseModal" unique_id=1849204962]
 layout_mode = 1
@@ -414,110 +468,152 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="UI/PauseModal/CenterContainer" unique_id=1849204963]
-custom_minimum_size = Vector2(560, 490)
+custom_minimum_size = Vector2(580, 520)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_win_panel")
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer" unique_id=1849204964]
+[node name="TablePanel" type="Panel" parent="UI/PauseModal/CenterContainer/PanelContainer" unique_id=1849204982]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_inner")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/PauseModal/CenterContainer/PanelContainer" unique_id=1849204983]
+layout_mode = 2
+theme_override_constants/margin_left = 46
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 46
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer" unique_id=1849204964]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="PauseTitle" type="Label" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204965]
+[node name="PauseTitle" type="Label" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204965]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.35, 0.9, 1, 1)
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 38
+theme_override_font_sizes/font_size = 42
 text = "GAME PAUSED"
 horizontal_alignment = 1
 
-[node name="SettingsBox" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204966]
+[node name="SettingsBox" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204966]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
-[node name="MusicToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/SettingsBox" unique_id=1849204967]
-custom_minimum_size = Vector2(0, 48)
+[node name="MusicToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBox" unique_id=1849204967]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "🎵 MUSIC: ON"
 
-[node name="SFXToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/SettingsBox" unique_id=1849204968]
-custom_minimum_size = Vector2(0, 48)
+[node name="SFXToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBox" unique_id=1849204968]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "🔊 SFX: ON"
 
-[node name="HapticsToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/SettingsBox" unique_id=1849204969]
-custom_minimum_size = Vector2(0, 48)
+[node name="HapticsToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBox" unique_id=1849204969]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "📳 VIBRATION: ON"
 
-[node name="Spacer" type="Control" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204970]
+[node name="Spacer" type="Control" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204970]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ActionsRow" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer" unique_id=1849204971]
+[node name="ActionsRow" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204971]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 12
 
-[node name="ResumeBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow" unique_id=1849204972]
-custom_minimum_size = Vector2(0, 52)
+[node name="ResumeBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204972]
+custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.1, 0.25, 0.2, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.35, 0.05, 1)
+theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_pull_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_pull_btn_pressed")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
 text = "▶ RESUME"
 
-[node name="ButtonsRow2" type="HBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow" unique_id=1849204973]
+[node name="ButtonsRow2" type="HBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204973]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 12
 alignment = 1
 
-[node name="PauseRestartBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204974]
-custom_minimum_size = Vector2(140, 48)
+[node name="PauseRestartBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204974]
+custom_minimum_size = Vector2(140, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
 theme_override_font_sizes/font_size = 19
-theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "↺ RETRY"
 
-[node name="PauseLevelsBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204975]
-custom_minimum_size = Vector2(140, 48)
+[node name="PauseLevelsBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204975]
+custom_minimum_size = Vector2(140, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
 theme_override_font_sizes/font_size = 19
-theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "☰ LEVELS"
 
-[node name="PauseHomeBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204976]
-custom_minimum_size = Vector2(140, 48)
+[node name="PauseHomeBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204976]
+custom_minimum_size = Vector2(140, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
 theme_override_font_sizes/font_size = 19
-theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_action_btn_hover")
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "🏠 MENU"
 
 [node name="PondAmbience" type="CPUParticles2D" parent="." unique_id=1849204950]
