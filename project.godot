@@ -23,7 +23,7 @@ SnapshotsClient="*uid://cwcaoife58xkq"
 GodotPlayGameServices="*uid://bnj1e5ski7rlf"
 SaveManager="*uid://pw7yhdisfwif"
 MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
-LeaderboardsClient="*uid://cag33jnv6nkas"
+LootLockerSDK="*uid://c5nk2ub7xngnd"
 
 [display]
 
@@ -37,7 +37,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GodotPlayGameServices/plugin.cfg", "res://addons/godot_mcp_toolkit/plugin.cfg")
+enabled=PackedStringArray("res://addons/GodotPlayGameServices/plugin.cfg", "res://addons/LootLockerSDK/plugin.cfg", "res://addons/godot_mcp_toolkit/plugin.cfg")
 
 [file_customization]
 

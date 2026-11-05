@@ -10,7 +10,7 @@
 # T = Tongue Trap (blocks doorway)
 
 name: Needle Eye
-pulls: 4
+pulls: 3
 bugs: 2
 
 ##########

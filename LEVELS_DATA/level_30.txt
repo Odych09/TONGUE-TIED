@@ -11,7 +11,7 @@
 # T = Tongue Trap
 
 name: The Swamp Citadel
-pulls: 6
+pulls: 4
 bugs: 3
 
 ################

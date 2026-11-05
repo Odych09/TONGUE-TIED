@@ -10,7 +10,7 @@
 # v = Crocodile moving down
 
 name: Sentry Squeeze
-pulls: 4
+pulls: 3
 bugs: 2
 
 #############
@@ -18,5 +18,5 @@ bugs: 2
 #...# v #...#
 #.B.........#
 #...#...#...#
-#.*.....#.*.#
+#.*.......*.#
 #############

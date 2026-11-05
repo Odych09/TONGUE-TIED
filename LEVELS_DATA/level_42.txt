@@ -10,7 +10,7 @@
 # X = Frog Spikes (lethal to traverse)
 
 name: The Moat Matrix
-pulls: 4
+pulls: 3
 bugs: 2
 
 #############

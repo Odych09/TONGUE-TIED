@@ -11,7 +11,7 @@
 # < = Crocodile moving left
 
 name: The Gauntlet
-pulls: 4
+pulls: 3
 bugs: 2
 
 ###############
