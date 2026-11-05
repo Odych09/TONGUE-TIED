@@ -596,4 +596,3 @@ func spawn_box_slide_dust(world_pos: Vector2, dir: Vector2) -> void:
 	var tw := create_tween()
 	tw.tween_interval(0.4)
 	tw.tween_callback(particles.queue_free)
-

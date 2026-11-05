@@ -24,6 +24,8 @@ GodotPlayGameServices="*uid://bnj1e5ski7rlf"
 SaveManager="*uid://pw7yhdisfwif"
 MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
 LootLockerSDK="*uid://c5nk2ub7xngnd"
+LootLockerManager="*res://SCRIPTS/LootLockerManager.gd"
+LeaderboardsClient="*uid://cag33jnv6nkas"
 
 [display]
 

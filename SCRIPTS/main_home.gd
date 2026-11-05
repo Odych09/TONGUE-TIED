@@ -38,6 +38,9 @@ extends Control
 @onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PGLabel
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
 
+# Leaderboard Modal
+var leaderboard_modal: Control
+
 # Toast Message
 @onready var toast_panel: PanelContainer = $UI/ToastPanel
 @onready var toast_label: Label = $UI/ToastPanel/ToastLabel
@@ -94,6 +97,17 @@ func _ready() -> void:
 	toast_panel.visible = false
 	toast_panel.modulate.a = 0.0
 
+	# Initialize Leaderboard Modal
+	leaderboard_modal = get_node_or_null("LeaderboardModal")
+	if not leaderboard_modal:
+		var lb_scene = load("res://SCENES/UI/LeaderboardModal.tscn")
+		if lb_scene:
+			leaderboard_modal = lb_scene.instantiate()
+			leaderboard_modal.name = "LeaderboardModal"
+			add_child(leaderboard_modal)
+	if leaderboard_modal:
+		leaderboard_modal.visible = false
+
 	# Ensure CRT state
 	#crt_overlay.visible = GameManager.crt_enabled
 
@@ -131,6 +145,7 @@ func _ready() -> void:
 	_hook_btn_animations(play_games_btn)
 	volume_slider.value_changed.connect(_on_volume_changed)
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
+
 
 	# Setup background audio
 	if not bgm_player.playing:
@@ -603,10 +618,17 @@ func _on_back_pressed() -> void:
 
 func _on_leaderboard_pressed() -> void:
 	click_sfx.play()
-	if GodotPlayGameServices.is_signed_in:
-		LeaderboardsClient.show_leaderboard("CgkI5IC_49ABEAIQAQ")
-	else:
-		_show_toast("Sign in to Google Play Games in Settings to view Leaderboards!")
+	if not leaderboard_modal:
+		var lb_scene = load("res://SCENES/UI/LeaderboardModal.tscn")
+		if lb_scene:
+			leaderboard_modal = lb_scene.instantiate()
+			leaderboard_modal.name = "LeaderboardModal"
+			add_child(leaderboard_modal)
+	if leaderboard_modal:
+		if leaderboard_modal.has_method("open"):
+			leaderboard_modal.open()
+		else:
+			leaderboard_modal.visible = true
 
 func _show_toast(msg: String) -> void:
 	toast_label.text = msg

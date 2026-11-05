@@ -1,0 +1,294 @@
+[gd_scene format=3 uid="uid://c58x0lbmodal1"]
+
+[ext_resource type="Script" path="res://SCENES/UI/LeaderboardModal.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://buq313i42uq61" path="res://ASSETS/UI/buttons/btn.png" id="2_btn"]
+[ext_resource type="Texture2D" uid="uid://df0gekcm0q0s8" path="res://ASSETS/UI/panels/table.png" id="3_table"]
+[ext_resource type="Texture2D" uid="uid://b5qgj67gloq4x" path="res://ASSETS/UI/panels/bg.png" id="4_modal_bg"]
+[ext_resource type="Texture2D" uid="uid://c18m8cw2vyx4u" path="res://ASSETS/UI/panels/wood_badge.svg" id="5_wood_badge"]
+[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="6_font"]
+[ext_resource type="AudioStream" uid="uid://bsolub8tb4qun" path="res://AUDIO/ui_click.wav" id="7_click"]
+[ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="8_back"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal_outer"]
+texture = ExtResource("4_modal_bg")
+expand_margin_left = 25.0
+expand_margin_top = 35.0
+expand_margin_right = 35.0
+expand_margin_bottom = 25.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal_inner"]
+texture = ExtResource("3_table")
+expand_margin_left = 10.0
+expand_margin_top = 20.0
+expand_margin_right = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge"]
+content_margin_left = 22.0
+content_margin_top = 8.0
+content_margin_right = 22.0
+content_margin_bottom = 8.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge_pressed"]
+content_margin_left = 22.0
+content_margin_top = 8.0
+content_margin_right = 22.0
+content_margin_bottom = 8.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(0.8, 0.8, 0.8, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge_hover"]
+content_margin_left = 22.0
+content_margin_top = 8.0
+content_margin_right = 22.0
+content_margin_bottom = 8.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(1.18, 1.12, 0.9, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green"]
+texture = ExtResource("2_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_pressed"]
+texture = ExtResource("2_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(0.78, 0.78, 0.78, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_hover"]
+texture = ExtResource("2_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(1.15, 1.1, 0.85, 1)
+
+[node name="LeaderboardModal" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_script")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.05, 0.08, 0.72)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(960, 780)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")
+
+[node name="TablePanel" type="Panel" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_inner")
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HeaderRow" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ModalTitle" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 40
+text = "🏆 GLOBAL LEADERBOARD"
+horizontal_alignment = 1
+
+[node name="RefreshButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HeaderRow"]
+custom_minimum_size = Vector2(130, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.35, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.8, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "🔄 REFRESH"
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ColumnsHeader" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="RankHeader" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ColumnsHeader"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.18, 0.08, 1)
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 18
+text = "# RANK"
+horizontal_alignment = 1
+
+[node name="PlayerHeader" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ColumnsHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.18, 0.08, 1)
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 18
+text = "PLAYER"
+
+[node name="ScoreHeader" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ColumnsHeader"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.18, 0.08, 1)
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 18
+text = "⭐ STARS"
+horizontal_alignment = 2
+
+[node name="ContentContainer" type="Control" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="LeaderboardScroll" type="ScrollContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ContentContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="LeaderboardList" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ContentContainer/LeaderboardScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="StatusContainer" type="CenterContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ContentContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LoadingLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ContentContainer/StatusContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.06, 1)
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 22
+text = "Loading top frogs..."
+
+[node name="MyStandingBar" type="PanelContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MyStandingBar"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MyStandingBar/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MyRankLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MyStandingBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 18
+text = "YOUR RANK: UNRANKED"
+
+[node name="MyScoreLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MyStandingBar/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 20
+text = "0 ⭐"
+horizontal_alignment = 2
+
+[node name="LeaderboardBackButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 0.94, 0.3, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.8, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("6_font")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "BACK"
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_click")
+
+[node name="BackSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_back")
