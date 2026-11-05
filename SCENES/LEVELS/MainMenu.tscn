@@ -34,11 +34,8 @@ texture_margin_left = 70.0
 texture_margin_right = 85.0
 region_rect = Rect2(0, 0, 308, 100)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wbed6"]
-load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p0kf6"]
-texture = SubResource("CompressedTexture2D_wbed6")
+texture = ExtResource("14_r4j5v")
 texture_margin_left = 70.0
 texture_margin_right = 200.0
 region_rect = Rect2(0, 0, 308, 100)
@@ -53,51 +50,34 @@ corner_radius_bottom_left = 12
 shadow_color = Color(1, 0.3, 0.6, 0.6)
 shadow_size = 4
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_maxjq"]
-load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_05orf"]
-texture = SubResource("CompressedTexture2D_maxjq")
+texture = ExtResource("14_r4j5v")
 texture_margin_left = 70.0
 texture_margin_right = 85.0
 region_rect = Rect2(0, 0, 308, 100)
-modulate_color = Color(0.8132577, 0.8132577, 0.81325763, 1)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_05orf"]
-load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wbed6"]
-texture = SubResource("CompressedTexture2D_05orf")
+texture = ExtResource("14_r4j5v")
 texture_margin_left = 70.0
 texture_margin_right = 200.0
 region_rect = Rect2(0, 0, 308, 100)
 modulate_color = Color(0.41215247, 0.41215247, 0.41215247, 1)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_w5jam"]
-load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2v6g1"]
-texture = SubResource("CompressedTexture2D_w5jam")
+texture = ExtResource("14_r4j5v")
 texture_margin_left = 70.0
 texture_margin_right = 85.0
 region_rect = Rect2(0, 0, 308, 100)
 modulate_color = Color(0.27022192, 0.27022192, 0.2702219, 1)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2v6g1"]
-load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mnmd0"]
-texture = SubResource("CompressedTexture2D_2v6g1")
+texture = ExtResource("14_r4j5v")
 texture_margin_left = 70.0
 texture_margin_right = 85.0
 region_rect = Rect2(0, 0, 308, 100)
-modulate_color = Color(0.8117647, 0.8117647, 0.8117647, 1)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_p0kf6"]
-load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w5jam"]
-texture = SubResource("CompressedTexture2D_p0kf6")
+texture = ExtResource("14_r4j5v")
 texture_margin_left = 70.0
 texture_margin_right = 85.0
 region_rect = Rect2(0, 0, 308, 100)
@@ -172,17 +152,11 @@ load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc
 texture = SubResource("CompressedTexture2D_mnmd0")
 modulate_color = Color(0.728822, 0.728822, 0.7288219, 1)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_agr0f"]
-load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q4b3e"]
-texture = SubResource("CompressedTexture2D_agr0f")
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_saqwy"]
-load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
+texture = ExtResource("14_r4j5v")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hh15h"]
-texture = SubResource("CompressedTexture2D_saqwy")
+texture = ExtResource("14_r4j5v")
 modulate_color = Color(0.585062, 0.585062, 0.5850621, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nwwlf"]
@@ -315,18 +289,18 @@ texture = ExtResource("7_pad")
 
 [node name="PadShadow" type="Sprite2D" parent="Diorama" unique_id=1883699685]
 modulate = Color(0.03, 0.06, 0.12, 0.45)
-position = Vector2(1380, 727.2)
+position = Vector2(1500, 727.2)
 scale = Vector2(3.455, 2.183)
 texture = ExtResource("7_pad")
 
 [node name="LilyPad" type="Sprite2D" parent="Diorama" unique_id=300468603]
 texture_filter = 6
-position = Vector2(1380, 680)
+position = Vector2(1500, 680)
 scale = Vector2(3.255, 3.255)
 texture = ExtResource("7_pad")
 
 [node name="Frog" type="Sprite2D" parent="Diorama" unique_id=1178312886]
-position = Vector2(1380.0001, 568)
+position = Vector2(1500.0001, 568)
 scale = Vector2(2.525, 2.525)
 texture = ExtResource("5_frog")
 
@@ -339,7 +313,7 @@ begin_cap_mode = 2
 end_cap_mode = 2
 
 [node name="Fly" type="Sprite2D" parent="Diorama" unique_id=2060470173]
-position = Vector2(1508.0001, 240.00008)
+position = Vector2(1628, 240.00006)
 scale = Vector2(1.46, 1.46)
 texture = ExtResource("6_fly")
 

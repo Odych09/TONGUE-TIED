@@ -22,10 +22,10 @@ TransitionLayer="*uid://b2l4lrpmr5c6y"
 SnapshotsClient="*uid://cwcaoife58xkq"
 GodotPlayGameServices="*uid://bnj1e5ski7rlf"
 SaveManager="*uid://pw7yhdisfwif"
-MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
 LootLockerSDK="*uid://c5nk2ub7xngnd"
 LootLockerManager="*res://SCRIPTS/LootLockerManager.gd"
 LeaderboardsClient="*uid://cag33jnv6nkas"
+MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
 
 [display]
 
@@ -48,6 +48,15 @@ folder_colors={
 "res://AUDIO/": "green",
 "res://SCENES/": "red",
 "res://SCRIPTS/": "blue"
+}
+
+[importer_defaults]
+
+texture={
+&"compress/mode": 2
+}
+3d_texture={
+&"compress/mode": 2
 }
 
 [input_devices]
