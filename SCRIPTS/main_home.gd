@@ -76,9 +76,59 @@ const LEVEL_POSITIONS: Array[Vector2] = [
 	Vector2(960, 220)    # Level 15 (Boss / Finale!)
 ]
 
+# World Biomes & Candy Crush-style Theming
+const BIOMES: Array[Dictionary] = [
+	{
+		"name": "Emerald Lagoon",
+		"btn_title": "🌴 WORLD 1: LAGOON ▾",
+		"subtitle": "Tropical Oasis",
+		"water_deep": Color(0.01, 0.42, 0.48, 1.0),
+		"water_mid": Color(0.04, 0.68, 0.68, 1.0),
+		"water_bright": Color(0.14, 0.88, 0.84, 1.0),
+		"caustic_color": Color(0.85, 1.0, 0.96, 0.50),
+		"shimmer_color": Color(0.85, 1.0, 0.95, 1.0),
+		"path_modulate": Color(1.0, 1.0, 1.0, 1.0),
+		"path_glow": Color(0.01, 0.32, 0.35, 0.40),
+		"props_modulate": Color(1.0, 1.0, 1.0, 1.0),
+		"pad_modulate": Color(1.0, 1.0, 1.0, 1.0),
+		"badge_color": Color(0.35, 0.95, 0.75, 1.0),
+	},
+	{
+		"name": "Twilight Swamp",
+		"btn_title": "🌙 WORLD 2: TWILIGHT ▾",
+		"subtitle": "Mystic Orchid Bog",
+		"water_deep": Color(0.14, 0.04, 0.28, 1.0),
+		"water_mid": Color(0.32, 0.10, 0.54, 1.0),
+		"water_bright": Color(0.66, 0.22, 0.88, 1.0),
+		"caustic_color": Color(1.0, 0.52, 0.94, 0.60),
+		"shimmer_color": Color(1.0, 0.75, 1.0, 1.0),
+		"path_modulate": Color(0.82, 0.58, 1.0, 1.0),
+		"path_glow": Color(0.38, 0.08, 0.52, 0.55),
+		"props_modulate": Color(0.82, 0.72, 1.0, 1.0),
+		"pad_modulate": Color(0.85, 0.75, 1.0, 1.0),
+		"badge_color": Color(0.92, 0.45, 1.0, 1.0),
+	},
+	{
+		"name": "Molten Citadel",
+		"btn_title": "🔥 WORLD 3: MOLTEN ▾",
+		"subtitle": "Amber Sunken Ruins",
+		"water_deep": Color(0.28, 0.06, 0.02, 1.0),
+		"water_mid": Color(0.64, 0.16, 0.04, 1.0),
+		"water_bright": Color(0.96, 0.48, 0.08, 1.0),
+		"caustic_color": Color(1.0, 0.88, 0.32, 0.65),
+		"shimmer_color": Color(1.0, 0.95, 0.6, 1.0),
+		"path_modulate": Color(1.0, 0.68, 0.35, 1.0),
+		"path_glow": Color(0.55, 0.12, 0.02, 0.60),
+		"props_modulate": Color(1.0, 0.78, 0.65, 1.0),
+		"pad_modulate": Color(1.0, 0.82, 0.68, 1.0),
+		"badge_color": Color(1.0, 0.68, 0.2, 1.0),
+	}
+]
+
 # State variables
 var current_chapter: int = 0
 var chapter_btn: Button = null
+var biome_tween: Tween = null
 var selected_level_index: int = 0
 var is_dragging: bool = false
 var drag_start_pos: Vector2 = Vector2.ZERO
@@ -158,6 +208,7 @@ func _ready() -> void:
 		current_chapter = 0
 
 	_setup_chapter_button()
+	_apply_biome_theme(false)
 
 	# Generate level map nodes and path
 	_build_winding_path()
@@ -274,11 +325,11 @@ func _setup_chapter_button() -> void:
 
 	chapter_btn = Button.new()
 	chapter_btn.name = "ChapterButton"
-	chapter_btn.custom_minimum_size = Vector2(160, 56)
+	chapter_btn.custom_minimum_size = Vector2(250, 56)
 	chapter_btn.add_theme_font_override("font", FONT_GORDITAS)
-	chapter_btn.add_theme_font_size_override("font_size", 20)
+	chapter_btn.add_theme_font_size_override("font_size", 19)
 	chapter_btn.add_theme_color_override("font_color", Color(1.0, 0.95, 0.4, 1.0))
-	chapter_btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 0.8, 1.0))
+	chapter_btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 0.85, 1.0))
 	chapter_btn.add_theme_color_override("font_outline_color", Color(0.12, 0.05, 0.02, 1.0))
 	chapter_btn.add_theme_constant_override("outline_size", 6)
 
@@ -286,8 +337,8 @@ func _setup_chapter_button() -> void:
 	if sb_norm:
 		var st := StyleBoxTexture.new()
 		st.texture = sb_norm
-		st.texture_margin_left = 16.0
-		st.texture_margin_right = 16.0
+		st.texture_margin_left = 18.0
+		st.texture_margin_right = 18.0
 		st.texture_margin_top = 10.0
 		st.texture_margin_bottom = 10.0
 		chapter_btn.add_theme_stylebox_override("normal", st)
@@ -305,16 +356,69 @@ func _setup_chapter_button() -> void:
 
 func _update_chapter_button_text() -> void:
 	if is_instance_valid(chapter_btn):
-		chapter_btn.text = "WORLD %d  ▾" % (current_chapter + 1)
+		var biome_idx := clampi(current_chapter, 0, BIOMES.size() - 1)
+		var biome: Dictionary = BIOMES[biome_idx]
+		chapter_btn.text = biome.btn_title
+		chapter_btn.add_theme_color_override("font_color", biome.badge_color)
+
+func _apply_biome_theme(animate: bool = true) -> void:
+	var biome_idx := clampi(current_chapter, 0, BIOMES.size() - 1)
+	var biome: Dictionary = BIOMES[biome_idx]
+	var mat := bg_rect.material as ShaderMaterial
+	if not mat:
+		return
+
+	if biome_tween and biome_tween.is_valid():
+		biome_tween.kill()
+
+	if not animate:
+		mat.set_shader_parameter("water_deep", biome.water_deep)
+		mat.set_shader_parameter("water_mid", biome.water_mid)
+		mat.set_shader_parameter("water_bright", biome.water_bright)
+		mat.set_shader_parameter("caustic_color", biome.caustic_color)
+		mat.set_shader_parameter("shimmer_color", biome.shimmer_color)
+		path_line.self_modulate = biome.path_modulate
+		path_glow.default_color = biome.path_glow
+		if is_instance_valid(props_container):
+			props_container.modulate = biome.props_modulate
+	else:
+		var cur_deep = mat.get_shader_parameter("water_deep")
+		var cur_mid = mat.get_shader_parameter("water_mid")
+		var cur_bright = mat.get_shader_parameter("water_bright")
+		var cur_caustic = mat.get_shader_parameter("caustic_color")
+		var cur_shimmer = mat.get_shader_parameter("shimmer_color")
+		if cur_deep == null: cur_deep = biome.water_deep
+		if cur_mid == null: cur_mid = biome.water_mid
+		if cur_bright == null: cur_bright = biome.water_bright
+		if cur_caustic == null: cur_caustic = biome.caustic_color
+		if cur_shimmer == null: cur_shimmer = biome.shimmer_color
+
+		biome_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		biome_tween.tween_method(func(c: Color): mat.set_shader_parameter("water_deep", c), cur_deep, biome.water_deep, 0.65)
+		biome_tween.tween_method(func(c: Color): mat.set_shader_parameter("water_mid", c), cur_mid, biome.water_mid, 0.65)
+		biome_tween.tween_method(func(c: Color): mat.set_shader_parameter("water_bright", c), cur_bright, biome.water_bright, 0.65)
+		biome_tween.tween_method(func(c: Color): mat.set_shader_parameter("caustic_color", c), cur_caustic, biome.caustic_color, 0.65)
+		biome_tween.tween_method(func(c: Color): mat.set_shader_parameter("shimmer_color", c), cur_shimmer, biome.shimmer_color, 0.65)
+		biome_tween.tween_property(path_line, "self_modulate", biome.path_modulate, 0.65)
+		biome_tween.tween_property(path_glow, "default_color", biome.path_glow, 0.65)
+		if is_instance_valid(props_container):
+			biome_tween.tween_property(props_container, "modulate", biome.props_modulate, 0.65)
+
+func _show_world_banner() -> void:
+	var biome_idx := clampi(current_chapter, 0, BIOMES.size() - 1)
+	var biome: Dictionary = BIOMES[biome_idx]
+	_show_toast("✦ %s ✦\n%s" % [biome.name.to_upper(), biome.subtitle])
 
 func _on_chapter_button_pressed() -> void:
 	click_sfx.play()
 	var total_chapters: int = int(ceil(float(GameManager.levels.size()) / 15.0))
 	current_chapter = (current_chapter + 1) % total_chapters
 	_update_chapter_button_text()
+	_apply_biome_theme(true)
 	_build_winding_path()
 	_build_level_nodes()
 	_auto_scroll_to_current_level()
+	_show_world_banner()
 
 # --- Path & Nodes Construction ---
 
@@ -354,6 +458,9 @@ func _build_level_nodes() -> void:
 	active_frog_sprite = null
 	active_glow_panel = null
 
+	var biome_idx := clampi(current_chapter, 0, BIOMES.size() - 1)
+	var biome: Dictionary = BIOMES[biome_idx]
+
 	var start_idx: int = current_chapter * 15
 	var remaining: int = GameManager.levels.size() - start_idx
 	var count: int = clampi(remaining, 0, LEVEL_POSITIONS.size())
@@ -382,9 +489,9 @@ func _build_level_nodes() -> void:
 		pad_sprite.name = "PadSprite"
 
 		if not is_unlocked:
-			pad_sprite.modulate = Color(0.42, 0.52, 0.48, 0.72)
+			pad_sprite.modulate = Color(biome.pad_modulate.r * 0.42, biome.pad_modulate.g * 0.50, biome.pad_modulate.b * 0.48, 0.72)
 		else:
-			pad_sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
+			pad_sprite.modulate = biome.pad_modulate
 		node_btn.add_child(pad_sprite)
 
 		# 2. Glowing Indicator Ring for Active Level
@@ -396,9 +503,9 @@ func _build_level_nodes() -> void:
 			var glow_sb := StyleBoxFlat.new()
 			glow_sb.draw_center = false
 			glow_sb.set_border_width_all(4)
-			glow_sb.border_color = Color(1.0, 0.88, 0.25, 0.85)
+			glow_sb.border_color = biome.badge_color
 			glow_sb.set_corner_radius_all(80)
-			glow_sb.shadow_color = Color(1.0, 0.85, 0.2, 0.6)
+			glow_sb.shadow_color = Color(biome.badge_color.r, biome.badge_color.g, biome.badge_color.b, 0.65)
 			glow_sb.shadow_size = 18
 			glow_panel.add_theme_stylebox_override("panel", glow_sb)
 			active_glow_panel = glow_panel

@@ -16,6 +16,29 @@ const TILE_FROG_HAZARD: int = 4
 const TILE_TONGUE_HAZARD: int = 5
 const TILE_WALL: int = 6
 const TILE_WATER: int = 7
+const TILE_GOOP: int = 8
+
+# World Biomes for in-game visuals
+const BIOMES_INGAME: Array[Dictionary] = [
+	{
+		"name": "Emerald Lagoon",
+		"water_tint": Color(1.0, 1.0, 1.0, 1.0),
+		"ambient_modulate": Color(1.0, 1.0, 1.0, 1.0),
+		"hazard_tile": 7
+	},
+	{
+		"name": "Twilight Swamp",
+		"water_tint": Color(0.60, 0.30, 0.95, 1.0),
+		"ambient_modulate": Color(0.92, 0.86, 1.0, 1.0),
+		"hazard_tile": 8 # Goop hazard
+	},
+	{
+		"name": "Molten Citadel",
+		"water_tint": Color(1.0, 0.45, 0.12, 1.0),
+		"ambient_modulate": Color(1.0, 0.90, 0.82, 1.0),
+		"hazard_tile": 7
+	}
+]
 
 @export_file("*.txt") var level_file: String = ""
 
@@ -65,6 +88,22 @@ func _get_target_level_file() -> String:
 
 	return ""
 
+func _get_current_level_num() -> int:
+	var path := _get_target_level_file()
+	if not path.is_empty():
+		var regex := RegEx.new()
+		regex.compile("level_(\\d+)")
+		var match_res := regex.search(path)
+		if match_res:
+			return int(match_res.get_string(1))
+	if GameManager:
+		return GameManager.current_level_index + 1
+	return 16
+
+func _get_current_world_index() -> int:
+	var lvl_num := _get_current_level_num()
+	return clampi(int((lvl_num - 1) / 15), 0, BIOMES_INGAME.size() - 1)
+
 func load_and_build() -> void:
 	var path := _get_target_level_file()
 	var content := ""
@@ -85,6 +124,12 @@ func _parse_and_build(raw_text: String) -> void:
 	var grid_lines: Array[String] = []
 	var player_grid_pos := Vector2i(-1, -1)
 	var enemies_data: Array[Dictionary] = []
+
+	var world_idx := _get_current_world_index()
+	var biome_cfg: Dictionary = BIOMES_INGAME[world_idx]
+
+	# Apply world ambient lighting mood
+	self.modulate = biome_cfg.ambient_modulate
 
 	# Reset counters
 	bug_count_in_map = 0
@@ -131,7 +176,7 @@ func _parse_and_build(raw_text: String) -> void:
 				'#':
 					tilemap_layer.set_cell(map_pos, TILE_WALL, Vector2i.ZERO)
 				'~':
-					tilemap_layer.set_cell(map_pos, TILE_WATER, Vector2i.ZERO)
+					tilemap_layer.set_cell(map_pos, biome_cfg.hazard_tile, Vector2i.ZERO)
 				'B':
 					tilemap_layer.set_cell(map_pos, TILE_BOX, Vector2i.ZERO)
 				'*':
@@ -160,7 +205,8 @@ func _parse_and_build(raw_text: String) -> void:
 	if required_bugs <= 0:
 		required_bugs = bug_count_in_map
 
-	# 3. Fill ambient water background surrounding the map
+	# 3. Fill ambient water background surrounding the map with world theme tint
+	bg_water_layer.modulate = biome_cfg.water_tint
 	var pad_x := 10
 	var pad_y := 8
 	for r in range(-pad_y, max_rows + pad_y):

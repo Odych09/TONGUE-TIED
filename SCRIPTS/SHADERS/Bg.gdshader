@@ -5,6 +5,7 @@ uniform vec4 water_deep : source_color = vec4(0.01, 0.42, 0.48, 1.0);
 uniform vec4 water_mid : source_color = vec4(0.04, 0.68, 0.68, 1.0);
 uniform vec4 water_bright : source_color = vec4(0.14, 0.88, 0.84, 1.0);
 uniform vec4 caustic_color : source_color = vec4(0.85, 1.0, 0.96, 0.45);
+uniform vec4 shimmer_color : source_color = vec4(0.85, 1.0, 0.95, 1.0);
 
 // Animation Controls
 uniform float speed : hint_range(0.05, 1.0) = 0.22;
@@ -60,7 +61,7 @@ void fragment() {
 	float shimmer = smoothstep(0.70, 0.92, (1.0 - c2) * (1.0 - c1));
 
 	vec4 final_col = mix(base_col, caustic_color, caustic_web * caustic_strength);
-	final_col += vec4(0.85, 1.0, 0.95, 0.0) * shimmer * 0.35;
+	final_col += vec4(shimmer_color.rgb, 0.0) * shimmer * 0.35;
 
 	COLOR = final_col;
 }
