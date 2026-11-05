@@ -91,6 +91,10 @@ func return_to_title() -> void:
 	if TransitionLayer:
 		TransitionLayer.transition_in()
 
+func is_final_level(index: int = -1) -> bool:
+	var check_idx := index if index >= 0 else current_level_index
+	return check_idx == (levels.size() - 1)
+
 func load_level(index: int, use_transition: bool = true) -> void:
 	if index >= levels.size():
 		emit_signal("game_completed")

@@ -48,6 +48,11 @@ var base_pulls_pos: Vector2
 var is_win_active := false
 var is_paused := false
 
+# Final level congratulation modal state
+var congrat_modal: Control = null
+var congrat_confetti_particles: Array[Dictionary] = []
+var congrat_elapsed: float = 0.0
+
 func _resolve_node(base_path: String, relative_paths: Array[String]) -> Node:
 	var base := get_node_or_null(base_path)
 	if not base:
@@ -240,6 +245,9 @@ func setup_player(p: Frog) -> void:
 		win_modal.visible = false
 	if pause_modal:
 		pause_modal.visible = false
+	if is_instance_valid(congrat_modal):
+		congrat_modal.visible = false
+	congrat_confetti_particles.clear()
 	update_level_label(GameManager.current_level_index)
 	_bind_player(player)
 
@@ -250,6 +258,9 @@ func _on_level_changed(new_index: int) -> void:
 		win_modal.visible = false
 	if pause_modal:
 		pause_modal.visible = false
+	if is_instance_valid(congrat_modal):
+		congrat_modal.visible = false
+	congrat_confetti_particles.clear()
 	update_level_label(new_index)
 
 func update_level_label(idx: int) -> void:
@@ -304,6 +315,20 @@ func _process(delta: float) -> void:
 		elif not big_pull_btn.is_hovered():
 			big_pull_btn.scale = Vector2.ONE
 
+	# --- Final Level Confetti Celebration Animation ---
+	if is_instance_valid(congrat_modal) and congrat_modal.visible and not congrat_confetti_particles.is_empty():
+		congrat_elapsed += delta
+		for p in congrat_confetti_particles:
+			var node: ColorRect = p.node
+			if is_instance_valid(node):
+				node.position.y += p.speed_y * delta
+				node.position.x = p.base_x + sin(congrat_elapsed * p.wobble + p.base_x * 0.01) * 24.0
+				node.rotation += p.rot_speed * delta
+				if node.position.y > 1150.0:
+					node.position.y = randf_range(-140.0, -20.0)
+					node.position.x = randf_range(50.0, 1870.0)
+					p.base_x = node.position.x
+
 func trigger_out_of_pulls_effect() -> void:
 	shake_timer = 0.35
 
@@ -321,6 +346,18 @@ func _on_player_pulled() -> void:
 		btn_tw.tween_property(big_pull_btn, "scale", Vector2.ONE, 0.14).set_trans(Tween.TRANS_BACK)
 
 func show_win_modal(stars: int, pulls_remaining: int) -> void:
+	# Check if this is the game's finale / last level
+	var is_final: bool = false
+	if GameManager:
+		if GameManager.has_method("is_final_level"):
+			is_final = GameManager.is_final_level()
+		else:
+			is_final = (GameManager.current_level_index + 1 >= GameManager.levels.size())
+
+	if is_final:
+		_show_congratulation_modal(stars, pulls_remaining)
+		return
+
 	if not win_modal:
 		GameManager.next_level()
 		return
@@ -342,12 +379,9 @@ func show_win_modal(stars: int, pulls_remaining: int) -> void:
 			performance_note = "Nice Stretch!"
 		stats_label.text = "%s\nPulls Left: %d" % [performance_note, pulls_remaining]
 
-	# Update Next button text on final level
+	# Update Next button text on normal levels
 	if next_btn:
-		if GameManager.current_level_index + 1 >= GameManager.levels.size():
-			next_btn.text = "FINISH ➔"
-		else:
-			next_btn.text = "NEXT ➔"
+		next_btn.text = "NEXT ➔"
 
 	# Prepare stars (initially dim)
 	var star_nodes: Array[Label] = [star_1, star_2, star_3]
@@ -379,3 +413,251 @@ func show_win_modal(stars: int, pulls_remaining: int) -> void:
 			if OS.get_name() == "Android" or OS.get_name() == "iOS":
 				Input.vibrate_handheld(25)
 			await get_tree().create_timer(0.2).timeout
+
+func _show_congratulation_modal(stars: int, pulls_remaining: int) -> void:
+	is_win_active = true
+	
+	# If already exists, clear it
+	if is_instance_valid(congrat_modal):
+		congrat_modal.queue_free()
+
+	congrat_modal = Control.new()
+	congrat_modal.name = "CongratulationModal"
+	congrat_modal.set_anchors_preset(Control.PRESET_FULL_RECT)
+	congrat_modal.mouse_filter = Control.MOUSE_FILTER_STOP
+	$UI.add_child(congrat_modal)
+
+	# 1. Darkened Festive Cinematic Dimmer
+	var dimmer := ColorRect.new()
+	dimmer.name = "Dimmer"
+	dimmer.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dimmer.color = Color(0.02, 0.04, 0.06, 0.85)
+	congrat_modal.add_child(dimmer)
+
+	# 2. Confetti Container for celebratory fireworks & falling confetti
+	var confetti_box := Control.new()
+	confetti_box.name = "ConfettiBox"
+	confetti_box.set_anchors_preset(Control.PRESET_FULL_RECT)
+	confetti_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	congrat_modal.add_child(confetti_box)
+
+	# Spawn celebratory confetti pieces across the top of screen
+	congrat_confetti_particles.clear()
+	var confetti_colors: Array[Color] = [
+		Color(1.0, 0.85, 0.2),  # Gold
+		Color(1.0, 0.35, 0.7),  # Radiant Pink
+		Color(0.2, 0.9, 0.75),  # Turquoise
+		Color(0.4, 1.0, 0.4),   # Emerald
+		Color(1.0, 0.55, 0.15), # Amber
+		Color(0.7, 0.45, 1.0)   # Orchid
+	]
+	for k in range(50):
+		var p_rect := ColorRect.new()
+		var p_size := Vector2(randf_range(12.0, 20.0), randf_range(8.0, 16.0))
+		p_rect.size = p_size
+		p_rect.color = confetti_colors[k % confetti_colors.size()]
+		p_rect.pivot_offset = p_size * 0.5
+		p_rect.position = Vector2(randf_range(50.0, 1870.0), randf_range(-400.0, 250.0))
+		confetti_box.add_child(p_rect)
+		congrat_confetti_particles.append({
+			"node": p_rect,
+			"speed_y": randf_range(140.0, 280.0),
+			"speed_x": randf_range(-40.0, 40.0),
+			"rot_speed": randf_range(-4.0, 4.0),
+			"wobble": randf_range(2.0, 5.0),
+			"base_x": p_rect.position.x
+		})
+
+	# 3. Center Modal Container
+	var center := CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	congrat_modal.add_child(center)
+
+	var panel_outer := PanelContainer.new()
+	panel_outer.custom_minimum_size = Vector2(740, 580)
+	var bg_tex := load("res://ASSETS/UI/panels/bg.png") as Texture2D
+	if bg_tex:
+		var st_outer := StyleBoxTexture.new()
+		st_outer.texture = bg_tex
+		st_outer.expand_margin_left = 30.0
+		st_outer.expand_margin_top = 40.0
+		st_outer.expand_margin_right = 40.0
+		st_outer.expand_margin_bottom = 30.0
+		panel_outer.add_theme_stylebox_override("panel", st_outer)
+	center.add_child(panel_outer)
+
+	var table_tex := load("res://ASSETS/UI/panels/table.png") as Texture2D
+	if table_tex:
+		var inner_panel := Panel.new()
+		inner_panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+		inner_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var st_inner := StyleBoxTexture.new()
+		st_inner.texture = table_tex
+		st_inner.expand_margin_left = 12.0
+		st_inner.expand_margin_top = 22.0
+		st_inner.expand_margin_right = 22.0
+		st_inner.expand_margin_bottom = 22.0
+		inner_panel.add_theme_stylebox_override("panel", st_inner)
+		panel_outer.add_child(inner_panel)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 48)
+	margin.add_theme_constant_override("margin_top", 36)
+	margin.add_theme_constant_override("margin_right", 48)
+	margin.add_theme_constant_override("margin_bottom", 40)
+	panel_outer.add_child(margin)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 18)
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	margin.add_child(vbox)
+
+	var font_gorditas := load("res://ASSETS/FONT/Gorditas-Bold.ttf") as Font
+
+	# Trophy & Celebration Header
+	var trophy_label := Label.new()
+	trophy_label.text = "🏆   🏆   🏆"
+	trophy_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	trophy_label.add_theme_font_size_override("font_size", 44)
+	vbox.add_child(trophy_label)
+
+	var title_lbl := Label.new()
+	title_lbl.text = "CONGRATULATIONS!"
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	if font_gorditas:
+		title_lbl.add_theme_font_override("font", font_gorditas)
+	title_lbl.add_theme_font_size_override("font_size", 46)
+	title_lbl.add_theme_color_override("font_color", Color(1.0, 0.92, 0.28, 1.0))
+	title_lbl.add_theme_color_override("font_outline_color", Color(0.2, 0.1, 0.02, 1.0))
+	title_lbl.add_theme_constant_override("outline_size", 10)
+	vbox.add_child(title_lbl)
+
+	var sub_title := Label.new()
+	sub_title.text = "★ YOU COMPLETED THE GAME! ★"
+	sub_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	if font_gorditas:
+		sub_title.add_theme_font_override("font", font_gorditas)
+	sub_title.add_theme_font_size_override("font_size", 22)
+	sub_title.add_theme_color_override("font_color", Color(0.35, 1.0, 0.7, 1.0))
+	sub_title.add_theme_color_override("font_outline_color", Color(0.1, 0.25, 0.15, 1.0))
+	sub_title.add_theme_constant_override("outline_size", 6)
+	vbox.add_child(sub_title)
+
+	# Stars Row
+	var stars_row := HBoxContainer.new()
+	stars_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	stars_row.add_theme_constant_override("separation", 24)
+	vbox.add_child(stars_row)
+
+	var star_nodes: Array[Label] = []
+	for s_idx in range(3):
+		var sl := Label.new()
+		sl.text = "★"
+		if font_gorditas:
+			sl.add_theme_font_override("font", font_gorditas)
+		sl.add_theme_font_size_override("font_size", 58)
+		sl.add_theme_color_override("font_outline_color", Color(0.2, 0.1, 0.02, 1.0))
+		sl.add_theme_constant_override("outline_size", 8)
+		sl.modulate = Color(0.25, 0.2, 0.15, 0.4)
+		sl.scale = Vector2(0.5, 0.5)
+		sl.pivot_offset = Vector2(30, 30)
+		stars_row.add_child(sl)
+		star_nodes.append(sl)
+
+	# Praise Text
+	var total_levels := GameManager.levels.size() if GameManager else 45
+	var desc_lbl := Label.new()
+	desc_lbl.text = "Froggy conquered all %d levels across every World\nand returned home as the Ultimate Champion!\nPulls Left: %d" % [total_levels, pulls_remaining]
+	desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	if font_gorditas:
+		desc_lbl.add_theme_font_override("font", font_gorditas)
+	desc_lbl.add_theme_font_size_override("font_size", 20)
+	desc_lbl.add_theme_color_override("font_color", Color(1.0, 0.96, 0.85, 1.0))
+	desc_lbl.add_theme_color_override("font_outline_color", Color(0.15, 0.08, 0.02, 1.0))
+	desc_lbl.add_theme_constant_override("outline_size", 5)
+	vbox.add_child(desc_lbl)
+
+	# Action Buttons Row
+	var actions := HBoxContainer.new()
+	actions.alignment = BoxContainer.ALIGNMENT_CENTER
+	actions.add_theme_constant_override("separation", 20)
+	vbox.add_child(actions)
+
+	var wood_tex := load("res://ASSETS/UI/panels/wood_badge.svg") as Texture2D
+	var btn_green_tex := load("res://ASSETS/UI/buttons/btn.png") as Texture2D
+
+	var replay_finale_btn := Button.new()
+	replay_finale_btn.text = "↺ REPLAY"
+	replay_finale_btn.custom_minimum_size = Vector2(190, 60)
+	if font_gorditas:
+		replay_finale_btn.add_theme_font_override("font", font_gorditas)
+	replay_finale_btn.add_theme_font_size_override("font_size", 20)
+	replay_finale_btn.add_theme_color_override("font_color", Color(1.0, 0.95, 0.8, 1.0))
+	replay_finale_btn.add_theme_color_override("font_outline_color", Color(0.2, 0.1, 0.02, 1.0))
+	replay_finale_btn.add_theme_constant_override("outline_size", 5)
+	if wood_tex:
+		var st_btn := StyleBoxTexture.new()
+		st_btn.texture = wood_tex
+		st_btn.texture_margin_left = 18.0
+		st_btn.texture_margin_right = 18.0
+		st_btn.texture_margin_top = 10.0
+		st_btn.texture_margin_bottom = 10.0
+		replay_finale_btn.add_theme_stylebox_override("normal", st_btn)
+		replay_finale_btn.add_theme_stylebox_override("hover", st_btn)
+		replay_finale_btn.add_theme_stylebox_override("pressed", st_btn)
+	_attach_btn_feedback(replay_finale_btn)
+	replay_finale_btn.pressed.connect(func():
+		congrat_modal.visible = false
+		is_win_active = false
+		GameManager.restart_level()
+	)
+	actions.add_child(replay_finale_btn)
+
+	var home_btn := Button.new()
+	home_btn.text = "🏠 HOME MAP"
+	home_btn.custom_minimum_size = Vector2(210, 60)
+	if font_gorditas:
+		home_btn.add_theme_font_override("font", font_gorditas)
+	home_btn.add_theme_font_size_override("font_size", 21)
+	home_btn.add_theme_color_override("font_color", Color(1.0, 1.0, 0.9, 1.0))
+	home_btn.add_theme_color_override("font_outline_color", Color(0.12, 0.35, 0.05, 1.0))
+	home_btn.add_theme_constant_override("outline_size", 7)
+	if btn_green_tex:
+		var st_grn := StyleBoxTexture.new()
+		st_grn.texture = btn_green_tex
+		st_grn.texture_margin_left = 65.0
+		st_grn.texture_margin_right = 65.0
+		st_grn.texture_margin_top = 18.0
+		st_grn.texture_margin_bottom = 22.0
+		home_btn.add_theme_stylebox_override("normal", st_grn)
+		home_btn.add_theme_stylebox_override("hover", st_grn)
+		home_btn.add_theme_stylebox_override("pressed", st_grn)
+	_attach_btn_feedback(home_btn, 1.06, 0.94)
+	home_btn.pressed.connect(func():
+		congrat_modal.visible = false
+		is_win_active = false
+		GameManager.return_to_menu()
+	)
+	actions.add_child(home_btn)
+
+	# Animate Modal Panel Pop-in
+	congrat_modal.modulate.a = 0.0
+	panel_outer.scale = Vector2(0.75, 0.75)
+	panel_outer.pivot_offset = panel_outer.custom_minimum_size * 0.5
+	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(congrat_modal, "modulate:a", 1.0, 0.35)
+	tw.tween_property(panel_outer, "scale", Vector2.ONE, 0.4)
+
+	# Sequentially pop stars with sound
+	await get_tree().create_timer(0.35).timeout
+	for i in range(stars):
+		var sl: Label = star_nodes[i]
+		if is_instance_valid(sl):
+			sl.modulate = Color(1.0, 0.88, 0.2, 1.0)
+			_play_sfx(CLICK_SOUND, 1.1 + i * 0.25)
+			var stw := create_tween()
+			stw.tween_property(sl, "scale", Vector2(1.5, 1.5), 0.14).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+			stw.tween_property(sl, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+			if OS.get_name() == "Android" or OS.get_name() == "iOS":
+				Input.vibrate_handheld(35)
+			await get_tree().create_timer(0.25).timeout

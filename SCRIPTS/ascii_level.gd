@@ -206,6 +206,7 @@ func _parse_and_build(raw_text: String) -> void:
 		required_bugs = bug_count_in_map
 
 	# 3. Fill ambient water background surrounding the map with world theme tint
+	bg_water_layer.visible = true
 	bg_water_layer.modulate = biome_cfg.water_tint
 	var pad_x := 10
 	var pad_y := 8
