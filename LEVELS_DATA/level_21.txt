@@ -1,0 +1,22 @@
+# Level 21: Double Bridge
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+
+name: Double Bridge
+pulls: 5
+bugs: 3
+
+##############
+#P...#..B..#W#
+#..B.#..*..#.#
+#....#.....#.#
+#~~~~#..~..#.#
+#....#..~..#.#
+#.*.....*....#
+##############

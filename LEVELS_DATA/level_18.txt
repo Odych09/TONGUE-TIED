@@ -1,0 +1,21 @@
+# Level 18: The Great Leap
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+
+name: The Great Leap
+pulls: 4
+bugs: 2
+
+################
+#P...~~~~~~~~..#
+#....~~~~~~~~*W#
+#....~~~~~~~~..#
+#~~~~~~~~~~~~..#
+#~~~..~~~~~~~~.#
+#~~~*.~~~~~~~~.#
+################

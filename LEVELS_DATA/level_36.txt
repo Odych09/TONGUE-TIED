@@ -1,0 +1,24 @@
+# Level 36: The Gauntlet
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# > = Crocodile moving right
+# < = Crocodile moving left
+
+name: The Gauntlet
+pulls: 4
+bugs: 2
+
+###############
+#P..#.......#W#
+#...# >   < #.#
+#.B.....#...#.#
+#...#...#...#.#
+#.*.....#.*...#
+#...#...#...#.#
+###############

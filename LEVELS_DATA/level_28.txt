@@ -1,0 +1,22 @@
+# Level 28: The Great Basin
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+
+name: The Great Basin
+pulls: 5
+bugs: 3
+
+###############
+#P...#....#..W#
+#....#....#...#
+#.B..~.~~~~...#
+#....~..*.B~..#
+#.*..~.~~~~.*.#
+#.............#
+###############

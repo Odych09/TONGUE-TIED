@@ -1,0 +1,23 @@
+# Level 39: Mirror Chamber
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# v = Crocodile moving down
+# ^ = Crocodile moving up
+
+name: Mirror Chamber
+pulls: 5
+bugs: 3
+
+###############
+#P..# v # ^ #W#
+#.B.~...#...~.#
+#...#...*...#.#
+#.*.#...B...#*#
+#...#.......#.#
+###############

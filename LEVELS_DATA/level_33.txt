@@ -1,0 +1,22 @@
+# Level 33: Spike Corridor
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# X = Frog Spikes (lethal to traverse, tongue passes through)
+
+name: Spike Corridor
+pulls: 4
+bugs: 3
+
+##############
+#P.X.#..X.#.W#
+#..B.#..*.#..#
+#X...#....#..#
+#....#....#..#
+#.*..~..B.~.*#
+##############

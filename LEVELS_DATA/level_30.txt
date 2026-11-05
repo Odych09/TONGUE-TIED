@@ -1,0 +1,26 @@
+# Level 30: The Swamp Citadel
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# v = Crocodile moving down
+# T = Tongue Trap
+
+name: The Swamp Citadel
+pulls: 6
+bugs: 3
+
+################
+#P...#...#....W#
+#....# v #.....#
+#.B..#...#..T..#
+#~~~~#...#.....#
+#....#...#..*..#
+#.*..#...#.....#
+#.....B..#.....#
+#..........*...#
+################

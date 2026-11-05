@@ -1,0 +1,22 @@
+# Level 25: Sentry Squeeze
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# v = Crocodile moving down
+
+name: Sentry Squeeze
+pulls: 4
+bugs: 2
+
+#############
+#P..#...#..W#
+#...# v #...#
+#.B.........#
+#...#...#...#
+#.*.....#.*.#
+#############

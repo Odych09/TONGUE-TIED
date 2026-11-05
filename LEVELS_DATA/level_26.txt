@@ -1,0 +1,21 @@
+# Level 26: The Forking Canal
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+
+name: The Forking Canal
+pulls: 5
+bugs: 3
+
+################
+#P...#...#...#W#
+#.B..~~..B.~~#.#
+#....#...#..~..#
+#.*..#.*.#..~#*#
+#....#...#..~#.#
+################

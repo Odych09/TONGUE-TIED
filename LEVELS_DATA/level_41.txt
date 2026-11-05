@@ -1,0 +1,24 @@
+# Level 41: Croc Enclosure
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# > = Crocodile moving right
+# < = Crocodile moving left
+
+name: Croc Enclosure
+pulls: 4
+bugs: 2
+
+##############
+#P..#......#W#
+#...# >  < #.#
+#.B........#.#
+#.B........#.#
+#.*........#.#
+#...#...#..#*#
+##############

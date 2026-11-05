@@ -1,0 +1,23 @@
+# Level 19: Croc Alley
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# > = Crocodile patrolling right
+
+name: Croc Alley
+pulls: 4
+bugs: 2
+
+############
+#P...#.....#
+#..B.#...*.#
+#....#.....#
+#.........~#
+#....#>....#
+#.*.......W#
+############

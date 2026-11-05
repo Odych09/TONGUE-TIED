@@ -1,0 +1,21 @@
+# Level 20: Snake Weave
+# Legend:
+# # = Wall
+# . = Floor
+# T = Tongue Trap (spikes on tongue)
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+
+name: Snake Weave
+pulls: 4
+bugs: 2
+
+###########
+#P........#
+#..TTT.T..#
+#..*...T.W#
+#.TTTT.T..#
+#......T..#
+#..*......#
+###########

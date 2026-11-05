@@ -19,9 +19,28 @@ signal progress_updated
 	preload("uid://6p3sgtylm6dn"), # Level 12 (scene 13)
 	preload("uid://ctyp6d243bhfo"), # Level 13 (scene 15)
 	preload("uid://etlbcg3fcwcg"), # Level 14 (scene 16)
-	preload("uid://c1p5den7ox4hc"), # Level 15 (scene 17)
-	preload("res://SCENES/LEVELS/ascii_level.tscn") # Level 16 (ASCII Level)
+	preload("uid://c1p5den7ox4hc")  # Level 15 (scene 17)
 ]
+
+const ASCII_LEVEL_SCENE: PackedScene = preload("res://SCENES/LEVELS/ascii_level.tscn")
+const HANDCRAFTED_COUNT: int = 15
+
+func _ready() -> void:
+	scan_ascii_levels()
+
+func scan_ascii_levels() -> void:
+	if levels.size() > HANDCRAFTED_COUNT:
+		levels.resize(HANDCRAFTED_COUNT)
+	
+	var idx := HANDCRAFTED_COUNT + 1
+	while true:
+		var path := "res://LEVELS_DATA/level_%d.txt" % idx
+		if FileAccess.file_exists(path):
+			levels.append(ASCII_LEVEL_SCENE)
+			idx += 1
+		else:
+			break
+	print("[GameManager] Total levels registered: %d (Handcrafted: %d, ASCII: %d)" % [levels.size(), HANDCRAFTED_COUNT, levels.size() - HANDCRAFTED_COUNT])
 
 const SAVE_PATH := "user://save_data.json"
 

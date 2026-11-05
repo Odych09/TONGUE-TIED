@@ -1,0 +1,23 @@
+# Level 44: The Penultimate Leap
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+
+name: The Penultimate Leap
+pulls: 4
+bugs: 3
+
+###############
+#P...#.....#..W#
+#....#..*..#...#
+#.B..~~~~~~~...#
+#....~..*..~...#
+#.*..~..B..~...#
+#....~~~~~~~...#
+#..............#
+###############

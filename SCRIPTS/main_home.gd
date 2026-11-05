@@ -70,17 +70,19 @@ const LEVEL_POSITIONS: Array[Vector2] = [
 	Vector2(840, 760),   # Level 12
 	Vector2(1180, 580),  # Level 13
 	Vector2(1380, 400),  # Level 14
-	Vector2(960, 220),   # Level 15 (Boss / Finale!)
-	Vector2(650, 100)    # Level 16 (ASCII Level)
+	Vector2(960, 220)    # Level 15 (Boss / Finale!)
 ]
 
 # State variables
+var current_chapter: int = 0
+var chapter_btn: Button = null
 var selected_level_index: int = 0
 var is_dragging: bool = false
 var drag_start_pos: Vector2 = Vector2.ZERO
 var drag_dist: float = 0.0
 var scroll_velocity_y: float = 0.0
 var active_frog_sprite: Sprite2D = null
+var active_glow_panel: Panel = null
 var elapsed_time: float = 0.0
 var toast_tween: Tween = null
 var is_transitioning: bool = false
@@ -134,6 +136,14 @@ func _ready() -> void:
 	if not bgm_player.playing:
 		bgm_player.play()
 
+	# Auto-select chapter based on unlocked level
+	if GameManager.unlocked_level >= 15:
+		current_chapter = int(GameManager.unlocked_level / 15)
+	else:
+		current_chapter = 0
+
+	_setup_chapter_button()
+
 	# Generate level map nodes and path
 	_build_winding_path()
 	_build_level_nodes()
@@ -154,11 +164,15 @@ func _hook_btn_animations(btn: Control) -> void:
 	btn.pivot_offset = btn.custom_minimum_size * 0.5 if btn.custom_minimum_size != Vector2.ZERO else btn.size * 0.5
 	btn.mouse_entered.connect(func():
 		_play_hover()
-		var tw := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		if not is_instance_valid(btn):
+			return
+		var tw := btn.create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		tw.tween_property(btn, "scale", Vector2(1.08, 1.08), 0.16)
 	)
 	btn.mouse_exited.connect(func():
-		var tw := create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		if not is_instance_valid(btn):
+			return
+		var tw := btn.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		tw.tween_property(btn, "scale", Vector2.ONE, 0.16)
 	)
 
@@ -179,7 +193,11 @@ func _process(delta: float) -> void:
 		active_frog_sprite.position.y = active_frog_sprite.get_meta("base_y", 0.0) + bob
 		active_frog_sprite.scale = Vector2(1.3 * (1.0 + breath), 1.3 * (1.0 - breath))
 
-	# 3. Animate ambient floating props (lotus flowers & pads)
+	# 3. Animate Glow Ring on Active Level Pad
+	if is_instance_valid(active_glow_panel):
+		active_glow_panel.modulate.a = 0.7 + sin(elapsed_time * 3.5) * 0.3
+
+	# 4. Animate ambient floating props (lotus flowers & pads)
 	if is_instance_valid(props_container):
 		for prop in props_container.get_children():
 			if prop.name.begins_with("Lotus") or prop.name.begins_with("PadLotus"):
@@ -228,21 +246,80 @@ func _input(event: InputEvent) -> void:
 		scroll_velocity_y = delta_y / maxf(get_process_delta_time(), 0.001)
 		drag_dist += abs(delta_y) + abs(event.relative.x)
 
+# --- Chapter / World System ---
+
+func _setup_chapter_button() -> void:
+	var total_chapters: int = int(ceil(float(GameManager.levels.size()) / 15.0))
+	if total_chapters <= 1:
+		return
+
+	var hbox := $UI/TopBar/MarginContainer/HBoxContainer as HBoxContainer
+	if not hbox:
+		return
+
+	chapter_btn = Button.new()
+	chapter_btn.name = "ChapterButton"
+	chapter_btn.custom_minimum_size = Vector2(160, 56)
+	chapter_btn.add_theme_font_override("font", FONT_GORDITAS)
+	chapter_btn.add_theme_font_size_override("font_size", 20)
+	chapter_btn.add_theme_color_override("font_color", Color(1.0, 0.95, 0.4, 1.0))
+	chapter_btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 0.8, 1.0))
+	chapter_btn.add_theme_color_override("font_outline_color", Color(0.12, 0.05, 0.02, 1.0))
+	chapter_btn.add_theme_constant_override("outline_size", 6)
+
+	var sb_norm := load("res://ASSETS/UI/panels/wood_badge.svg") as Texture2D
+	if sb_norm:
+		var st := StyleBoxTexture.new()
+		st.texture = sb_norm
+		st.texture_margin_left = 16.0
+		st.texture_margin_right = 16.0
+		st.texture_margin_top = 10.0
+		st.texture_margin_bottom = 10.0
+		chapter_btn.add_theme_stylebox_override("normal", st)
+		chapter_btn.add_theme_stylebox_override("hover", st)
+		chapter_btn.add_theme_stylebox_override("pressed", st)
+
+	chapter_btn.pressed.connect(_on_chapter_button_pressed)
+	_hook_btn_animations(chapter_btn)
+
+	# Place nicely in top bar after Back button
+	hbox.add_child(chapter_btn)
+	hbox.move_child(chapter_btn, 1)
+
+	_update_chapter_button_text()
+
+func _update_chapter_button_text() -> void:
+	if is_instance_valid(chapter_btn):
+		chapter_btn.text = "WORLD %d  ▾" % (current_chapter + 1)
+
+func _on_chapter_button_pressed() -> void:
+	click_sfx.play()
+	var total_chapters: int = int(ceil(float(GameManager.levels.size()) / 15.0))
+	current_chapter = (current_chapter + 1) % total_chapters
+	_update_chapter_button_text()
+	_build_winding_path()
+	_build_level_nodes()
+	_auto_scroll_to_current_level()
+
 # --- Path & Nodes Construction ---
 
 func _build_winding_path() -> void:
 	path_glow.clear_points()
 	path_line.clear_points()
 
+	var start_idx: int = current_chapter * 15
+	var remaining: int = GameManager.levels.size() - start_idx
+	var count: int = clampi(remaining, 0, LEVEL_POSITIONS.size())
+	if count <= 0:
+		return
+
 	# Create a smooth Catmull-Rom or cubic spline passing through each level position
 	var curve := Curve2D.new()
-	var path_count: int = mini(GameManager.levels.size(), LEVEL_POSITIONS.size())
-	for i in range(path_count):
+	for i in range(count):
 		var pt := LEVEL_POSITIONS[i]
-		# Add smooth control points based on surrounding positions
 		if i == 0:
 			curve.add_point(pt, Vector2.ZERO, Vector2(-80, -90))
-		elif i == path_count - 1:
+		elif i == count - 1:
 			curve.add_point(pt, Vector2(0, 90), Vector2.ZERO)
 		else:
 			var prev_pt := LEVEL_POSITIONS[i - 1]
@@ -259,19 +336,24 @@ func _build_winding_path() -> void:
 func _build_level_nodes() -> void:
 	for child in nodes_container.get_children():
 		child.queue_free()
+	active_frog_sprite = null
+	active_glow_panel = null
 
-	var total_levels := GameManager.levels.size()
+	var start_idx: int = current_chapter * 15
+	var remaining: int = GameManager.levels.size() - start_idx
+	var count: int = clampi(remaining, 0, LEVEL_POSITIONS.size())
 	var current_unlocked := GameManager.unlocked_level
 
-	for i in range(total_levels):
-		var pos: Vector2 = LEVEL_POSITIONS[i] if i < LEVEL_POSITIONS.size() else Vector2(960, 100)
-		var is_unlocked := GameManager.is_level_unlocked(i)
-		var is_current := (i == current_unlocked)
-		var stars := GameManager.get_level_stars(i)
+	for j in range(count):
+		var global_level_idx: int = start_idx + j
+		var pos: Vector2 = LEVEL_POSITIONS[j]
+		var is_unlocked := GameManager.is_level_unlocked(global_level_idx)
+		var is_current := (global_level_idx == current_unlocked)
+		var stars := GameManager.get_level_stars(global_level_idx)
 
 		# Master node container
 		var node_btn := Button.new()
-		node_btn.name = "Level_%d" % (i + 1)
+		node_btn.name = "Level_%d" % (global_level_idx + 1)
 		node_btn.flat = true
 		node_btn.custom_minimum_size = Vector2(170, 170)
 		node_btn.position = pos - Vector2(85, 85)
@@ -304,12 +386,8 @@ func _build_level_nodes() -> void:
 			glow_sb.shadow_color = Color(1.0, 0.85, 0.2, 0.6)
 			glow_sb.shadow_size = 18
 			glow_panel.add_theme_stylebox_override("panel", glow_sb)
+			active_glow_panel = glow_panel
 			node_btn.add_child(glow_panel)
-
-			# Animate pulse glow
-			var pulse_tw := create_tween().set_loops()
-			pulse_tw.tween_property(glow_panel, "modulate:a", 0.4, 0.9).set_trans(Tween.TRANS_SINE)
-			pulse_tw.tween_property(glow_panel, "modulate:a", 1.0, 0.9).set_trans(Tween.TRANS_SINE)
 
 		# 3. Mascot Frog sitting on active level!
 		if is_current:
@@ -333,7 +411,7 @@ func _build_level_nodes() -> void:
 		label.add_theme_font_size_override("font_size", 34 if not is_current else 26)
 
 		if is_unlocked:
-			label.text = str(i + 1)
+			label.text = str(global_level_idx + 1)
 			label.add_theme_color_override("font_color", Color(1.0, 0.95, 0.35, 1.0) if is_current else Color(1.0, 1.0, 1.0, 1.0))
 			label.add_theme_color_override("font_outline_color", Color(0.12, 0.05, 0.02, 1.0))
 			label.add_theme_constant_override("outline_size", 10)
@@ -375,7 +453,7 @@ func _build_level_nodes() -> void:
 		if is_unlocked or OS.is_debug_build():
 			node_btn.mouse_entered.connect(_on_node_hover.bind(node_btn))
 			node_btn.mouse_exited.connect(_on_node_unhover.bind(node_btn))
-			node_btn.pressed.connect(_on_node_clicked.bind(i))
+			node_btn.pressed.connect(_on_node_clicked.bind(global_level_idx))
 		else:
 			node_btn.mouse_filter = Control.MOUSE_FILTER_PASS
 
@@ -383,11 +461,15 @@ func _build_level_nodes() -> void:
 
 func _on_node_hover(btn: Button) -> void:
 	_play_hover()
-	var tw := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if not is_instance_valid(btn):
+		return
+	var tw := btn.create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.tween_property(btn, "scale", Vector2(1.12, 1.12), 0.18)
 
 func _on_node_unhover(btn: Button) -> void:
-	var tw := create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if not is_instance_valid(btn):
+		return
+	var tw := btn.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tw.tween_property(btn, "scale", Vector2.ONE, 0.18)
 
 func _on_node_clicked(level_idx: int) -> void:
@@ -400,8 +482,9 @@ func _on_node_clicked(level_idx: int) -> void:
 # --- Auto Scroll ---
 
 func _auto_scroll_to_current_level() -> void:
-	var current_idx: int = clamp(GameManager.unlocked_level, 0, LEVEL_POSITIONS.size() - 1)
-	var target_y: float = LEVEL_POSITIONS[current_idx].y
+	var start_idx: int = current_chapter * 15
+	var relative_idx: int = clampi(GameManager.unlocked_level - start_idx, 0, LEVEL_POSITIONS.size() - 1)
+	var target_y: float = LEVEL_POSITIONS[relative_idx].y
 	var viewport_h: float = scroll_container.size.y if scroll_container.size.y > 0 else 1080.0
 	var max_scroll: float = maxf(map_canvas.custom_minimum_size.y - viewport_h, 0.0)
 	var target_scroll: float = clampf(target_y - (viewport_h * 0.5), 0.0, max_scroll)
@@ -434,6 +517,23 @@ func _update_hud_counters() -> void:
 func _open_level_modal(level_idx: int) -> void:
 	selected_level_index = level_idx
 	modal_title.text = "LEVEL %d" % (level_idx + 1)
+
+	# Check for ASCII level title
+	var txt_path := "res://LEVELS_DATA/level_%d.txt" % (level_idx + 1)
+	if FileAccess.file_exists(txt_path):
+		var f := FileAccess.open(txt_path, FileAccess.READ)
+		if f:
+			while not f.eof_reached():
+				var l := f.get_line().strip_edges()
+				if l.to_lower().begins_with("name:"):
+					var lvl_name := l.substr(5).strip_edges()
+					if lvl_name != "":
+						modal_title.text = "LVL %d: %s" % [level_idx + 1, lvl_name]
+					break
+				if l == "" or (l.begins_with("#") and not l.to_lower().begins_with("# name:")):
+					continue
+				if not l.contains(":"):
+					break
 
 	var stars := GameManager.get_level_stars(level_idx)
 	for i in range(modal_stars_row.get_child_count()):

@@ -1,0 +1,24 @@
+# Level 24: The Crossfire
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# T = Tongue Trap (blocks tongue)
+# X = Frog Spike (blocks frog, allows tongue)
+
+name: The Crossfire
+pulls: 4
+bugs: 2
+
+###########
+#P......*.#
+#...#...#.#
+#.*.T...#.#
+#...#...#.#
+#.X...#...#
+#...B.~..W#
+###########

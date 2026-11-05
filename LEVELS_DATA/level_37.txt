@@ -1,0 +1,22 @@
+# Level 37: Submerged Vault
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+
+name: Submerged Vault
+pulls: 4
+bugs: 3
+
+###############
+#P..#...#...#W#
+#.B.~.B.~...~.#
+#...#...#...#.#
+#.*.#.*.#...#.#
+#...#...#...#*#
+#...#...#...#.#
+###############

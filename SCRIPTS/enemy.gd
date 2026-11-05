@@ -36,12 +36,14 @@ func _on_move_timer_timeout():
 	var step_dir = patrol_direction if moving_forward else -patrol_direction
 	var next_pos = position + (step_dir * TILE_SIZE)
 	
-	# Check if the enemy is walking into a wall tile
-	if tilemap_layer and get_tile_type_at(next_pos) == "wall":
-		moving_forward = not moving_forward
-		step_dir = patrol_direction if moving_forward else -patrol_direction
-		update_facing(step_dir)
-		return
+	# Check if the enemy is walking into a wall or box
+	if tilemap_layer:
+		var tile_at_next := get_tile_type_at(next_pos)
+		if tile_at_next == "wall" or tile_at_next == "pushable_box":
+			moving_forward = not moving_forward
+			step_dir = patrol_direction if moving_forward else -patrol_direction
+			update_facing(step_dir)
+			return
 		
 	is_moving = true
 	

@@ -1,0 +1,21 @@
+# Level 29: Tightrope
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+
+name: Tightrope
+pulls: 4
+bugs: 2
+
+#############
+#P....W.....#
+#.#.#.B.#.#.#
+#.#.#.~.#.#.#
+#...#...#...#
+#.*.......*.#
+#############

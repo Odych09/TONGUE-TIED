@@ -1,0 +1,24 @@
+# Level 35: Labyrinth of Tongues
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# T = Tongue Trap
+
+name: Labyrinth of Tongues
+pulls: 4
+bugs: 2
+
+##############
+#P...#...#..W#
+#.T.#.T.#.T..#
+#...#...#....#
+#.T.#.T.#.T..#
+#.*.....#.*..#
+#.T.#.T.#.T..#
+#...B...~....#
+##############

@@ -1,0 +1,25 @@
+# Level 38: The Hourglass
+# Legend:
+# # = Wall
+# . = Floor
+# ~ = Water
+# B = Box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# v = Crocodile moving down
+# T = Tongue Trap
+
+name: The Hourglass
+pulls: 4
+bugs: 2
+
+#############
+#P...#.#...W#
+#..B.#.#.B..#
+#...#...#...#
+#..#..T..#..#
+#.#...v...#.#
+#..#.....#..#
+#.*.......*.#
+#############
