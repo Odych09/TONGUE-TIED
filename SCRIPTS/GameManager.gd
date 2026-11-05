@@ -19,7 +19,8 @@ signal progress_updated
 	preload("uid://6p3sgtylm6dn"), # Level 12 (scene 13)
 	preload("uid://ctyp6d243bhfo"), # Level 13 (scene 15)
 	preload("uid://etlbcg3fcwcg"), # Level 14 (scene 16)
-	preload("uid://c1p5den7ox4hc")  # Level 15 (scene 17)
+	preload("uid://c1p5den7ox4hc"), # Level 15 (scene 17)
+	preload("res://SCENES/LEVELS/ascii_level.tscn") # Level 16 (ASCII Level)
 ]
 
 const SAVE_PATH := "user://save_data.json"

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dqup70jky7dbi"]
+
+[ext_resource type="Script" uid="uid://dvvdvgedm3tf2" path="res://SCRIPTS/ascii_level.gd" id="1_uv52d"]
+
+[node name="ascii_level" type="Node2D" unique_id=1615474181]
+script = ExtResource("1_uv52d")

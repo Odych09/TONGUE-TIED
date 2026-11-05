@@ -70,7 +70,8 @@ const LEVEL_POSITIONS: Array[Vector2] = [
 	Vector2(840, 760),   # Level 12
 	Vector2(1180, 580),  # Level 13
 	Vector2(1380, 400),  # Level 14
-	Vector2(960, 220)    # Level 15 (Boss / Finale!)
+	Vector2(960, 220),   # Level 15 (Boss / Finale!)
+	Vector2(650, 100)    # Level 16 (ASCII Level)
 ]
 
 # State variables
@@ -191,6 +192,10 @@ func _process(delta: float) -> void:
 # --- Touch & Mouse Inertia Dragging ---
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
+		_launch_level(GameManager.levels.size() - 1)
+		return
+
 	if level_modal.visible or settings_modal.visible:
 		return
 
@@ -231,12 +236,13 @@ func _build_winding_path() -> void:
 
 	# Create a smooth Catmull-Rom or cubic spline passing through each level position
 	var curve := Curve2D.new()
-	for i in range(LEVEL_POSITIONS.size()):
+	var path_count: int = mini(GameManager.levels.size(), LEVEL_POSITIONS.size())
+	for i in range(path_count):
 		var pt := LEVEL_POSITIONS[i]
 		# Add smooth control points based on surrounding positions
 		if i == 0:
 			curve.add_point(pt, Vector2.ZERO, Vector2(-80, -90))
-		elif i == LEVEL_POSITIONS.size() - 1:
+		elif i == path_count - 1:
 			curve.add_point(pt, Vector2(0, 90), Vector2.ZERO)
 		else:
 			var prev_pt := LEVEL_POSITIONS[i - 1]
@@ -258,7 +264,7 @@ func _build_level_nodes() -> void:
 	var current_unlocked := GameManager.unlocked_level
 
 	for i in range(total_levels):
-		var pos := LEVEL_POSITIONS[i]
+		var pos: Vector2 = LEVEL_POSITIONS[i] if i < LEVEL_POSITIONS.size() else Vector2(960, 100)
 		var is_unlocked := GameManager.is_level_unlocked(i)
 		var is_current := (i == current_unlocked)
 		var stars := GameManager.get_level_stars(i)
@@ -366,7 +372,7 @@ func _build_level_nodes() -> void:
 			node_btn.add_child(stars_box)
 
 		# Hover & Click Events
-		if is_unlocked:
+		if is_unlocked or OS.is_debug_build():
 			node_btn.mouse_entered.connect(_on_node_hover.bind(node_btn))
 			node_btn.mouse_exited.connect(_on_node_unhover.bind(node_btn))
 			node_btn.pressed.connect(_on_node_clicked.bind(i))
