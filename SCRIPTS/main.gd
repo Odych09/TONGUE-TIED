@@ -5,6 +5,9 @@ extends Node2D
 @onready var bgm_player: AudioStreamPlayer = $AudioStreamPlayer
 
 func _ready() -> void:
+	if bgm_player and has_node("/root/MusicManager"):
+		bgm_player.stop()
+		bgm_player.stream = null
 	GameManager.level_changed.connect(_on_level_changed)
 	GameManager.settings_changed.connect(_update_audio_settings)
 	_update_audio_settings()
@@ -16,7 +19,7 @@ func _ready() -> void:
 		transition_layer.transition_in()
 
 func _update_audio_settings() -> void:
-	if bgm_player:
+	if bgm_player and not has_node("/root/MusicManager"):
 		bgm_player.volume_db = 0.0 if GameManager.music_enabled else -80.0
 
 

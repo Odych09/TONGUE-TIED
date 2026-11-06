@@ -291,6 +291,10 @@ func pull_frog() -> void:
 		player_pulled.emit()
 		trigger_haptic(30)
 		
+		var music_mgr := get_node_or_null("/root/MusicManager")
+		if music_mgr and music_mgr.has_method("play_push_sfx"):
+			music_mgr.play_push_sfx()
+		
 		var tween := create_tween()
 		tween.tween_property(sprite, "scale", Vector2(1.25, 0.75), 0.08).set_trans(Tween.TRANS_QUAD)
 		tween.tween_property(sprite, "scale", Vector2(0.75, 1.25), 0.08)

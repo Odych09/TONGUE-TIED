@@ -26,6 +26,7 @@ LootLockerSDK="*uid://c5nk2ub7xngnd"
 LootLockerManager="*res://SCRIPTS/LootLockerManager.gd"
 LeaderboardsClient="*uid://cag33jnv6nkas"
 MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
+MusicManager="*uid://n6e3iwojfdtt"
 
 [display]
 
@@ -36,6 +37,7 @@ window/size/window_width_override=1920
 window/size/window_height_override=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+window/stretch/scale=1.35
 
 [editor_plugins]
 

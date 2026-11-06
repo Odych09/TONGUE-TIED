@@ -197,9 +197,13 @@ func _ready() -> void:
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
 
 
-	# Setup background audio
-	if not bgm_player.playing:
-		bgm_player.play()
+	# Setup background audio (handled globally by MusicManager if available)
+	if bgm_player:
+		if has_node("/root/MusicManager"):
+			bgm_player.stop()
+			bgm_player.stream = null
+		elif not bgm_player.playing:
+			bgm_player.play()
 
 	# Auto-select chapter based on unlocked level
 	if GameManager.unlocked_level >= 15:
@@ -771,7 +775,7 @@ func _on_settings_back_pressed() -> void:
 	settings_modal.visible = false
 
 func _init_settings_values() -> void:
-	if bgm_player:
+	if bgm_player and not has_node("/root/MusicManager"):
 		bgm_player.volume_db = 0.0 if GameManager.music_enabled else -80.0
 
 	volume_slider.value = GameManager.master_volume

@@ -141,9 +141,13 @@ func _ready() -> void:
 	_init_settings_values()
 	_init_play_games()
 
-	# Start BGM if not already playing
-	if not bgm_player.playing:
-		bgm_player.play()
+	# Start BGM if not already playing (handled globally by MusicManager if available)
+	if bgm_player:
+		if has_node("/root/MusicManager"):
+			bgm_player.stop()
+			bgm_player.stream = null
+		elif not bgm_player.playing:
+			bgm_player.play()
 
 	# Draw title tongue accent
 	_update_title_tongue_accent()
@@ -230,7 +234,7 @@ func _init_play_games() -> void:
 		play_games_label.text = "GOOGLE PLAY: SIGNED IN"
 
 func _init_settings_values() -> void:
-	if bgm_player:
+	if bgm_player and not has_node("/root/MusicManager"):
 		bgm_player.volume_db = 0.0 if GameManager.music_enabled else -80.0
 
 	# Master volume
@@ -480,8 +484,9 @@ func _on_play_pressed() -> void:
 	seq.tween_property(frog, "scale", frog_base_scale, 0.18).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 
 	# Audio fade
-	var audio_tw := create_tween()
-	audio_tw.tween_property(bgm_player, "volume_db", -35.0, 0.35)
+	if bgm_player and bgm_player.stream:
+		var audio_tw := create_tween()
+		audio_tw.tween_property(bgm_player, "volume_db", -35.0, 0.35)
 
 	await seq.finished
 
