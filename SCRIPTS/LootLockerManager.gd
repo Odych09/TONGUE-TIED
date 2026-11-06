@@ -13,48 +13,78 @@ signal auth_status_changed(success: bool)
 signal player_name_changed(new_name: String)
 signal score_submitted(success: bool, rank: int, score: int)
 
+const SERVER_CLIENT_ID = "56043225188-jhve2t235mlfse4m4a88u2s6fc56vsvq.apps.googleusercontent.com"
+
+# Request helper to send Google Play server auth code to LootLocker
+class _GooglePlayGamesRequestBody extends LootLockerInternal_BaseRequest:
+	var game_api_key: String = ""
+	var game_version: String = ""
+	var auth_code: String = ""
+
+class GooglePlayGamesSession extends LootLockerInternal_RequestDefinition:
+	func _init(auth_code: String, endpoint: String = "/game/session/google-play-games/v1/login") -> void:
+		responseType = LL_Authentication._LL_BaseSessionResponse
+		request = _GooglePlayGamesRequestBody.new()
+		var settings = preload("res://addons/LootLockerSDK/Game/Internals/LootLockerInternal_Settings.gd")
+		request.game_api_key = settings.GetApiKey()
+		request.auth_code = auth_code
+		request.game_version = settings.GetGameVersion()
+		super._init(endpoint, HTTPClient.Method.METHOD_POST, [
+			"session_token", "player_identifier", "player_name",
+			"player_id", "public_uid", "player_ulid", "wallet_id"
+		])
+
+	func send() -> LL_Authentication._LL_BaseSessionResponse:
+		await _send()
+		return response
+
 func _ready() -> void:
 	# Load locally cached name if any
 	var saved_name := _load_local_player_name()
 	if saved_name != "":
 		player_name = saved_name
 
-	# Automatically start silent background session on boot
-	start_silent_session()
 	_connect_google_play_listener()
 
 func _connect_google_play_listener() -> void:
-	# Connect to GodotPlayGameServices if available in tree
-	var pg = get_node_or_null("/root/GodotPlayGameServices")
-	if pg and pg.has_signal("current_player_loaded"):
-		pg.current_player_loaded.connect(_on_google_play_player_loaded)
+	if not GodotPlayGameServices:
+		return
+
+	if not GodotPlayGameServices.current_player_loaded.is_connected(_on_google_play_player_loaded):
+		GodotPlayGameServices.current_player_loaded.connect(_on_google_play_player_loaded)
+
+	if GodotPlayGameServices.android_plugin:
+		if not GodotPlayGameServices.android_plugin.serverSideAccessRequested.is_connected(_on_server_auth_code_received):
+			GodotPlayGameServices.android_plugin.serverSideAccessRequested.connect(_on_server_auth_code_received)
+
+	# If player is already signed in and loaded, start auth exchange immediately
+	if "current_player" in GodotPlayGameServices and GodotPlayGameServices.current_player:
+		_on_google_play_player_loaded(GodotPlayGameServices.current_player)
 
 func _on_google_play_player_loaded(player) -> void:
 	if not player:
 		return
-	var g_id: String = player.player_id if "player_id" in player else ""
 	var g_name: String = player.display_name if "display_name" in player else ""
-	
-	# If authenticated player identifier differs from Google ID, re-authenticate with Google ID
-	if g_id != "" and g_id != player_identifier:
-		await ensure_session(g_id)
-	
-	# Update player display name if non-empty
 	if g_name != "":
 		player_name = g_name
 		_save_local_player_name(g_name)
-		await set_player_name(g_name)
-		
-		# Immediately update leaderboard score metadata with the Google name
-		var local_stars := _get_local_stars()
-		if local_stars > 0:
-			await submit_score(local_stars, g_name)
 
-func start_silent_session() -> void:
-	await ensure_session()
+	if GodotPlayGameServices and GodotPlayGameServices.android_plugin:
+		print("[LootLockerManager] Google Play player loaded (%s). Requesting server auth code..." % g_name)
+		GodotPlayGameServices.android_plugin.requestServerSideAccess(SERVER_CLIENT_ID, false)
+	else:
+		print("[LootLockerManager] Android plugin not active; skipping Google Play token request.")
 
-func ensure_session(custom_id: String = "") -> bool:
-	if is_authenticated and custom_id == "":
+func _on_server_auth_code_received(token: String) -> void:
+	print("[LootLockerManager] Google Play auth code received from plugin. " , token)
+	if token.strip_edges() == "":
+		print("[LootLockerManager] Warning: Received empty server auth token from Google Play")
+		return
+	await authenticate_with_google_play(token)
+
+func authenticate_with_google_play(token: String) -> bool:
+	if is_authenticated:
+		print("[LootLockerManager] Already authenticated.")
 		return true
 
 	if is_authenticating:
@@ -62,8 +92,9 @@ func ensure_session(custom_id: String = "") -> bool:
 		return is_authenticated
 
 	is_authenticating = true
+	print("[LootLockerManager] Exchanging Google Play auth token with LootLocker...")
 
-	var req = LL_Authentication.GuestSession.new(custom_id)
+	var req = GooglePlayGamesSession.new(token, "/game/session/google-play-games/v1/login")
 	var response = await req.send()
 
 	is_authenticating = false
@@ -75,19 +106,21 @@ func ensure_session(custom_id: String = "") -> bool:
 			player_name = response.player_name
 		public_uid = response.public_uid
 		player_identifier = response.player_identifier
-		print("[LootLockerManager] Authenticated successfully. Player ID: %d, Name: '%s'" % [player_id, player_name])
+		print("[LootLockerManager] Authenticated via Google Play successfully! Player ID: %d, Name: '%s'" % [player_id, player_name])
 		auth_status_changed.emit(true)
-		
-		# Auto-resubmit score with metadata if we have local stars and an effective name
+
 		var eff_name := get_effective_player_name()
+		if eff_name != "" and eff_name != player_name:
+			await set_player_name(eff_name)
+
 		var stars := _get_local_stars()
 		if stars > 0 and eff_name != "":
 			submit_score(stars, eff_name)
-			
+
 		return true
 	else:
 		var err_msg = response.error_data.message if (response and response.error_data) else "Unknown error"
-		print("[LootLockerManager] Authentication failed: %s" % err_msg)
+		print("[LootLockerManager] Google Play LootLocker authentication failed (status %d): %s" % [response.status_code if response else 0, err_msg])
 		auth_status_changed.emit(false)
 		return false
 
@@ -124,9 +157,7 @@ func set_player_name(new_name: String) -> bool:
 	player_name_changed.emit(clean_name)
 
 	if not is_authenticated:
-		var ok := await ensure_session()
-		if not ok:
-			return false
+		return false
 
 	var req = LL_Players.SetPlayerName.new(clean_name)
 	var response = await req.send()
@@ -140,9 +171,7 @@ func set_player_name(new_name: String) -> bool:
 
 func submit_score(score: int, custom_metadata: String = "") -> Dictionary:
 	if not is_authenticated:
-		var ok := await ensure_session()
-		if not ok:
-			return {"success": false, "error": "Not authenticated"}
+		return {"success": false, "error": "Not authenticated"}
 
 	# Determine metadata: prefer custom_metadata, otherwise use effective player name
 	var meta: String = custom_metadata
@@ -164,9 +193,7 @@ func submit_score(score: int, custom_metadata: String = "") -> Dictionary:
 
 func get_leaderboard(count: int = 50) -> Dictionary:
 	if not is_authenticated:
-		var ok := await ensure_session()
-		if not ok:
-			return {"success": false, "items": [], "my_rank": 0, "my_score": 0}
+		return {"success": false, "items": [], "my_rank": 0, "my_score": 0}
 
 	var list_req = LL_Leaderboards.GetScoreList.new(LEADERBOARD_ID, count)
 	var list_res = await list_req.send()
@@ -239,3 +266,47 @@ func _load_local_player_name() -> String:
 			f.close()
 			return s
 	return ""
+
+		
+# No Longer uses of Guest Method Instead we already shifted to token exchange method
+
+#func start_silent_session() -> void:
+	#await ensure_session()
+#
+#func ensure_session(custom_id: String = "") -> bool:
+	#if is_authenticated and custom_id == "":
+		#return true
+#
+	#if is_authenticating:
+		#await auth_status_changed
+		#return is_authenticated
+#
+	#is_authenticating = true
+#
+	#var req = LL_Authentication.GuestSession.new(custom_id)
+	#var response = await req.send()
+#
+	#is_authenticating = false
+#
+	#if response and response.success:
+		#is_authenticated = true
+		#player_id = response.player_id
+		#if response.player_name != "":
+			#player_name = response.player_name
+		#public_uid = response.public_uid
+		#player_identifier = response.player_identifier
+		#print("[LootLockerManager] Authenticated successfully. Player ID: %d, Name: '%s'" % [player_id, player_name])
+		#auth_status_changed.emit(true)
+		#
+		## Auto-resubmit score with metadata if we have local stars and an effective name
+		#var eff_name := get_effective_player_name()
+		#var stars := _get_local_stars()
+		#if stars > 0 and eff_name != "":
+			#submit_score(stars, eff_name)
+			#
+		#return true
+	#else:
+		#var err_msg = response.error_data.message if (response and response.error_data) else "Unknown error"
+		#print("[LootLockerManager] Authentication failed: %s" % err_msg)
+		#auth_status_changed.emit(false)
+		#return false

@@ -24,9 +24,16 @@ signal progress_updated
 
 const ASCII_LEVEL_SCENE: PackedScene = preload("res://SCENES/LEVELS/ascii_level.tscn")
 const HANDCRAFTED_COUNT: int = 15
+const MOBILE_CONTENT_SCALE: float = 1.22
 
 func _ready() -> void:
+	_apply_platform_display_scale()
 	scan_ascii_levels()
+
+func _apply_platform_display_scale() -> void:
+	if OS.has_feature("mobile") or OS.has_feature("android") or OS.has_feature("ios"):
+		get_tree().root.content_scale_factor = MOBILE_CONTENT_SCALE
+		print("[GameManager] Mobile platform detected: applied content_scale_factor = ", MOBILE_CONTENT_SCALE)
 
 func scan_ascii_levels() -> void:
 	if levels.size() > HANDCRAFTED_COUNT:
@@ -149,7 +156,6 @@ func save_progress() -> void:
 	var bytes = JSON.stringify(data).to_utf8_buffer()
 	if SaveManager:
 		SaveManager.save_game("SaveData", bytes)
-		print("SaveSendToCloud")
 	
 	#local backup
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)

@@ -69,8 +69,13 @@ func load_leaderboard(is_refresh: bool = false) -> void:
 
 	if not is_instance_valid(self) or not visible:
 		return
-
-	if not res.get("success", false):
+		
+	if OS.get_name() == "Android" and not GodotPlayGameServices.is_signed_in:
+		loading_label.text = "Sign in to Google Play Games\nin Settings to view Leaderboards!"
+		my_rank_label.text = "YOUR RANK: UNRANKED"
+		my_score_label.text = "%d ⭐" % local_stars
+		return
+	elif not res.get("success", false):
 		loading_label.text = "Could not load leaderboard.\nCheck connection and tap Refresh."
 		loading_label.visible = true
 		my_rank_label.text = "YOUR RANK: UNRANKED"

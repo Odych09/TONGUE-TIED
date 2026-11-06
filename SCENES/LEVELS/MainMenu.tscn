@@ -333,10 +333,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 130
-theme_override_constants/margin_top = 110
-theme_override_constants/margin_right = 130
-theme_override_constants/margin_bottom = 90
+theme_override_constants/margin_left = 70
+theme_override_constants/margin_top = 45
+theme_override_constants/margin_right = 70
+theme_override_constants/margin_bottom = 40
 
 [node name="HBoxContainer" type="Control" parent="UI/MarginContainer" unique_id=654221895]
 layout_mode = 2
@@ -388,9 +388,9 @@ end_cap_mode = 2
 [node name="ButtonsStack" type="Control" parent="UI/MarginContainer/HBoxContainer/LeftColumn" unique_id=648228439]
 custom_minimum_size = Vector2(420, 0)
 anchors_preset = 0
-offset_top = 275.0
+offset_top = 250.0
 offset_right = 790.0
-offset_bottom = 645.0
+offset_bottom = 620.0
 offset_transform_enabled = true
 
 [node name="PlayButton" type="Button" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack" unique_id=65199515]
@@ -458,7 +458,7 @@ anchors_preset = -1
 anchor_left = 0.021518987
 anchor_top = 0.72162163
 anchor_right = 0.4164557
-anchor_bottom = 1.0297297
+anchor_bottom = 1.0
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 41
 theme_override_styles/normal = SubResource("StyleBoxTexture_mnmd0")

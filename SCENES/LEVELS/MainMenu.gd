@@ -91,6 +91,11 @@ var hover_tongue_prog: float = 0.0
 var last_hover_target: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	# Responsive diorama positioning for any screen aspect ratio or scale
+	_align_diorama_to_screen()
+	if not get_viewport().size_changed.is_connected(_align_diorama_to_screen):
+		get_viewport().size_changed.connect(_align_diorama_to_screen)
+
 	# Cache base transform positions
 	diorama_base_pos = diorama.position
 	pad_base_pos = lily_pad.position
@@ -365,6 +370,28 @@ func _process_parallax(delta: float) -> void:
 	# Diorama (frog, lilypad, ripples) depth integration (approx layer 3 depth)
 	if diorama:
 		diorama.position = diorama_base_pos + current_parallax * MAX_PARALLAX_OFFSET * 0.65
+
+func _align_diorama_to_screen() -> void:
+	if not is_instance_valid(frog) or not is_instance_valid(lily_pad):
+		return
+	var vp_size := get_viewport_rect().size
+	# Position frog center comfortably at 73% of the viewport width (never clipped on right or left)
+	var target_frog_x := clampf(vp_size.x * 0.73, 900.0, 1420.0)
+	var delta_x := target_frog_x - 1500.0
+
+	lily_pad.position.x = 1500.0 + delta_x
+	pad_shadow.position.x = 1500.0 + delta_x
+	frog.position.x = 1500.0 + delta_x
+	if is_instance_valid(fly):
+		fly.position.x = 1628.0 + delta_x
+	if is_instance_valid(ambient_pad_2):
+		ambient_pad_2.position.x = clampf(vp_size.x - 140.0, 1200.0, 1780.0)
+
+	pad_base_pos = lily_pad.position
+	pad_shadow_base_pos = pad_shadow.position
+	frog_base_pos = frog.position
+	if is_instance_valid(fly):
+		fly_base_pos = fly.position
 
 func _animate_hover_tongue(delta: float) -> void:
 	# Snout / mouth position on the frog (between and slightly below eyes)

@@ -13,6 +13,9 @@ config_version=5
 config/name="FROG_GAME"
 run/main_scene="uid://bjdglxl4fb47s"
 config/features=PackedStringArray("4.7", "Mobile")
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/show_image=false
+boot_splash/use_filter=false
 config/icon="uid://ca7pbj1jbccv5"
 
 [autoload]
@@ -25,8 +28,8 @@ SaveManager="*uid://pw7yhdisfwif"
 LootLockerSDK="*uid://c5nk2ub7xngnd"
 LootLockerManager="*res://SCRIPTS/LootLockerManager.gd"
 LeaderboardsClient="*uid://cag33jnv6nkas"
-MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
 MusicManager="*uid://n6e3iwojfdtt"
+MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
 
 [display]
 
@@ -37,6 +40,7 @@ window/size/window_width_override=1920
 window/size/window_height_override=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+window/stretch/scale=1.22
 
 [editor_plugins]
 
