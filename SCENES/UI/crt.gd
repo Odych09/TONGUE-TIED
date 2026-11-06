@@ -283,7 +283,7 @@ func _process(delta: float) -> void:
 		elif player.remaining_pulls <= 0:
 			color_tag = "[color=#ff4d4d]"
 			
-		pulls_label.text = "[center]⚡ PULLS: " + color_tag + str(player.remaining_pulls) + "[/color][/center]"
+		pulls_label.text = "[center] PULLS: " + color_tag + str(player.remaining_pulls) + "[/color][/center]"
 		
 		var shake_target: Control = pulls_badge if pulls_badge else pulls_label
 		if shake_target:
@@ -303,7 +303,7 @@ func _process(delta: float) -> void:
 		else:
 			bug_color = "[color=#9ef01a]"
 			
-		bugs_label.text = "[center]🪰 FLIES: " + bug_color + str(player.collected_bugs) + "/" + str(player.required_bugs) + "[/color][/center]"
+		bugs_label.text = "[center] FLIES: " + bug_color + str(player.collected_bugs) + "/" + str(player.required_bugs) + "[/color][/center]"
 
 	# --- Pull Button Active State / Juice ---
 	if big_pull_btn:

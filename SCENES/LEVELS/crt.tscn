@@ -163,36 +163,40 @@ grow_vertical = 2
 mouse_filter = 1
 
 [node name="TopLeftBar" type="HBoxContainer" parent="UI" unique_id=1849204910]
-layout_mode = 0
-offset_left = 28.0
-offset_top = 20.0
-offset_right = 440.0
-offset_bottom = 78.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.014583333
+anchor_top = 0.033333335
+anchor_right = 0.23229167
+anchor_bottom = 0.14629629
+offset_right = -3.0
+offset_bottom = -32.0
 theme_override_constants/separation = 12
+metadata/_edit_use_anchors_ = true
 
 [node name="RestartBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204911]
-custom_minimum_size = Vector2(62, 58)
+custom_minimum_size = Vector2(110.57, 90)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
 theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 54
 theme_override_styles/normal = SubResource("StyleBoxTexture_icon_btn")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_icon_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_icon_btn_hover")
 text = "↺"
 
 [node name="MenuBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204912]
-custom_minimum_size = Vector2(62, 58)
+custom_minimum_size = Vector2(104.3, 58)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
 theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 45
 theme_override_styles/normal = SubResource("StyleBoxTexture_icon_btn")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_icon_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_icon_btn_hover")
@@ -209,7 +213,7 @@ theme_override_colors/font_color = Color(1, 0.94, 0.72, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 31
 text = "LEVEL 1"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -217,17 +221,20 @@ vertical_alignment = 1
 [node name="FliesBadge" type="PanelContainer" parent="UI" unique_id=1849204940]
 custom_minimum_size = Vector2(290, 58)
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -145.0
-offset_top = 20.0
-offset_right = 145.0
-offset_bottom = 78.0
+anchors_preset = -1
+anchor_left = 0.34114584
+anchor_top = 0.033333335
+anchor_right = 0.6588542
+anchor_bottom = 0.1574074
+offset_left = 80.0
+offset_right = -80.0
+offset_bottom = -38.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
+metadata/_edit_use_anchors_ = true
 
 [node name="FLIES_LEFT" type="RichTextLabel" parent="UI/FliesBadge" unique_id=952952309]
+custom_minimum_size = Vector2(410, 80)
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 0.96, 0.85, 1)
@@ -235,25 +242,26 @@ theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/normal_font = ExtResource("2_t1itu")
 theme_override_fonts/bold_font = ExtResource("2_t1itu")
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 57
 bbcode_enabled = true
-text = "[center]🪰 FLIES: [color=#ffd23f]0/6[/color][/center]"
+text = "[center] FLIES: [color=#ffd23f]0/6[/color][/center]"
 scroll_active = false
 
 [node name="PullsBadge" type="PanelContainer" parent="UI" unique_id=1849204941]
 custom_minimum_size = Vector2(243, 58)
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -275.0
-offset_top = 20.0
-offset_right = -32.0
-offset_bottom = 78.0
+anchors_preset = -1
+anchor_left = 0.8567708
+anchor_top = 0.033333335
+anchor_right = 0.98333335
+anchor_bottom = 0.1574074
+offset_bottom = -38.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
+metadata/_edit_use_anchors_ = true
 
 [node name="PULLS_LEFT" type="RichTextLabel" parent="UI/PullsBadge" unique_id=259030708]
+custom_minimum_size = Vector2(110, 80)
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 0.96, 0.85, 1)
@@ -261,23 +269,21 @@ theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/normal_font = ExtResource("2_t1itu")
 theme_override_fonts/bold_font = ExtResource("2_t1itu")
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "[center]⚡ PULLS: [color=white]15[/color][/center]"
+text = "[center] PULLS: [color=white]15[/color][/center]"
 scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="BigPullBtn" type="Button" parent="UI" unique_id=1849204915]
 custom_minimum_size = Vector2(235, 100)
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -270.0
-offset_top = -128.0
-offset_right = -35.0
-offset_bottom = -28.0
+anchors_preset = -1
+anchor_left = 0.859375
+anchor_top = 0.88148147
+anchor_right = 0.9817708
+anchor_bottom = 0.97407407
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 0.95, 1)
@@ -289,7 +295,8 @@ theme_override_font_sizes/font_size = 38
 theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
-text = "⚡ PULL"
+text = "PULL"
+metadata/_edit_use_anchors_ = true
 
 [node name="WinModal" type="Control" parent="UI" unique_id=1849204916]
 visible = false

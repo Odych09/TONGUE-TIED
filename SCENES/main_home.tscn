@@ -327,17 +327,15 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="TopBar" type="PanelContainer" parent="UI" unique_id=145920109]
-custom_minimum_size = Vector2(0, 96)
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
+offset_right = 412.0
 offset_bottom = 96.0
-grow_horizontal = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_top_bar")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/TopBar" unique_id=145920110]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 36
 theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 36
@@ -345,6 +343,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/TopBar/MarginContainer" unique_id=145920111]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 16
 
 [node name="BackButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920112]
@@ -362,16 +361,26 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
 text = "←  MENU"
 
-[node name="Spacer" type="Control" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920113]
-layout_mode = 2
-size_flags_horizontal = 3
+[node name="RightBar" type="VBoxContainer" parent="UI" unique_id=145920113]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -400.0
+offset_top = 18.0
+offset_right = -36.0
+offset_bottom = 450.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/separation = 16
 
-[node name="StarsBadge" type="PanelContainer" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920114]
+[node name="StarsBadge" type="PanelContainer" parent="UI/RightBar" unique_id=145920114]
 custom_minimum_size = Vector2(361.42, 122.41)
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
 
-[node name="StarsLabel" type="Label" parent="UI/TopBar/MarginContainer/HBoxContainer/StarsBadge" unique_id=145920115]
+[node name="StarsLabel" type="Label" parent="UI/RightBar/StarsBadge" unique_id=145920115]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.25, 1)
 theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
@@ -382,9 +391,10 @@ text = "STARS 0 / 45"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LeaderboardButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920118]
+[node name="LeaderboardButton" type="Button" parent="UI/RightBar" unique_id=145920118]
 custom_minimum_size = Vector2(279.7, 122.41)
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_colors/font_color = Color(1, 0.92, 0.35, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.8, 0.25, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
@@ -397,9 +407,10 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed"
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "RANKS"
 
-[node name="SettingsButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920119]
+[node name="SettingsButton" type="Button" parent="UI/RightBar" unique_id=145920119]
 custom_minimum_size = Vector2(155.995, 122.41)
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 0.75, 1)
 theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
@@ -421,6 +432,30 @@ offset_top = -140.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
+
+[node name="WorldButton" type="Button" parent="UI/BottomBar" unique_id=145920191]
+custom_minimum_size = Vector2(360, 96)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 36.0
+offset_top = -48.0
+offset_right = 396.0
+offset_bottom = 48.0
+grow_vertical = 2
+pivot_offset = Vector2(180, 48)
+theme_override_colors/font_color = Color(0.35, 0.95, 0.75, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.95, 0.4, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "🌴 WORLD 1: LAGOON ▾"
 
 [node name="QuickPlayButton" type="Button" parent="UI/BottomBar" unique_id=145920121]
 custom_minimum_size = Vector2(420, 104)

@@ -19,7 +19,6 @@ extends Control
 @onready var play_btn: Button = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/PlayButton
 @onready var settings_btn: Button = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/SettingsButton
 @onready var quit_btn: Button = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/QuitButton
-@onready var hint_1: Label = $UI/MarginContainer/HBoxContainer/LeftColumn/ControlHints/Hint1
 
 # Indicator pips inside buttons
 @onready var play_pip: Panel = $UI/MarginContainer/HBoxContainer/LeftColumn/ButtonsStack/PlayButton/Pip
@@ -137,10 +136,6 @@ func _ready() -> void:
 	volume_slider.value_changed.connect(_on_volume_changed)
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
 	crt_check.toggled.connect(_on_crt_toggled)
-
-	# Mobile dynamic control hint
-	if OS.get_name() == "Android" or OS.get_name() == "iOS":
-		hint_1.text = "🎮  SWIPE TO STRETCH TONGUE   •   TAP PULL TO SNAP"
 
 	# Initialize settings state
 	_init_settings_values()

@@ -13,10 +13,11 @@ extends Control
 
 # HUD
 @onready var back_btn: Button = $UI/TopBar/MarginContainer/HBoxContainer/BackButton
-@onready var stars_label: Label = $UI/TopBar/MarginContainer/HBoxContainer/StarsBadge/StarsLabel
-@onready var leaderboard_btn: Button = $UI/TopBar/MarginContainer/HBoxContainer/LeaderboardButton
-@onready var settings_btn: Button = $UI/TopBar/MarginContainer/HBoxContainer/SettingsButton
+@onready var stars_label: Label = $UI/RightBar/StarsBadge/StarsLabel
+@onready var leaderboard_btn: Button = $UI/RightBar/LeaderboardButton
+@onready var settings_btn: Button = $UI/RightBar/SettingsButton
 @onready var quick_play_btn: Button = $UI/BottomBar/QuickPlayButton
+@onready var chapter_btn: Button = $UI/BottomBar/WorldButton
 
 # Level Info Modal
 @onready var level_modal: Control = $LevelModal
@@ -126,7 +127,6 @@ const BIOMES: Array[Dictionary] = [
 
 # State variables
 var current_chapter: int = 0
-var chapter_btn: Button = null
 var biome_tween: Tween = null
 var selected_level_index: int = 0
 var is_dragging: bool = false
@@ -318,43 +318,11 @@ func _input(event: InputEvent) -> void:
 # --- Chapter / World System ---
 
 func _setup_chapter_button() -> void:
-	var total_chapters: int = int(ceil(float(GameManager.levels.size()) / 15.0))
-	if total_chapters <= 1:
+	if not is_instance_valid(chapter_btn):
 		return
-
-	var hbox := $UI/TopBar/MarginContainer/HBoxContainer as HBoxContainer
-	if not hbox:
-		return
-
-	chapter_btn = Button.new()
-	chapter_btn.name = "ChapterButton"
-	chapter_btn.custom_minimum_size = Vector2(250, 56)
-	chapter_btn.add_theme_font_override("font", FONT_GORDITAS)
-	chapter_btn.add_theme_font_size_override("font_size", 19)
-	chapter_btn.add_theme_color_override("font_color", Color(1.0, 0.95, 0.4, 1.0))
-	chapter_btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 0.85, 1.0))
-	chapter_btn.add_theme_color_override("font_outline_color", Color(0.12, 0.05, 0.02, 1.0))
-	chapter_btn.add_theme_constant_override("outline_size", 6)
-
-	var sb_norm := load("res://ASSETS/UI/panels/wood_badge.svg") as Texture2D
-	if sb_norm:
-		var st := StyleBoxTexture.new()
-		st.texture = sb_norm
-		st.texture_margin_left = 18.0
-		st.texture_margin_right = 18.0
-		st.texture_margin_top = 10.0
-		st.texture_margin_bottom = 10.0
-		chapter_btn.add_theme_stylebox_override("normal", st)
-		chapter_btn.add_theme_stylebox_override("hover", st)
-		chapter_btn.add_theme_stylebox_override("pressed", st)
-
-	chapter_btn.pressed.connect(_on_chapter_button_pressed)
+	if not chapter_btn.pressed.is_connected(_on_chapter_button_pressed):
+		chapter_btn.pressed.connect(_on_chapter_button_pressed)
 	_hook_btn_animations(chapter_btn)
-
-	# Place nicely in top bar after Back button
-	hbox.add_child(chapter_btn)
-	hbox.move_child(chapter_btn, 1)
-
 	_update_chapter_button_text()
 
 func _update_chapter_button_text() -> void:
@@ -414,7 +382,7 @@ func _show_world_banner() -> void:
 
 func _on_chapter_button_pressed() -> void:
 	click_sfx.play()
-	var total_chapters: int = int(ceil(float(GameManager.levels.size()) / 15.0))
+	var total_chapters: int = maxi(int(ceil(float(GameManager.levels.size()) / 15.0)), BIOMES.size())
 	current_chapter = (current_chapter + 1) % total_chapters
 	_update_chapter_button_text()
 	_apply_biome_theme(true)
