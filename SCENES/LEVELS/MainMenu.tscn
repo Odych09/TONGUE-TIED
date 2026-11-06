@@ -486,30 +486,39 @@ offset_right = 790.0
 offset_bottom = 790.0
 size_flags_vertical = 3
 
-[node name="ControlHints" type="VBoxContainer" parent="UI/MarginContainer/HBoxContainer/LeftColumn" unique_id=1528970817]
+[node name="ControlHints" type="Control" parent="UI/MarginContainer/HBoxContainer/LeftColumn" unique_id=2003339898]
 layout_mode = 1
-anchors_preset = -1
 anchor_left = 1.7873417
 anchor_top = 1.0511364
 anchor_right = 2.2594938
 anchor_bottom = 1.0977273
-theme_override_constants/separation = 6
+offset_right = 226.99988
 metadata/_edit_use_anchors_ = true
 
-[node name="Hint1" type="Label" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ControlHints" unique_id=805697907]
-layout_mode = 2
+[node name="Branding" type="Label" parent="UI/MarginContainer/HBoxContainer/LeftColumn/ControlHints" unique_id=805697907]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.025000203
+anchor_top = 1.2682942
+anchor_right = 0.7361166
+anchor_bottom = 2.2595136
+offset_right = -97.08734
+offset_bottom = -8.639999
+scale = Vector2(1.27, 1.27)
 theme_override_colors/font_color = Color(0.85, 0.94, 1, 0.85)
 theme_override_fonts/font = ExtResource("4_cvoun")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 33
 text = " AKURA INTERACTIVE ™"
 label_settings = SubResource("LabelSettings_05orf")
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="RightHeroSpace" type="Control" parent="UI/MarginContainer/HBoxContainer" unique_id=480774487]
 layout_mode = 1
-anchor_left = 0.52409637
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 1.488764
+anchor_top = -0.2713568
+anchor_right = 1.9646677
+anchor_bottom = 0.72864324
 size_flags_horizontal = 3
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true

@@ -348,7 +348,7 @@ layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="BackButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920112]
-custom_minimum_size = Vector2(170, 60)
+custom_minimum_size = Vector2(340, 60)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.94, 0.3, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
@@ -356,7 +356,7 @@ theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
@@ -367,7 +367,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="StarsBadge" type="PanelContainer" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920114]
-custom_minimum_size = Vector2(140, 56)
+custom_minimum_size = Vector2(361.42, 122.41)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
 
@@ -377,29 +377,13 @@ theme_override_colors/font_color = Color(1, 0.9, 0.25, 1)
 theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 22
-text = "⭐ 0 / 45"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CoinsBadge" type="PanelContainer" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920116]
-custom_minimum_size = Vector2(120, 56)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
-
-[node name="CoinsLabel" type="Label" parent="UI/TopBar/MarginContainer/HBoxContainer/CoinsBadge" unique_id=145920117]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
-theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
-theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 22
-text = "🪙 0"
+theme_override_font_sizes/font_size = 42
+text = "STARS 0 / 45"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LeaderboardButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920118]
-custom_minimum_size = Vector2(130, 56)
+custom_minimum_size = Vector2(279.7, 122.41)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.92, 0.35, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.8, 0.25, 1)
@@ -407,21 +391,21 @@ theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
 theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 57
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
-text = "🏆  RANK"
+text = "RANKS"
 
 [node name="SettingsButton" type="Button" parent="UI/TopBar/MarginContainer/HBoxContainer" unique_id=145920119]
-custom_minimum_size = Vector2(68, 56)
+custom_minimum_size = Vector2(155.995, 122.41)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 0.75, 1)
 theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 61
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")

@@ -14,7 +14,6 @@ extends Control
 # HUD
 @onready var back_btn: Button = $UI/TopBar/MarginContainer/HBoxContainer/BackButton
 @onready var stars_label: Label = $UI/TopBar/MarginContainer/HBoxContainer/StarsBadge/StarsLabel
-@onready var coins_label: Label = $UI/TopBar/MarginContainer/HBoxContainer/CoinsBadge/CoinsLabel
 @onready var leaderboard_btn: Button = $UI/TopBar/MarginContainer/HBoxContainer/LeaderboardButton
 @onready var settings_btn: Button = $UI/TopBar/MarginContainer/HBoxContainer/SettingsButton
 @onready var quick_play_btn: Button = $UI/BottomBar/QuickPlayButton
@@ -627,10 +626,7 @@ func _update_hud_counters() -> void:
 	for i in range(GameManager.levels.size()):
 		total_stars += GameManager.get_level_stars(i)
 	var max_stars: int = GameManager.levels.size() * 3
-	stars_label.text = "⭐ %d / %d" % [total_stars, max_stars]
-
-	# 2. Coins badge (future proofed)
-	coins_label.text = "🪙 0"
+	stars_label.text = "STARS %d / %d" % [total_stars, max_stars]
 
 	# 3. Quick Play button text
 	var next_lvl := GameManager.unlocked_level + 1
