@@ -37,7 +37,7 @@ region_rect = Rect2(0, 0, 308, 100)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p0kf6"]
 texture = ExtResource("14_r4j5v")
 texture_margin_left = 70.0
-texture_margin_right = 200.0
+texture_margin_right = 85.0
 region_rect = Rect2(0, 0, 308, 100)
 modulate_color = Color(0.9647059, 0.6862745, 0.0627451, 1)
 
@@ -59,7 +59,7 @@ region_rect = Rect2(0, 0, 308, 100)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wbed6"]
 texture = ExtResource("14_r4j5v")
 texture_margin_left = 70.0
-texture_margin_right = 200.0
+texture_margin_right = 85.0
 region_rect = Rect2(0, 0, 308, 100)
 modulate_color = Color(0.41215247, 0.41215247, 0.41215247, 1)
 
@@ -400,6 +400,7 @@ anchors_preset = -1
 anchor_right = 0.6506329
 anchor_bottom = 0.35135135
 size_flags_horizontal = 0
+focus_mode = 0
 theme_override_colors/font_color = Color(1, 0.92156863, 0.2784314, 1)
 theme_override_colors/font_focus_color = Color(1, 0.93, 0.35, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
@@ -409,6 +410,8 @@ theme_override_font_sizes/font_size = 80
 theme_override_styles/normal = SubResource("StyleBoxTexture_r4j5v")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_p0kf6")
 theme_override_styles/hover = SubResource("StyleBoxTexture_p0kf6")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_p0kf6")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_p0kf6")
 text = "   PLAY"
 alignment = 0
 metadata/_edit_use_anchors_ = true
@@ -432,11 +435,15 @@ anchor_left = 0.017721519
 anchor_top = 0.3918919
 anchor_right = 0.4835443
 anchor_bottom = 0.7
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 41
 theme_override_styles/normal = SubResource("StyleBoxTexture_05orf")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wbed6")
 theme_override_styles/hover = SubResource("StyleBoxTexture_2v6g1")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_05orf")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_05orf")
 text = "SETTINGS"
 metadata/_edit_use_anchors_ = true
 
@@ -459,11 +466,14 @@ anchor_left = 0.021518987
 anchor_top = 0.72162163
 anchor_right = 0.4164557
 anchor_bottom = 1.0
+focus_mode = 0
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 41
 theme_override_styles/normal = SubResource("StyleBoxTexture_mnmd0")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_r4j5v")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wbed6")
 theme_override_styles/hover = SubResource("StyleBoxTexture_w5jam")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_wbed6")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_w5jam")
 text = "Quit"
 metadata/_edit_use_anchors_ = true
 

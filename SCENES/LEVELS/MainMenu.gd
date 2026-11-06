@@ -252,6 +252,10 @@ func _init_settings_values() -> void:
 func _setup_nav_button(btn: Button, pip: Panel) -> void:
 	btn.mouse_entered.connect(_on_button_hover.bind(btn, pip))
 	btn.mouse_exited.connect(_on_button_unhover.bind(btn, pip))
+	btn.button_up.connect(func():
+		if not btn.is_hovered():
+			_on_button_unhover(btn, pip)
+	)
 
 func _on_button_hover(btn: Button, pip: Panel) -> void:
 	if is_snapping:
@@ -452,6 +456,8 @@ func _on_play_pressed() -> void:
 	if is_snapping:
 		return
 	is_snapping = true
+	_on_button_unhover(play_btn, play_pip)
+	play_btn.release_focus()
 	play_btn.disabled = true
 	settings_btn.disabled = true
 	quit_btn.disabled = true
@@ -521,6 +527,8 @@ func _on_play_pressed() -> void:
 
 func _on_settings_pressed() -> void:
 	click_sfx.play()
+	_on_button_unhover(settings_btn, settings_pip)
+	settings_btn.release_focus()
 	settings_modal.visible = true
 	settings_modal.modulate.a = 0.0
 	settings_panel.scale = Vector2(0.85, 0.85)
@@ -532,6 +540,8 @@ func _on_settings_pressed() -> void:
 
 func _on_settings_back_pressed() -> void:
 	back_sfx.play()
+	_on_button_unhover(settings_btn, settings_pip)
+	settings_btn.release_focus()
 	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tw.tween_property(settings_modal, "modulate:a", 0.0, 0.18)
 	tw.tween_property(settings_panel, "scale", Vector2(0.85, 0.85), 0.18)
@@ -556,5 +566,7 @@ func _on_crt_toggled(toggled: bool) -> void:
 
 func _on_quit_pressed() -> void:
 	click_sfx.play()
+	_on_button_unhover(quit_btn, quit_pip)
+	quit_btn.release_focus()
 	await get_tree().create_timer(0.25).timeout
 	get_tree().quit(0)
