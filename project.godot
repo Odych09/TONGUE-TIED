@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="FROG_GAME"
+config/version="1.0.0"
 run/main_scene="uid://bjdglxl4fb47s"
 config/features=PackedStringArray("4.7", "Mobile")
 boot_splash/bg_color=Color(0, 0, 0, 1)
@@ -26,12 +27,12 @@ SnapshotsClient="*uid://cwcaoife58xkq"
 GodotPlayGameServices="*uid://bnj1e5ski7rlf"
 SaveManager="*uid://pw7yhdisfwif"
 LootLockerSDK="*uid://c5nk2ub7xngnd"
-NetworkManager="*res://SCRIPTS/NetworkManager.gd"
 LootLockerManager="*res://SCRIPTS/LootLockerManager.gd"
 LeaderboardsClient="*uid://cag33jnv6nkas"
 MusicManager="*uid://n6e3iwojfdtt"
 SentryManager="*res://SCRIPTS/SentryManager.gd"
 MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
+NetworkManager="*res://SCRIPTS/NetworkManager.gd"
 
 [debug]
 
@@ -92,8 +93,6 @@ textures/vram_compression/import_etc2_astc=true
 [sentry]
 
 schema_version=5
-options/auto_init=false
-options/skip_auto_init_on_editor_play=true
 options/dsn="https://4925a8b16851d0002da6fa720ee258ac@o4512379038203904.ingest.us.sentry.io/4512379084406784"
 options/attach_scene_tree=true
 godot_logger/events=15
