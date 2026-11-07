@@ -20,6 +20,40 @@ func _ready() -> void:
 		player_name = saved_name
 
 	_connect_google_play_listener()
+	#fake_login("63822640","the_CrazyBoy")
+
+func fake_login(g_id : String , g_name : String) -> bool:
+	is_authenticating = true
+
+	# Bind session directly to the player's permanent Google Play Games ID
+	var req = LL_Authentication.GuestSession.new(g_id)
+	var response = await req.send()
+
+	is_authenticating = false
+
+	if response and response.success:
+		is_authenticated = true
+		player_id = response.player_id
+		public_uid = response.public_uid
+		player_identifier = response.player_identifier
+		print("[LootLockerManager] Authenticated via Google Play successfully! Player ID: %d, Name: '%s'" % [player_id, g_name])
+		auth_status_changed.emit(true)
+
+		# Set the player's Google Play gamer tag on LootLocker
+		if g_name != "":
+			await set_player_name(g_name)
+
+		var eff_name := get_effective_player_name()
+		var stars := _get_local_stars()
+		if stars > 0 and eff_name != "":
+			submit_score(stars, eff_name)
+
+		return true
+	else:
+		var err_msg = response.error_data.message if (response and response.error_data) else "Unknown error"
+		print("[LootLockerManager] LootLocker authentication failed: %s" % err_msg)
+		auth_status_changed.emit(false)
+		return false
 
 func _connect_google_play_listener() -> void:
 	if not GodotPlayGameServices:
