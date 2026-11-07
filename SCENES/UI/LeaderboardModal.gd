@@ -4,6 +4,7 @@ extends Control
 @onready var panel: PanelContainer = $CenterContainer/PanelContainer
 @onready var refresh_btn: Button = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HeaderRow/RefreshButton
 @onready var back_btn: Button = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LeaderboardBackButton
+@onready var scroll_container: ScrollContainer = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ContentContainer/LeaderboardScroll
 @onready var leaderboard_list: VBoxContainer = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ContentContainer/LeaderboardScroll/LeaderboardList
 @onready var loading_label: Label = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ContentContainer/StatusContainer/LoadingLabel
 @onready var my_rank_label: Label = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MyStandingBar/MarginContainer/HBoxContainer/MyRankLabel
@@ -15,12 +16,24 @@ const FONT_GORDITAS := preload("res://ASSETS/FONT/Gorditas-Bold.ttf")
 
 signal closed
 
+# Mobile Touch & Momentum Scrolling
+var is_dragging_scroll: bool = false
+var scroll_pos_f: float = 0.0
+var scroll_velocity_y: float = 0.0
+var active_touch_id: int = -1
+var velocity_samples: Array[float] = []
+const VELOCITY_SAMPLES_MAX: int = 5
+const SCROLL_FRICTION: float = 7.5
+
 func _ready() -> void:
 	visible = false
 	back_btn.pressed.connect(close)
 	refresh_btn.pressed.connect(func(): load_leaderboard(true))
 	_hook_btn_animations(back_btn)
 	_hook_btn_animations(refresh_btn)
+
+	leaderboard_list.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	loading_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	dimmer.gui_input.connect(func(event: InputEvent):
 		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -33,6 +46,14 @@ func open() -> void:
 	panel.scale = Vector2(0.85, 0.85)
 	panel.pivot_offset = panel.size * 0.5
 
+	is_dragging_scroll = false
+	scroll_velocity_y = 0.0
+	active_touch_id = -1
+	velocity_samples.clear()
+	scroll_pos_f = 0.0
+	if is_instance_valid(scroll_container):
+		scroll_container.scroll_vertical = 0
+
 	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.tween_property(self, "modulate:a", 1.0, 0.22)
 	tw.tween_property(panel, "scale", Vector2.ONE, 0.26)
@@ -40,6 +61,8 @@ func open() -> void:
 	load_leaderboard(false)
 
 func close() -> void:
+	is_dragging_scroll = false
+	scroll_velocity_y = 0.0
 	if back_sfx:
 		back_sfx.play()
 	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
@@ -108,6 +131,7 @@ func load_leaderboard(is_refresh: bool = false) -> void:
 
 func _create_leaderboard_row(rank: int, p_name: String, score: int, is_me: bool) -> Control:
 	var panel_row := PanelContainer.new()
+	panel_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel_row.custom_minimum_size = Vector2(0, 52)
 	panel_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
@@ -143,11 +167,13 @@ func _create_leaderboard_row(rank: int, p_name: String, score: int, is_me: bool)
 	panel_row.add_theme_stylebox_override("panel", style)
 
 	var hbox := HBoxContainer.new()
+	hbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hbox.add_theme_constant_override("separation", 16)
 	panel_row.add_child(hbox)
 
 	# Rank Label
 	var rank_label := Label.new()
+	rank_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	rank_label.custom_minimum_size = Vector2(120, 0)
 	rank_label.add_theme_font_override("font", FONT_GORDITAS)
 	rank_label.add_theme_font_size_override("font_size", 20)
@@ -172,6 +198,7 @@ func _create_leaderboard_row(rank: int, p_name: String, score: int, is_me: bool)
 
 	# Name Label
 	var name_label := Label.new()
+	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_label.clip_text = true
 	name_label.text = p_name + ("  (YOU)" if is_me else "")
@@ -189,6 +216,7 @@ func _create_leaderboard_row(rank: int, p_name: String, score: int, is_me: bool)
 
 	# Score Label
 	var score_label := Label.new()
+	score_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	score_label.custom_minimum_size = Vector2(140, 0)
 	score_label.text = "%d ⭐" % score
 	score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -222,3 +250,122 @@ func _hook_btn_animations(btn: Button) -> void:
 		var tw := create_tween()
 		tw.tween_property(btn, "scale", Vector2.ONE, 0.08).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	)
+
+func _process(delta: float) -> void:
+	if not visible or not is_instance_valid(scroll_container):
+		return
+	if not is_dragging_scroll and abs(scroll_velocity_y) > 2.0:
+		scroll_pos_f -= scroll_velocity_y * delta
+		var max_s: float = float(_get_max_scroll())
+		if scroll_pos_f <= 0.0:
+			scroll_pos_f = 0.0
+			scroll_velocity_y = 0.0
+		elif scroll_pos_f >= max_s:
+			scroll_pos_f = max_s
+			scroll_velocity_y = 0.0
+		scroll_container.scroll_vertical = int(round(scroll_pos_f))
+		scroll_velocity_y = lerp(scroll_velocity_y, 0.0, clampf(delta * SCROLL_FRICTION, 0.0, 1.0))
+
+func _input(event: InputEvent) -> void:
+	if not visible or not is_instance_valid(scroll_container):
+		return
+
+	# Touch events (Mobile / Touchscreen)
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			if scroll_container.get_global_rect().has_point(event.position):
+				is_dragging_scroll = true
+				active_touch_id = event.index
+				scroll_pos_f = float(scroll_container.scroll_vertical)
+				scroll_velocity_y = 0.0
+				velocity_samples.clear()
+				get_viewport().set_input_as_handled()
+		else:
+			if is_dragging_scroll and (active_touch_id == -1 or event.index == active_touch_id):
+				is_dragging_scroll = false
+				active_touch_id = -1
+				_compute_release_velocity()
+				get_viewport().set_input_as_handled()
+
+	elif event is InputEventScreenDrag:
+		if is_dragging_scroll and (active_touch_id == -1 or event.index == active_touch_id):
+			var delta_y: float = event.relative.y
+			scroll_pos_f -= delta_y
+			_clamp_scroll()
+			var dt := maxf(get_process_delta_time(), 0.001)
+			_add_velocity_sample(delta_y / dt)
+			get_viewport().set_input_as_handled()
+
+	# Mouse events (Desktop / Editor testing)
+	elif event is InputEventMouseButton:
+		if active_touch_id != -1:
+			return
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				if scroll_container.get_global_rect().has_point(event.position):
+					is_dragging_scroll = true
+					scroll_pos_f = float(scroll_container.scroll_vertical)
+					scroll_velocity_y = 0.0
+					velocity_samples.clear()
+					get_viewport().set_input_as_handled()
+			else:
+				if is_dragging_scroll:
+					is_dragging_scroll = false
+					_compute_release_velocity()
+					get_viewport().set_input_as_handled()
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			if scroll_container.get_global_rect().has_point(event.position):
+				scroll_pos_f -= 50.0
+				_clamp_scroll()
+				get_viewport().set_input_as_handled()
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			if scroll_container.get_global_rect().has_point(event.position):
+				scroll_pos_f += 50.0
+				_clamp_scroll()
+				get_viewport().set_input_as_handled()
+
+	elif event is InputEventMouseMotion:
+		if active_touch_id != -1:
+			return
+		if is_dragging_scroll:
+			var delta_y: float = event.relative.y
+			scroll_pos_f -= delta_y
+			_clamp_scroll()
+			var dt := maxf(get_process_delta_time(), 0.001)
+			_add_velocity_sample(delta_y / dt)
+			get_viewport().set_input_as_handled()
+
+func _add_velocity_sample(v: float) -> void:
+	velocity_samples.append(v)
+	if velocity_samples.size() > VELOCITY_SAMPLES_MAX:
+		velocity_samples.pop_front()
+
+func _compute_release_velocity() -> void:
+	if velocity_samples.is_empty():
+		scroll_velocity_y = 0.0
+		return
+	var sum := 0.0
+	for v in velocity_samples:
+		sum += v
+	var avg := sum / float(velocity_samples.size())
+	if abs(velocity_samples.back()) < 30.0:
+		scroll_velocity_y = 0.0
+	else:
+		scroll_velocity_y = avg
+
+func _get_max_scroll() -> int:
+	if not is_instance_valid(scroll_container):
+		return 0
+	var v_bar := scroll_container.get_v_scroll_bar()
+	if v_bar and v_bar.max_value > 0:
+		return int(maxf(v_bar.max_value - v_bar.page, 0.0))
+	if is_instance_valid(leaderboard_list):
+		return int(maxf(leaderboard_list.size.y - scroll_container.size.y, 0.0))
+	return 0
+
+func _clamp_scroll() -> void:
+	if not is_instance_valid(scroll_container):
+		return
+	var max_s: float = float(_get_max_scroll())
+	scroll_pos_f = clampf(scroll_pos_f, 0.0, max_s)
+	scroll_container.scroll_vertical = int(round(scroll_pos_f))

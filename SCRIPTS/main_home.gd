@@ -283,7 +283,7 @@ func _input(event: InputEvent) -> void:
 		_launch_level(GameManager.levels.size() - 1)
 		return
 
-	if level_modal.visible or settings_modal.visible:
+	if level_modal.visible or settings_modal.visible or (is_instance_valid(leaderboard_modal) and leaderboard_modal.visible):
 		return
 
 	if event is InputEventMouseButton:
@@ -605,9 +605,12 @@ func _update_hud_counters() -> void:
 # --- Level Modal Dialog ---
 
 func _open_level_modal(level_idx: int) -> void:
+	if !(level_idx + 1) <= (GameManager.unlocked_level + 1):
+		print("_open_level_modal",level_idx + 1)
+		print("Unlocked-LEVEL",GameManager.unlocked_level + 1)
+		return
 	selected_level_index = level_idx
 	modal_title.text = "LEVEL %d" % (level_idx + 1)
-
 	# Check for ASCII level title
 	var txt_path := "res://LEVELS_DATA/level_%d.txt" % (level_idx + 1)
 	if FileAccess.file_exists(txt_path):
