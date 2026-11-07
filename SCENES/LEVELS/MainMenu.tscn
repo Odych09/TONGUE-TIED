@@ -20,6 +20,10 @@
 [ext_resource type="Texture2D" uid="uid://b5qgj67gloq4x" path="res://ASSETS/UI/panels/bg.png" id="14_mnmd0"]
 [ext_resource type="Texture2D" uid="uid://buq313i42uq61" path="res://ASSETS/UI/buttons/btn.png" id="14_r4j5v"]
 [ext_resource type="Texture2D" uid="uid://df0gekcm0q0s8" path="res://ASSETS/UI/panels/table.png" id="15_mnmd0"]
+[ext_resource type="Texture2D" uid="uid://byrg4f4ejhrr2" path="res://ASSETS/UI/checkbox_unchecked.svg" id="16_chk_off"]
+[ext_resource type="Texture2D" uid="uid://bpfmt1tc6u211" path="res://ASSETS/UI/checkbox_checked.svg" id="17_chk_on"]
+[ext_resource type="Texture2D" uid="uid://e4lmusohesob" path="res://ASSETS/UI/slider_grabber.svg" id="18_slider_knob"]
+[ext_resource type="Texture2D" uid="uid://bip6mg73wueai" path="res://ASSETS/UI/slider_grabber_highlight.svg" id="19_slider_knob_hl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_maxjq"]
 font_size = 136
@@ -62,13 +66,6 @@ texture_margin_left = 70.0
 texture_margin_right = 85.0
 region_rect = Rect2(0, 0, 308, 100)
 modulate_color = Color(0.41215247, 0.41215247, 0.41215247, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2v6g1"]
-texture = ExtResource("14_r4j5v")
-texture_margin_left = 70.0
-texture_margin_right = 85.0
-region_rect = Rect2(0, 0, 308, 100)
-modulate_color = Color(0.27022192, 0.27022192, 0.2702219, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mnmd0"]
 texture = ExtResource("14_r4j5v")
@@ -113,27 +110,25 @@ font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mnmd0"]
 content_margin_left = 4.0
-content_margin_top = 4.0
+content_margin_top = 6.0
 content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-corner_detail = 6
+content_margin_bottom = 6.0
+bg_color = Color(0.16, 0.08, 0.03, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_agr0f"]
 content_margin_left = 4.0
-content_margin_top = 4.0
+content_margin_top = 6.0
 content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-corner_detail = 6
+content_margin_bottom = 6.0
+bg_color = Color(0.38, 0.82, 0.22, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="LabelSettings" id="LabelSettings_saqwy"]
 font = ExtResource("4_cvoun")
@@ -141,6 +136,8 @@ font_size = 21
 font_color = Color(1, 1, 0.23137255, 1)
 outline_size = 7
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_chk"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u0fo5"]
 texture = ExtResource("14_r4j5v")
@@ -397,14 +394,19 @@ offset_transform_enabled = true
 custom_minimum_size = Vector2(400, 130)
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 0.6506329
-anchor_bottom = 0.35135135
+anchor_right = 0.810038
+anchor_bottom = 0.43743244
+offset_right = -125.92999
+offset_bottom = -31.850006
+scale = Vector2(1.245, 1.245)
 size_flags_horizontal = 0
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 0.92156863, 0.2784314, 1)
 theme_override_colors/font_focus_color = Color(1, 0.93, 0.35, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
 theme_override_colors/font_hover_color = Color(1, 0.9919793, 0.9098202, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 13
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 80
 theme_override_styles/normal = SubResource("StyleBoxTexture_r4j5v")
@@ -432,18 +434,22 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.017721519
-anchor_top = 0.3918919
-anchor_right = 0.4835443
-anchor_bottom = 0.7
+anchor_top = 0.4783784
+anchor_right = 0.5976709
+anchor_bottom = 0.8619729
+offset_right = -90.160034
+offset_bottom = -27.929993
+scale = Vector2(1.245, 1.245)
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 18
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 41
 theme_override_styles/normal = SubResource("StyleBoxTexture_05orf")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wbed6")
-theme_override_styles/hover = SubResource("StyleBoxTexture_2v6g1")
-theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_05orf")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_05orf")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wbed6")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_wbed6")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_wbed6")
 text = "SETTINGS"
 metadata/_edit_use_anchors_ = true
 
@@ -463,10 +469,14 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.021518987
-anchor_top = 0.72162163
-anchor_right = 0.4164557
-anchor_bottom = 1.0
+anchor_top = 0.93783784
+anchor_right = 0.5132152
+anchor_bottom = 1.2844192
+offset_right = -76.44
+offset_bottom = -25.235016
+scale = Vector2(1.245, 1.245)
 focus_mode = 0
+theme_override_constants/outline_size = 13
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 41
 theme_override_styles/normal = SubResource("StyleBoxTexture_mnmd0")
@@ -621,8 +631,11 @@ horizontal_alignment = 2
 [node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow" unique_id=343102086]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+theme_override_icons/grabber = ExtResource("18_slider_knob")
+theme_override_icons/grabber_highlight = ExtResource("19_slider_knob_hl")
 theme_override_styles/slider = SubResource("StyleBoxFlat_mnmd0")
 theme_override_styles/grabber_area = SubResource("StyleBoxFlat_agr0f")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_agr0f")
 max_value = 1.0
 step = 0.05
 value = 1.0
@@ -641,6 +654,10 @@ label_settings = SubResource("LabelSettings_saqwy")
 
 [node name="FullscreenCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow" unique_id=2128562276]
 layout_mode = 2
+focus_mode = 0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_chk")
+theme_override_icons/checked = ExtResource("17_chk_on")
+theme_override_icons/unchecked = ExtResource("16_chk_off")
 
 [node name="CRTRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=113032936]
 layout_mode = 2
@@ -656,6 +673,10 @@ label_settings = SubResource("LabelSettings_saqwy")
 
 [node name="CRTCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow" unique_id=77347175]
 layout_mode = 2
+focus_mode = 0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_chk")
+theme_override_icons/checked = ExtResource("17_chk_on")
+theme_override_icons/unchecked = ExtResource("16_chk_off")
 button_pressed = true
 
 [node name="PlayGamesRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=741029182]

@@ -749,8 +749,23 @@ func _init_settings_values() -> void:
 	fullscreen_check.button_pressed = is_fullscreen
 	
 func _init_play_games() -> void:
-	if not GodotPlayGameServices:
+	if not is_instance_valid(play_games_btn):
 		return
+
+	if OS.get_name() != "Android":
+		play_games_btn.text = "DESKTOP"
+		play_games_btn.disabled = true
+		return
+
+	if not GodotPlayGameServices:
+		play_games_btn.text = "UNAVAILABLE"
+		play_games_btn.disabled = true
+		return
+
+	play_games_btn.mouse_entered.connect(func():
+		_play_hover()
+	)
+
 	play_games_btn.pressed.connect(func():
 		click_sfx.play()
 		if GodotPlayGameServices.is_signed_in:
@@ -773,6 +788,8 @@ func _init_play_games() -> void:
 	if GodotPlayGameServices.is_signed_in:
 		play_games_btn.text = "PROFILE"
 		play_games_label.text = "GOOGLE PLAY: SIGNED IN"
+	if "current_player" in GodotPlayGameServices and GodotPlayGameServices.current_player:
+		play_games_label.text = "PLAY: %s" % GodotPlayGameServices.current_player.display_name
 
 func _on_volume_changed(val: float) -> void:
 	GameManager.set_master_volume(val)

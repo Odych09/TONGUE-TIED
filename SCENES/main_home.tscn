@@ -15,6 +15,10 @@
 [ext_resource type="Texture2D" uid="uid://dtxs3i0i7bfvf" path="res://ASSETS/UI/background/home/Decoration1.png" id="13_shrine"]
 [ext_resource type="Texture2D" uid="uid://bh8xij77wax1e" path="res://ASSETS/UI/background/home/Decoration2.png" id="14_waterfall"]
 [ext_resource type="Texture2D" uid="uid://di1f3nlcll0mk" path="res://ASSETS/UI/background/home/Tiles480x480.png" id="15_tiles"]
+[ext_resource type="Texture2D" uid="uid://byrg4f4ejhrr2" path="res://ASSETS/UI/checkbox_unchecked.svg" id="16_chk_off"]
+[ext_resource type="Texture2D" uid="uid://bpfmt1tc6u211" path="res://ASSETS/UI/checkbox_checked.svg" id="17_chk_on"]
+[ext_resource type="Texture2D" uid="uid://e4lmusohesob" path="res://ASSETS/UI/slider_grabber.svg" id="18_slider_knob"]
+[ext_resource type="Texture2D" uid="uid://bip6mg73wueai" path="res://ASSETS/UI/slider_grabber_highlight.svg" id="19_slider_knob_hl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bg"]
 shader = ExtResource("2_bg")
@@ -141,18 +145,37 @@ expand_margin_right = 20.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_track"]
-bg_color = Color(0.12, 0.06, 0.02, 0.9)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.16, 0.08, 0.03, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_fill"]
-bg_color = Color(0.42, 0.82, 0.28, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.38, 0.82, 0.22, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_chk"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge_disabled"]
+content_margin_left = 22.0
+content_margin_top = 8.0
+content_margin_right = 22.0
+content_margin_bottom = 8.0
+texture = ExtResource("7_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(0.45, 0.45, 0.45, 0.75)
 
 [node name="MainHome" type="Control" unique_id=911861562]
 layout_mode = 3
@@ -748,8 +771,10 @@ text = "100%"
 horizontal_alignment = 2
 
 [node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow" unique_id=145920151]
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+theme_override_icons/grabber = ExtResource("18_slider_knob")
+theme_override_icons/grabber_highlight = ExtResource("19_slider_knob_hl")
 theme_override_styles/slider = SubResource("StyleBoxFlat_slider_track")
 theme_override_styles/grabber_area = SubResource("StyleBoxFlat_slider_fill")
 theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_slider_fill")
@@ -771,6 +796,10 @@ text = "FULLSCREEN MODE"
 
 [node name="FullscreenCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow" unique_id=145920154]
 layout_mode = 2
+focus_mode = 0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_chk")
+theme_override_icons/checked = ExtResource("17_chk_on")
+theme_override_icons/unchecked = ExtResource("16_chk_off")
 
 [node name="CRTRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920155]
 layout_mode = 2
@@ -786,6 +815,10 @@ text = "CRT RETRO SHADER"
 
 [node name="CRTCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow" unique_id=145920157]
 layout_mode = 2
+focus_mode = 0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_chk")
+theme_override_icons/checked = ExtResource("17_chk_on")
+theme_override_icons/unchecked = ExtResource("16_chk_off")
 button_pressed = true
 
 [node name="PlayGamesRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920158]
@@ -804,6 +837,7 @@ text = "GOOGLE PLAY GAMES"
 custom_minimum_size = Vector2(170, 48)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_disabled_color = Color(0.65, 0.65, 0.65, 0.8)
 theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("8_font")
@@ -811,6 +845,7 @@ theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_wood_badge_disabled")
 text = "SIGN IN"
 
 [node name="Spacer" type="Control" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920161]
