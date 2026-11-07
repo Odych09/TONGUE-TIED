@@ -30,6 +30,11 @@ LootLockerManager="*res://SCRIPTS/LootLockerManager.gd"
 LeaderboardsClient="*uid://cag33jnv6nkas"
 MusicManager="*uid://n6e3iwojfdtt"
 MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
+SentryManager="*res://SCRIPTS/SentryManager.gd"
+
+[debug]
+
+settings/gdscript/always_track_call_stacks=true
 
 [display]
 
@@ -81,3 +86,10 @@ rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+
+[sentry]
+
+schema_version=5
+options/attach_log=true
+options/attach_scene_tree=true
+options/dsn="https://4925a8b16851d0002da6fa720ee258ac@o4512379038203904.ingest.us.sentry.io/4512379084406784"
