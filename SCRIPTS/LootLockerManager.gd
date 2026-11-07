@@ -20,6 +20,7 @@ func _ready() -> void:
 		player_name = saved_name
 
 	_connect_google_play_listener()
+	_connect_network_listener()
 	#fake_login("63822640","the_CrazyBoy")
 
 func fake_login(g_id : String , g_name : String) -> bool:
@@ -56,15 +57,56 @@ func fake_login(g_id : String , g_name : String) -> bool:
 		return false
 
 func _connect_google_play_listener() -> void:
-	if not GodotPlayGameServices:
+	var pg = get_node_or_null("/root/GodotPlayGameServices")
+	if not pg:
 		return
 
-	if not GodotPlayGameServices.current_player_loaded.is_connected(_on_google_play_player_loaded):
-		GodotPlayGameServices.current_player_loaded.connect(_on_google_play_player_loaded)
+	if not pg.current_player_loaded.is_connected(_on_google_play_player_loaded):
+		pg.current_player_loaded.connect(_on_google_play_player_loaded)
 
 	# If player is already signed in and loaded, start auth immediately
-	if "current_player" in GodotPlayGameServices and GodotPlayGameServices.current_player:
-		_on_google_play_player_loaded(GodotPlayGameServices.current_player)
+	if "current_player" in pg and pg.current_player:
+		_on_google_play_player_loaded(pg.current_player)
+
+func _connect_network_listener() -> void:
+	var nm = get_node_or_null("/root/NetworkManager")
+	if nm and not nm.became_online.is_connected(_on_network_became_online):
+		nm.became_online.connect(_on_network_became_online)
+
+func _is_network_available() -> bool:
+	var nm = get_node_or_null("/root/NetworkManager")
+	if nm:
+		return nm.is_online
+	return true
+
+func _on_network_became_online() -> void:
+	print("[LootLockerManager] Network connection restored! Re-checking authentication and syncing...")
+
+	# If Google Play is available on Android but not signed in, trigger sign-in
+	var pg = get_node_or_null("/root/GodotPlayGameServices")
+	if pg and "is_signed_in" in pg and not pg.is_signed_in and pg.android_plugin:
+		print("[LootLockerManager] Requesting Google Play sign-in on network reconnect...")
+		pg.sign_in()
+
+	# If not yet authenticated with LootLocker, trigger session
+	if not is_authenticated and not is_authenticating:
+		if pg and "current_player" in pg and pg.current_player:
+			var g_id: String = pg.current_player.player_id if "player_id" in pg.current_player else ""
+			var g_name: String = pg.current_player.display_name if "display_name" in pg.current_player else ""
+			if g_id != "":
+				await login_with_google_player_id(g_id, g_name)
+		elif not OS.has_feature("android"):
+			var eff_name := get_effective_player_name()
+			if eff_name != "":
+				await fake_login(eff_name, eff_name)
+
+	# If authenticated, submit any local stars earned offline
+	if is_authenticated:
+		var stars := _get_local_stars()
+		var eff_name := get_effective_player_name()
+		if stars > 0 and eff_name != "":
+			print("[LootLockerManager] Syncing %d stars to leaderboard after reconnect..." % stars)
+			submit_score(stars, eff_name)
 
 func _on_google_play_player_loaded(player) -> void:
 	if not player:
@@ -154,7 +196,7 @@ func set_player_name(new_name: String) -> bool:
 	player_name = clean_name
 	player_name_changed.emit(clean_name)
 
-	if not is_authenticated:
+	if not _is_network_available() or not is_authenticated:
 		return false
 
 	var req = LL_Players.SetPlayerName.new(clean_name)
@@ -168,6 +210,10 @@ func set_player_name(new_name: String) -> bool:
 		return false
 
 func submit_score(score: int, custom_metadata: String = "") -> Dictionary:
+	if not _is_network_available():
+		print("[LootLockerManager] Offline: Score (%d stars) stored locally; will auto-submit when network returns." % score)
+		return {"success": false, "error": "Offline"}
+
 	if not is_authenticated:
 		return {"success": false, "error": "Not authenticated"}
 
@@ -190,6 +236,10 @@ func submit_score(score: int, custom_metadata: String = "") -> Dictionary:
 		return {"success": false, "error": err}
 
 func get_leaderboard(count: int = 50) -> Dictionary:
+	if not _is_network_available():
+		print("[LootLockerManager] Offline: Cannot retrieve leaderboard without network.")
+		return {"success": false, "items": [], "my_rank": 0, "my_score": 0}
+
 	if not is_authenticated:
 		return {"success": false, "items": [], "my_rank": 0, "my_score": 0}
 
@@ -245,9 +295,10 @@ func get_leaderboard(count: int = 50) -> Dictionary:
 	}
 
 func _get_local_stars() -> int:
-	if GameManager and "level_stars" in GameManager and GameManager.level_stars:
-		if not GameManager.level_stars.is_empty():
-			return GameManager.level_stars.values().reduce(func(accum, number): return accum + number, 0)
+	var gm = get_node_or_null("/root/GameManager")
+	if gm and "level_stars" in gm and gm.level_stars:
+		if not gm.level_stars.is_empty():
+			return gm.level_stars.values().reduce(func(accum, number): return accum + number, 0)
 	return 0
 
 func _save_local_player_name(new_name: String) -> void:
