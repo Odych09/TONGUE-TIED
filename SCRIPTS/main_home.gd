@@ -145,7 +145,7 @@ func _ready() -> void:
 	settings_modal.visible = false
 	toast_panel.visible = false
 	toast_panel.modulate.a = 0.0
-
+	
 	# Initialize Leaderboard Modal
 	leaderboard_modal = get_node_or_null("LeaderboardModal")
 	if not leaderboard_modal:

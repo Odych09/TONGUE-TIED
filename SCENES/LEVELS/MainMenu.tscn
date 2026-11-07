@@ -142,11 +142,8 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u0fo5"]
 texture = ExtResource("14_r4j5v")
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mnmd0"]
-load_path = "res://.godot/imported/btn.png-893b218cd96be3815ceed1719b427ffe.s3tc.ctex"
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1oolv"]
-texture = SubResource("CompressedTexture2D_mnmd0")
+texture = ExtResource("14_r4j5v")
 modulate_color = Color(0.728822, 0.728822, 0.7288219, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q4b3e"]
@@ -700,7 +697,10 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxTexture_u0fo5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1oolv")
 theme_override_styles/hover = SubResource("StyleBoxTexture_1oolv")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1oolv")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_1oolv")
 text = "SIGN IN"
 
 [node name="Spacer" type="Control" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1863393753]
