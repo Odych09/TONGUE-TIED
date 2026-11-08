@@ -17,6 +17,7 @@ const TILE_TONGUE_HAZARD: int = 5
 const TILE_WALL: int = 6
 const TILE_WATER: int = 7
 const TILE_GOOP: int = 8
+const TILE_BREAKABLE_WALL: int = 9
 
 # World Biomes for in-game visuals
 const BIOMES_INGAME: Array[Dictionary] = [
@@ -175,6 +176,8 @@ func _parse_and_build(raw_text: String) -> void:
 			match char:
 				'#':
 					tilemap_layer.set_cell(map_pos, TILE_WALL, Vector2i.ZERO)
+				'=':
+					tilemap_layer.set_cell(map_pos, TILE_BREAKABLE_WALL, Vector2i.ZERO)
 				'~':
 					tilemap_layer.set_cell(map_pos, biome_cfg.hazard_tile, Vector2i.ZERO)
 				'B':

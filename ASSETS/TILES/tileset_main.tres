@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b5t5rk2c2pbki" path="res://ASSETS/TILES/wall2.png" id="7_jj06t"]
 [ext_resource type="Texture2D" uid="uid://xypbvukvvkec" path="res://ASSETS/TILES/water2.png" id="8_wf0yf"]
 [ext_resource type="Texture2D" uid="uid://bx5la5k47fcj" path="res://ASSETS/TILES/goop1.png" id="9_3inlh"]
+[ext_resource type="Texture2D" uid="uid://cx5578y60dh6l" path="res://ASSETS/TILES/wall_unbreakable.png" id="10_unbrk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wvd0d"]
 texture = ExtResource("1_7ykgj")
@@ -95,6 +96,12 @@ texture_region_size = Vector2i(128, 128)
 0:0/0 = 0
 0:0/0/custom_data_0 = "water"
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_unbrk"]
+texture = ExtResource("10_unbrk")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/custom_data_0 = "breakable_wall"
+
 [resource]
 tile_size = Vector2i(128, 128)
 physics_layer_0/collision_layer = 1
@@ -109,3 +116,4 @@ sources/5 = SubResource("TileSetAtlasSource_yr8dt")
 sources/6 = SubResource("TileSetAtlasSource_y7ghf")
 sources/8 = SubResource("TileSetAtlasSource_5uis6")
 sources/7 = SubResource("TileSetAtlasSource_u2kcg")
+sources/9 = SubResource("TileSetAtlasSource_unbrk")

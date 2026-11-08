@@ -305,7 +305,7 @@ func extend_tongue(direction: Vector2) -> void:
 		push_tile_box(next_pos, direction)
 		return
 		
-	if tile_type == "wall":
+	if tile_type == "wall" or tile_type == "breakable_wall":
 		_trigger_blocked_feedback(next_pos, direction, "wall")
 		return
 	elif tile_type == "tongue_hazard":
@@ -405,8 +405,14 @@ func push_tile_box(box_world_pos: Vector2, direction: Vector2) -> void:
 	var map_pos := tilemap_layer.local_to_map(tilemap_layer.to_local(box_world_pos))
 	var next_map_pos := map_pos + Vector2i(direction)
 	
-	if next_tile_type == "water":
-		spawn_water_splash(next_world_pos)
+	if next_tile_type == "water" or next_tile_type == "breakable_wall":
+		if next_tile_type == "water":
+			spawn_water_splash(next_world_pos)
+		else:
+			_play_bonk_sfx(0.9)
+			spawn_box_slide_dust(next_world_pos, direction)
+			shake_strength = 6.0
+			trigger_haptic(35)
 		tilemap_layer.erase_cell(map_pos)
 		tilemap_layer.erase_cell(next_map_pos)
 		tongue_path.append(box_world_pos)

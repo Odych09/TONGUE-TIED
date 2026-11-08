@@ -10,18 +10,19 @@
 # T = Tongue Trap (spikes on tongue)
 # X = Frog Hazard (spikes on body)
 # > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
 name: The Gloom Crossing
 pulls: 4
 bugs: 2
 
 ################
-#..P..#........#
-#..B..#...B..~W#
-#.....#.T.T..~.#
-#T~~~T#..>...~.#
-#XX.XX#.....BT.#
-#............~.#
-#.*...#........#
-#.....#.*......#
+#..P..#......=.#
+#..B..#...B..=W#
+#.....#.T.T..=.#
+#T~~~T#..<..B=.#
+#XX.XX#......=.#
+#............=.#
+#.*...#......=.#
+#.....#.*....=.#
 ################
