@@ -1,21 +1,26 @@
-# Level 29: Tightrope
+# Level 29: The Razor's Edge
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Goop
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: Tightrope
-pulls: 3
+name: The Razor's Edge
+pulls: 2
 bugs: 2
 
-#############
-#P..#...#..W#
-#...#.B.#...#
-#...#.~.#...#
-#.~.#...#.~.#
-#.*.......*.#
-#############
+###################
+#P.T...T...T.....W#
+#..T.*.T...T...T..#
+#####.#####.#######
+#.................#
+#######.#####.#####
+#..X...X...*...X..#
+#..X...X...X...X..#
+###################

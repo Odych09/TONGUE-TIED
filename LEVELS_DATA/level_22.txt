@@ -1,23 +1,26 @@
-# Level 22: Croc Carousel
+# Level 22: Twin Jaws
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Goop
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# > = Crocodile moving right
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: Croc Carousel
+name: Twin Jaws
 pulls: 4
-bugs: 2
+bugs: 3
 
-############
-#P...#...W.#
-#....#.....#
-#.B..~..B..#
-#....~ > ..#
-#.*..~..*..#
-#....#.....#
-############
+###################
+#P......#....*....#
+#..>....#..~~~~~..#
+#.......#..~...~..#
+#.......B..~.W.~..#
+#...<...#..~...~..#
+#.......#..~~~~~..#
+#.*.....#....*....#
+###################

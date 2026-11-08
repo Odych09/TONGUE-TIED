@@ -1,21 +1,26 @@
-# Level 26: The Forking Canal
+# Level 26: Sokoban Shallows
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Goop
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: The Forking Canal
+name: Sokoban Shallows
 pulls: 4
-bugs: 3
+bugs: 2
 
-###############
-#P...#...#...W#
-#.B..~.B.~....#
-#....#...#....#
-#.*..#.*.#..*.#
-#....#...#....#
-###############
+##################
+#P.....#.........#
+#.B....#..B...*..#
+#......#.........#
+#~~~~~~#..XXXXX..#
+#......#..~~~~~..#
+#.*.......XXXXX..#
+#......#....W....#
+##################

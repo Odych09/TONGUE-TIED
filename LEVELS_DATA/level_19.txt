@@ -1,23 +1,26 @@
-# Level 19: Croc Alley
+# Level 19: The Needle's Eye
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Goop
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# > = Crocodile patrolling right
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: Croc Alley
+name: The Needle's Eye
 pulls: 4
-bugs: 2
+bugs: 3
 
-############
-#P...#.....#
-#..B.#...*.#
-#....#.....#
-#.........~#
-#....#>....#
-#.*.......W#
-############
+##################
+#P..TTT.#.XXXXX.W#
+#...T...#.*...X..#
+#...T...#.....X..#
+#...T...#........#
+#...TTT...TT.TT..#
+#XXXXXX.#........#
+#.*.B...#..*.....#
+##################

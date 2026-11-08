@@ -1,22 +1,25 @@
-# Level 21: Double Bridge
+# Level 21: Caging the Beast
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Goop
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: Double Bridge
-pulls: 5
-bugs: 3
+name: Caging the Beast
+pulls: 3
+bugs: 2
 
-##############
-#P...#..B..#W#
-#..B.#..*..#.#
-#....#.....#.#
-#~~~~#..~..#.#
-#....#..~..#.#
-#.*.....*....#
-##############
+##################
+#P..............*#
+#..B....#........#
+####.####.######.#
+#.......#..>....W#
+#.......#.######.#
+#.*.....#........#
+##################

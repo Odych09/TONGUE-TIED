@@ -1,24 +1,28 @@
-# Level 24: The Crossfire
+# Level 24: Serpent's Coil
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Goop
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# T = Tongue Trap (blocks tongue)
-# X = Frog Spike (blocks frog, allows tongue)
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: The Crossfire
-pulls: 4
-bugs: 2
+name: Serpent's Coil
+pulls: 3
+bugs: 3
 
-###########
-#P......*.#
-#...#...#.#
-#.*.T...#.#
-#...#...#.#
-#.X...#...#
-#...B.~..W#
-###########
+################
+#P..>..........#
+#.############.#
+#.#..........#.#
+#.#.########.#.#
+#.#.#*...W.#.#.#
+#.#.######.#.#.#
+#.#.*......#.#.#
+#.##########.#.#
+#............*.#
+################

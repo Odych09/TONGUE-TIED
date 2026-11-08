@@ -1,20 +1,26 @@
-# Level 23: Island Hopper
+# Level 23: The Sunken Ruin
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Goop
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: Island Hopper
+name: The Sunken Ruin
 pulls: 4
-bugs: 2
+bugs: 3
 
-############
-#P.B~..*~.W#
-#...~.B.~..#
-#.*.~...~..#
-#...~...~..#
-############
+####################
+#P...#...B.~..#...*#
+#.B..#.....~..#..v.#
+#....#.....~.......#
+#~~~~#.....~..#....#
+#....#.....~..#..W.#
+#.*....*...~..#....#
+#....#.....~..#....#
+####################

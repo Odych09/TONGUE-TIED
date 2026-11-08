@@ -1,22 +1,27 @@
-# Level 28: The Great Basin
+# Level 28: The Orchid Vault
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Goop
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: The Great Basin
-pulls: 4
-bugs: 3
+name: The Orchid Vault
+pulls: 5
+bugs: 5
 
-###############
-#P...#....#..W#
-#....#....#...#
-#.B..~.~~~#...#
-#....~..*.B~..#
-#.*..~.~~~#.*.#
-#....#~~~~#...#
-###############
+######################
+#P...#.......#......*#
+#.B..#..B.v..........#
+#....#.......#..###..#
+#~~~~#.......#..#....#
+#....#..~~~~~#..#.W..#
+#.*....*.....#..#..^.#
+#...*#.......#..#....#
+#....#......*#..#....#
+######################

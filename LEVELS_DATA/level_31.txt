@@ -1,22 +1,26 @@
-# Level 31: Shattered Pillars
+# Level 31: Molten Gateway
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# T = Tongue Trap
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: Shattered Pillars
+name: Molten Gateway
 pulls: 4
 bugs: 3
 
-#############
-#P..#...#..W#
-#.B.#.T.#...#
-#...~...~...#
-#...#.*.#...#
-#.*.....#.*.#
-#############
+###################
+#P.....#....*...*.#
+#..B.......TT.TT..#
+#......#...T...T..#
+#~~~~~~#...T...T..#
+#......#....>.....#
+#.*....#...~~~~~.W#
+#......#...~~~~~..#
+###################

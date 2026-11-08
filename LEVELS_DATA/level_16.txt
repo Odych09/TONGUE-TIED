@@ -1,25 +1,27 @@
-# Level 16: The Winding River
+# Level 16: The Gloom Crossing
 # Legend:
 # # = Wall
 # . = Walkable floor
-# ~ = Water
-# B = Pushable box (push into water to build bridge)
-# * = Bug (eat to satisfy goal)
+# ~ = Water / Goop
+# B = Pushable box
+# * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
 # T = Tongue Trap (spikes on tongue)
 # X = Frog Hazard (spikes on body)
 # > / < / ^ / v = Crocodile Enemy
 
-name: The Winding River
+name: The Gloom Crossing
 pulls: 4
 bugs: 2
 
-###############
-#P....#.......#
-#..B..#...*...#
-#.....#.......#
-#~~~~~#...~~~~#
-#.....#.......#
-#..*......W...#
-###############
+################
+#..P..#........#
+#..B..#...B..~W#
+#.....#.T.T..~.#
+#T~~~T#..>...~.#
+#XX.XX#.....BT.#
+#............~.#
+#.*...#........#
+#.....#.*......#
+################

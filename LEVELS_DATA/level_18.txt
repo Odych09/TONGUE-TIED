@@ -1,21 +1,26 @@
-# Level 18: The Great Leap
+# Level 18: Sinking Shallows
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
+# . = Walkable floor
+# ~ = Water / Goop
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: The Great Leap
+name: Sinking Shallows
 pulls: 4
 bugs: 2
 
-################
-#P...~~~~~~~~..#
-#....~~~~~~~~*W#
-#....~~~~~~~~..#
-#~~~~~~~~~~~~..#
-#~~~..~~~~~~~~.#
-#~~~*.~~~~~~~~.#
-################
+#################
+#P.B...#........#
+#~~~~~~#..~~~~~.#
+#~~~~~~#..~.W.~.#
+#XX.XX...~~~~~~.#
+#......#....B...#
+#.*....#...*....#
+#......#........#
+#################

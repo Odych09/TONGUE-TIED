@@ -1,23 +1,26 @@
-# Level 27: Needle Eye
+# Level 27: Bramble & Fang
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Goop
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# T = Tongue Trap (blocks doorway)
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
 
-name: Needle Eye
-pulls: 3
-bugs: 2
+name: Bramble & Fang
+pulls: 4
+bugs: 3
 
-##########
-#P...#..W#
-#.B..T...#
-#....#...#
-#~~~.#...#
-#.*..#.*.#
-#........#
-##########
+###################
+#P.....#....*.....#
+#..B.......TT.TT..#
+#......#...T...T..#
+#~~~~~~#...T...T.W#
+#......#....>.....#
+#.*....#...XX.XX..#
+#......#.........*#
+###################
