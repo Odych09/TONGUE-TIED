@@ -1,23 +1,31 @@
-# Level 41: Croc Enclosure
+# Level 41: The Infernal Switchback
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# > = Crocodile moving right
-# < = Crocodile moving left
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: Croc Enclosure
-pulls: 3
-bugs: 2
+name: The Infernal Switchback
+pulls: 5
+bugs: 5
 
-##############
-#P..#......#W#
-#...# >  < #.#
-#.B........#.#
-#.B........#.#
-#.*.........*#
-##############
+######################
+#P...#...^....#....*.#
+#........^...........#
+#.*..#...#....#..*...#
+#........#...........#
+######...######..#####
+#..>......*.......<..#
+######...######..#####
+#........#...........#
+#.*..#...#....#..*...#
+#....#...v....#......#
+#....#........#.....W#
+######################

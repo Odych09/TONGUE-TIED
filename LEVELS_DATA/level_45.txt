@@ -1,28 +1,34 @@
-# Level 45: The Master of Tongues
+# Level 45: The Master of Tongues (Infernal Sovereign)
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# > = Crocodile moving right
-# v = Crocodile moving down
-# T = Tongue Trap
-# X = Frog Spikes
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: The Master of Tongues
-pulls: 5
-bugs: 3
+name: The Master of Tongues (Infernal Sovereign)
+pulls: 8
+bugs: 7
 
-################
-#P...#...#....W#
-#....# > #..T..#
-#.B..#...#.....#
-#~~~~#...#..*..#
-#....# v #.....#
-#.*..#...#..X..#
-#.....B..#.....#
-#....#......*..#
-################
+########################
+#P...............#....W#
+#.....#....B.....#....=#
+#.B...#....^.....#....##
+#.....#...~~~~~..#....##
+#.~~~~#...~...~..#....##
+#.....#...~.*.~..#....*#
+#..*..#...~...~..#....##
+#.....#...~~~~~..#....##
+#..=..#....v.....#....=#
+#.....#..........#....##
+#.*...#....*.....#....*#
+#.....#...B...B..#....##
+#.....#..........#....##
+#.*...................*#
+########################

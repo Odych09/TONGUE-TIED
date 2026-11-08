@@ -1,23 +1,32 @@
-# Level 42: The Moat Matrix
+# Level 42: The Dragon's Throat
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# X = Frog Spikes (lethal to traverse)
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: The Moat Matrix
-pulls: 3
-bugs: 2
+name: The Dragon's Throat
+pulls: 6
+bugs: 5
 
-#############
-#P..#...#..W#
-#...#.B.#...#
-#.X.~.~.~.X.#
-#...#...#...#
-#.*.~...~.*.#
-#...#...#...#
-#############
+######################
+#P...................#
+#....#...B....#....B.#
+#.B..#...^....#..*^..#
+#....#...#....#..#...#
+#.~~~#...#....#..#.~~#
+#....#.<....>....<...#
+#.*..#...#....#..#...#
+#....#...#....#..#...#
+#....#...v....#..#...#
+#....#........#......#
+#.*..#...*....#....*.#
+#...................W#
+######################

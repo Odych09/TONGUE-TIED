@@ -1,21 +1,32 @@
-# Level 34: Boxlock
+# Level 34: Pincer Forge
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: Boxlock
-pulls: 3
-bugs: 2
+name: Pincer Forge
+pulls: 6
+bugs: 5
 
-###########
-#P...#...W#
-#.B..#..~.#
-#....~....#
-#..B.#..*.#
-#.*..#....#
-###########
+######################
+#P...#........#....*.#
+#....#...B....#......#
+#.B..#...^....#..B...#
+#....#...#....#......#
+#.~~~#...#....#.~~~..#
+#......<....>........#
+#.*..#...#....#..*...#
+#....#...#....#......#
+#....#...v....#..B...#
+#....#........#......#
+#.*......*.........*.#
+#...................W#
+######################

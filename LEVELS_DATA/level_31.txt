@@ -1,4 +1,4 @@
-# Level 31: Molten Gateway
+# Level 31: The Obsidian Portcullis
 # Legend:
 # # = Wall
 # . = Walkable floor
@@ -10,17 +10,21 @@
 # T = Tongue Trap (spikes on tongue)
 # X = Frog Hazard (spikes on body)
 # > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: Molten Gateway
-pulls: 4
-bugs: 3
+name: The Obsidian Portcullis
+pulls: 5
+bugs: 4
 
-###################
-#P.....#....*...*.#
-#..B.......TT.TT..#
-#......#...T...T..#
-#~~~~~~#...T...T..#
-#......#....>.....#
-#.*....#...~~~~~.W#
-#......#...~~~~~..#
-###################
+######################
+#P...#.........#.....#
+#.B..#..B...*..#..*..#
+#....#.........#.....#
+#.~~~#...~~~~.....=..#
+#....#...~..~..#..#..#
+#.*..#...~.W~..#..#..#
+#....#...~~~~..#..#..#
+#....#.........#..#..#
+#....#######.###..#..#
+#.*...............#.*#
+######################

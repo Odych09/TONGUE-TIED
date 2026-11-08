@@ -1,21 +1,30 @@
-# Level 37: Submerged Vault
+# Level 37: The Cinder Paradox
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: Submerged Vault
-pulls: 4
-bugs: 3
+name: The Cinder Paradox
+pulls: 5
+bugs: 5
 
-###############
-#P..#...#...#W#
-#.B.~.B.~...#.#
-#...#...#...#.#
-#.*.#.*.#....*#
-#...#...#.....#
-###############
+######################
+#P..TXT...TXT...TXT.W#
+#.X.T.X.X.T.X.X.T.X..#
+#.T.X.T.T.X.T.T.X.T..#
+#.*...*...*...*...*..#
+#.T.X.T.T.X.T.T.X.T..#
+#.X.T.X.X.T.X.X.T.X..#
+#...TXT...TXT...TXT..#
+#.X.T.X.X.T.X.X.T.X..#
+#.T.X.T.T.X.T.T.X.T..#
+#...TXT...TXT...TXT..#
+######################

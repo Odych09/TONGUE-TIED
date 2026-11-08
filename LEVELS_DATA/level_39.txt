@@ -1,23 +1,33 @@
-# Level 39: Mirror Chamber
+# Level 39: Obsidian Quadrants
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# v = Crocodile moving down
-# ^ = Crocodile moving up
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: Mirror Chamber
-pulls: 4
-bugs: 3
+name: Obsidian Quadrants
+pulls: 7
+bugs: 5
 
-###############
-#P..# v # ^ #W#
-#.B.~...#...~.#
-#...#..*#...#.#
-#.*.#...B...#*#
-#...#.......#.#
-###############
+######################
+#P......*...#...T..W.#
+#....#..B...#...T....#
+#....#..=...#...T....#
+#....###.####...T....#
+##.##.......##.##..###
+#...~...*...~........#
+#...~.......~....>...#
+##.##.......##.##..###
+#...........#...#....#
+#.*..#..X...#...#..*.#
+#....#..X...#...#....#
+#....#..X...#...#....#
+#....#..*...#...#....#
+######################

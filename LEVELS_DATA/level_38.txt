@@ -1,22 +1,32 @@
-# Level 38: The Hourglass
+# Level 38: The Magma Locksmith
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# v = Crocodile moving down
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: The Hourglass
-pulls: 3
-bugs: 2
+name: The Magma Locksmith
+pulls: 6
+bugs: 5
 
-#############
-#P..#...#..W#
-#.B.#.v.#.B.#
-#...#...#...#
-#...~.~.~...#
-#.*.......*.#
-#############
+######################
+#P............#......#
+#....#........#....B.#
+#.B..#...B....#..=...#
+#....#..~~~~~~#..#...#
+#.*..#..~....~#..#..W#
+#....#..~.*..~#..#...#
+#....#..~....~#..#...#
+#....#..~....~#..#...#
+#.*..#..~~~~~~#..#...#
+#....#....>...#..#...#
+#....#........#..#...#
+#.*...............*..#
+######################

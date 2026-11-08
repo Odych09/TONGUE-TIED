@@ -1,23 +1,32 @@
-# Level 40: Needle & Thread
+# Level 40: The Molten Crucible
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# T = Tongue Trap
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: Needle & Thread
-pulls: 3
-bugs: 2
+name: The Molten Crucible
+pulls: 6
+bugs: 5
 
-##########
-#P...#..W#
-#.T..#.~.#
-#..B.#.~.#
-#....~.*.#
-#.*..#...#
-#....#...#
-##########
+######################
+#P............#......#
+#.B..#...B....#....B.#
+#....#..~~~~~~#..~~~~#
+#.~~~#..~....~#..~...#
+#....#..~.*..~#..~..W#
+#.*..#..~....~#..~...#
+#....#..~....~#..~...#
+#....#..~~~~~~#..~...#
+#....#........#..~...#
+#.*..#...*....#..~...#
+#....#........#..~...#
+#.*..............~.*.#
+######################

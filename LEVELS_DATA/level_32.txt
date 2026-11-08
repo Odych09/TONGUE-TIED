@@ -1,23 +1,31 @@
-# Level 32: The Double Cross
+# Level 32: Twin Crucible of Cinders
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# > = Crocodile moving right
-# v = Crocodile moving down
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: The Double Cross
-pulls: 3
-bugs: 2
+name: Twin Crucible of Cinders
+pulls: 5
+bugs: 4
 
-#############
-#P..#..v#..W#
-#.B.........#
-#...# > #...#
-#...#...#...#
-#.*.......*.#
-#############
+######################
+#P...#........#....*.#
+#....#...B....#......#
+#....#...^....#......#
+#..*.......*.........#
+######..~~~~~~..######
+#..>....~....~....<..#
+######..~.W..~..######
+#.......~....~.......#
+#....#..~~~~~~#......#
+#....#...B....#......#
+#.*..#........#....*.#
+######################

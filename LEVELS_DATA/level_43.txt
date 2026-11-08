@@ -1,23 +1,30 @@
-# Level 43: Ironclad
+# Level 43: Caldera of the Sunken Gods
 # Legend:
 # # = Wall
-# . = Floor
-# ~ = Water
-# B = Box
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
 # * = Bug
 # W = Win (Lily Pad)
 # P = Player Start
-# v = Crocodile moving down
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
-name: Ironclad
-pulls: 4
-bugs: 2
+name: Caldera of the Sunken Gods
+pulls: 6
+bugs: 6
 
-################
-#P...#...#....W#
-#.B..# v #.B...#
-#..............#
-#~~~~#...#~~~~.#
-#....#.B.#.....#
-#.*...........*#
-################
+######################
+#P..T.X.T..T.X.T..T.W#
+#...T.X.T..T.X.T..T..#
+#.T.X.*.X..X.*.X..X..#
+#.T.X...X..X...X..X..#
+#.*..............*...#
+#.T.X...X..X...X..X..#
+#.T.X.*.X..X.*.X..X..#
+#...T.X.T..T.X.T..T..#
+#...T.X.T..T.X.T..T..#
+#.*..............*...#
+######################
