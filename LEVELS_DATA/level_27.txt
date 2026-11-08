@@ -10,17 +10,19 @@
 # T = Tongue Trap (spikes on tongue)
 # X = Frog Hazard (spikes on body)
 # > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
+
 
 name: Bramble & Fang
-pulls: 4
+pulls: 6
 bugs: 3
 
 ###################
 #P.....#....*.....#
 #..B.......TT.TT..#
-#......#...T...T..#
-#~~~~~~#...T...T.W#
-#......#....>.....#
-#.*....#...XX.XX..#
-#......#.........*#
+#......#...T.W.T..#
+#~~~~~~#...T...T..#
+#<....>#....>.....#
+#..>...#...XX.XX..#
+#X.*..T#v........*#
 ###################

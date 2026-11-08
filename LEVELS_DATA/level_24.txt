@@ -10,9 +10,10 @@
 # T = Tongue Trap (spikes on tongue)
 # X = Frog Hazard (spikes on body)
 # > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
 name: Serpent's Coil
-pulls: 3
+pulls: 4
 bugs: 3
 
 ################

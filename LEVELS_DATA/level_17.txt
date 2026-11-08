@@ -10,16 +10,17 @@
 # T = Tongue Trap (spikes on tongue)
 # X = Frog Hazard (spikes on body)
 # > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
 name: Bramble Slalom
-pulls: 4
+pulls: 6
 bugs: 3
 
 #################
-#P...T....#..*..#
+#P...T....#<.*..#
 #.T....T..#..B..#
-#..T.T....#.~~~.#
-#####.#####.~W~.#
-#...T..T..#.~~~.#
-#.*.......#..*..#
+#..T....B.#.~~~.#
+#####=#####.~W~.#
+#...T..T....~~~.#
+#.*.....>.#..*.>#
 #################

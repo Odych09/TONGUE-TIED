@@ -10,16 +10,17 @@
 # T = Tongue Trap (spikes on tongue)
 # X = Frog Hazard (spikes on body)
 # > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
 name: The Razor's Edge
-pulls: 2
+pulls: 5
 bugs: 2
 
 ###################
-#P.T...T...T.....W#
-#..T.*.T...T...T..#
+#P.....T###T.....W#
+#..T.*.T###T...T..#
 #####.#####.#######
-#.................#
+#<...............>#
 #######.#####.#####
 #..X...X...*...X..#
 #..X...X...X...X..#

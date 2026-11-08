@@ -194,13 +194,13 @@ func _parse_and_build(raw_text: String) -> void:
 				'P':
 					player_grid_pos = map_pos
 				'>':
-					enemies_data.append({"pos": map_pos, "dir": Vector2.RIGHT, "steps": 3})
+					enemies_data.append({"pos": map_pos, "dir": Vector2.RIGHT, "steps": 0})
 				'<':
-					enemies_data.append({"pos": map_pos, "dir": Vector2.LEFT, "steps": 3})
+					enemies_data.append({"pos": map_pos, "dir": Vector2.LEFT, "steps": 0})
 				'^':
-					enemies_data.append({"pos": map_pos, "dir": Vector2.UP, "steps": 3})
+					enemies_data.append({"pos": map_pos, "dir": Vector2.UP, "steps": 0})
 				'v':
-					enemies_data.append({"pos": map_pos, "dir": Vector2.DOWN, "steps": 3})
+					enemies_data.append({"pos": map_pos, "dir": Vector2.DOWN, "steps": 0})
 				'.', ' ':
 					pass # Open ground
 

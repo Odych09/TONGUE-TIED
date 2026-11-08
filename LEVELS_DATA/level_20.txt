@@ -10,17 +10,18 @@
 # T = Tongue Trap (spikes on tongue)
 # X = Frog Hazard (spikes on body)
 # > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
 
 name: Predator's Alley
-pulls: 4
+pulls: 6
 bugs: 2
 
 ###################
 #P...#............#
-#.B..#..#######*..#
-#....#..#.........#
+#.B..#..#######.*.#
+#....#..#........>#
 #~~~~#..#.>.......#
-#....#..#.........#
-#.*......#######.W#
+#....#..#<........#
+#.*.....########.W#
 #....#..#.~~~~~~~~#
 ###################

@@ -7,7 +7,7 @@ const TILE_SIZE = 128
 @export var player: Frog
 @export var tilemap_layer: TileMapLayer
 @export var patrol_direction: Vector2 = Vector2.RIGHT # Starting direction
-@export var patrol_steps: int = 3 # Steps before turning around
+@export var patrol_steps: int = 3 # Steps before turning around (<= 0 for corridor patrol until obstacle)
 
 var current_step = 0
 var moving_forward = true
@@ -41,6 +41,7 @@ func _on_move_timer_timeout():
 		var tile_at_next := get_tile_type_at(next_pos)
 		if tile_at_next == "wall" or tile_at_next == "pushable_box" or tile_at_next == "breakable_wall":
 			moving_forward = not moving_forward
+			current_step = 0
 			step_dir = patrol_direction if moving_forward else -patrol_direction
 			update_facing(step_dir)
 			return
@@ -54,10 +55,11 @@ func _on_move_timer_timeout():
 	var target_rot = step_dir.angle() - (PI / 2.0)
 	tween.tween_property(sprite, "rotation", target_rot, 0.15).set_trans(Tween.TRANS_QUAD)
 	
-	current_step += 1
-	if current_step >= patrol_steps:
-		current_step = 0
-		moving_forward = not moving_forward
+	if patrol_steps > 0:
+		current_step += 1
+		if current_step >= patrol_steps:
+			current_step = 0
+			moving_forward = not moving_forward
 	
 	tween.chain().tween_callback(func():
 		is_moving = false

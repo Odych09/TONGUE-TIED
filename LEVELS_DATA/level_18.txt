@@ -10,17 +10,19 @@
 # T = Tongue Trap (spikes on tongue)
 # X = Frog Hazard (spikes on body)
 # > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
+
 
 name: Sinking Shallows
-pulls: 4
+pulls: 5
 bugs: 2
 
 #################
-#P.B...#........#
-#~~~~~~#..~~~~~.#
+#......#<.......#
+#~~P~~~#..~~~~~.#
 #~~~~~~#..~.W.~.#
-#XX.XX...~~~~~~.#
-#......#....B...#
-#.*....#...*....#
-#......#........#
+#X..X..#.~~~~~~.#
+#<....B=...~....#
+#.*...>#...*...>#
+#<.....#<.......#
 #################
