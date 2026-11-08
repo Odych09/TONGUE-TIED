@@ -13,6 +13,7 @@ shader_parameter/water_deep = Color(0.01, 0.42, 0.48, 1)
 shader_parameter/water_mid = Color(0.04, 0.68, 0.68, 1)
 shader_parameter/water_bright = Color(0.14, 0.88, 0.84, 1)
 shader_parameter/caustic_color = Color(0.85, 1, 0.96, 0.45)
+shader_parameter/shimmer_color = Color(0.85, 1, 0.95, 1)
 shader_parameter/speed = 0.3
 shader_parameter/scale = 4.0
 shader_parameter/caustic_strength = 0.45

@@ -20,9 +20,25 @@ var tongue_path: Array[Vector2] = []
 var is_latching: bool = false
 var is_dead: bool = false
 
-var touch_start_pos: Vector2 = Vector2.ZERO
+# --- Touch & Gesture Tuning ---
+const SWIPE_MIN_THRESHOLD: float = 65.0      # Pixels required for deliberate swipe on 1080p canvas
+const SWIPE_REPEAT_DELAY_SEC: float = 0.16   # Delay between steps if dragging continuously
+const TAP_MAX_DISTANCE: float = 24.0         # Max movement to be considered a tap
+const TAP_MAX_DURATION_MS: int = 300         # Max press duration for a tap
+
+var touch_start_screen_pos: Vector2 = Vector2.ZERO
+var touch_start_time_ms: int = 0
+var touch_last_step_time: float = 0.0
 var is_touch_active: bool = false
-const SWIPE_THRESHOLD: float = 38.0
+var has_swiped_this_touch: bool = false
+
+# Procedural Sound Effects
+var _sfx_player: AudioStreamPlayer = null
+var _snd_extend: AudioStreamWAV = null
+var _snd_retract: AudioStreamWAV = null
+var _snd_bonk: AudioStreamWAV = null
+var _snd_blocked: AudioStreamWAV = null
+var _snd_slide: AudioStreamWAV = null
 
 var shake_strength: float = 0.0
 var shake_fade: float = 5.0
@@ -52,6 +68,7 @@ func _ready() -> void:
 		camera = get_viewport().get_camera_2d()
 		
 	_create_tongue_tip()
+	_setup_audio()
 	position = get_tile_center(position)
 	tongue_path.append(position)
 	update_tongue_visuals()
@@ -122,26 +139,24 @@ func _unhandled_input(event: InputEvent) -> void:
 	if is_latching or is_dead:
 		return
 
-	# Touch & Mouse Swipe Gestures
+	# Touch & Mouse Gestures
 	if event is InputEventScreenTouch:
 		if event.pressed:
-			is_touch_active = true
-			touch_start_pos = event.position
+			_start_touch(event.position)
 		else:
-			is_touch_active = false
+			_end_touch(event.position)
 	elif event is InputEventScreenDrag:
 		if is_touch_active:
-			_process_swipe(event.position)
+			_process_drag(event.position)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
-				is_touch_active = true
-				touch_start_pos = event.position
+				_start_touch(event.position)
 			else:
-				is_touch_active = false
+				_end_touch(event.position)
 	elif event is InputEventMouseMotion:
-		if is_touch_active and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			_process_swipe(event.position)
+		if is_touch_active:
+			_process_drag(event.position)
 		
 	var direction := Vector2.ZERO
 	if event.is_action_pressed("ui_right"):
@@ -159,20 +174,93 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
 		pull_frog()
 
-func _process_swipe(current_pos: Vector2) -> void:
+func _start_touch(screen_pos: Vector2) -> void:
 	if is_latching or is_dead:
 		return
-	var diff := current_pos - touch_start_pos
-	if diff.length() >= SWIPE_THRESHOLD:
-		var dir := Vector2.ZERO
-		if abs(diff.x) > abs(diff.y):
-			dir = Vector2.RIGHT if diff.x > 0 else Vector2.LEFT
-		else:
-			dir = Vector2.DOWN if diff.y > 0 else Vector2.UP
-		
-		extend_tongue(dir)
-		touch_start_pos = current_pos
+	is_touch_active = true
+	has_swiped_this_touch = false
+	touch_start_screen_pos = screen_pos
+	touch_start_time_ms = Time.get_ticks_msec()
+	touch_last_step_time = 0.0
 
+func _end_touch(screen_pos: Vector2) -> void:
+	if not is_touch_active:
+		return
+	is_touch_active = false
+	
+	if has_swiped_this_touch:
+		return
+		
+	var distance := screen_pos.distance_to(touch_start_screen_pos)
+	if distance < SWIPE_MIN_THRESHOLD:
+		_process_tap(screen_pos)
+
+func _process_tap(screen_pos: Vector2) -> void:
+	if is_latching or is_dead:
+		return
+		
+	var world_pos: Vector2 = get_canvas_transform().affine_inverse() * screen_pos
+	var tapped_tile := get_tile_center(world_pos)
+	var current_head := tongue_path.back() as Vector2
+	if tapped_tile.is_equal_approx(position):
+		if tongue_path.size() > 1:
+			pull_frog()
+		return
+		
+	# 2. Tap on any existing tongue segment -> Rewind back to that segment!
+	for i in range(tongue_path.size() - 1):
+		if tapped_tile.is_equal_approx(tongue_path[i]):
+			_rewind_tongue_to_index(i)
+			return
+			
+	# 3. Tap on tile directly adjacent to current tongue tip -> Extend tongue!
+	var delta_pos := (tapped_tile - current_head) / TILE_SIZE
+	var step_x := int(round(delta_pos.x))
+	var step_y := int(round(delta_pos.y))
+	if (abs(step_x) == 1 and step_y == 0) or (abs(step_y) == 1 and step_x == 0):
+		extend_tongue(Vector2(step_x, step_y))
+
+func _rewind_tongue_to_index(target_index: int) -> void:
+	if target_index < 0 or target_index >= tongue_path.size() - 1:
+		return
+	while tongue_path.size() > target_index + 1:
+		tongue_path.pop_back()
+	update_tongue_visuals()
+	_play_retract_sfx(0.95)
+	trigger_haptic(22)
+	_animate_tip_retract()
+
+func _process_drag(current_pos: Vector2) -> void:
+	if is_latching or is_dead:
+		return
+	var diff := current_pos - touch_start_screen_pos
+	if diff.length() < SWIPE_MIN_THRESHOLD:
+		return
+		
+	var current_time := float(Time.get_ticks_msec()) / 1000.0
+	if has_swiped_this_touch and (current_time - touch_last_step_time) < SWIPE_REPEAT_DELAY_SEC:
+		return
+		
+	var angle := diff.angle()
+	var dir := Vector2.ZERO
+	
+	if abs(angle) <= 0.61: # East (~35 deg cone)
+		dir = Vector2.RIGHT
+	elif abs(angle - PI) <= 0.61 or abs(angle + PI) <= 0.61: # West
+		dir = Vector2.LEFT
+	elif abs(angle - (PI * 0.5)) <= 0.61: # South
+		dir = Vector2.DOWN
+	elif abs(angle - (-PI * 0.5)) <= 0.61: # North
+		dir = Vector2.UP
+		
+	if dir == Vector2.ZERO:
+		return
+		
+	has_swiped_this_touch = true
+	touch_last_step_time = current_time
+	touch_start_screen_pos += dir * SWIPE_MIN_THRESHOLD
+	
+	extend_tongue(dir)
 
 func rotate_to_direction(direction: Vector2, duration: float = 0.1) -> void:
 	if direction == Vector2.ZERO:
@@ -190,21 +278,22 @@ func extend_tongue(direction: Vector2) -> void:
 	var current_head := tongue_path.back() as Vector2
 	var next_pos := current_head + (direction * TILE_SIZE)
 	
+	# Retract if moving backwards into previous segment
 	if tongue_path.size() > 1 and next_pos.is_equal_approx(tongue_path[tongue_path.size() - 2]):
-		tongue_path.pop_back()
-		update_tongue_visuals()
-		trigger_haptic(12)
+		retract_tongue_one_step()
 		return
 	
+	# Blocked: Self-intersection
 	for p in tongue_path:
 		if p.is_equal_approx(next_pos):
+			_trigger_blocked_feedback(next_pos, direction, "self")
 			return
 
-	# Snappily turn the frog toward the tongue direction on initial extension
+	# Turn frog on first extension
 	if tongue_path.size() == 1:
 		rotate_to_direction(direction, 0.12)
 
-	# Juicy lean/stretch toward extension direction
+	# Juicy stretch towards extension direction
 	var stretch_vec := Vector2(1.15, 0.88) if abs(direction.x) > 0.1 else Vector2(0.88, 1.15)
 	var tw := create_tween()
 	tw.tween_property(sprite, "scale", stretch_vec, 0.05).set_trans(Tween.TRANS_QUAD)
@@ -217,6 +306,7 @@ func extend_tongue(direction: Vector2) -> void:
 		return
 		
 	if tile_type == "wall":
+		_trigger_blocked_feedback(next_pos, direction, "wall")
 		return
 	elif tile_type == "tongue_hazard":
 		hurt_tongue(next_pos)
@@ -224,7 +314,82 @@ func extend_tongue(direction: Vector2) -> void:
 	
 	tongue_path.append(next_pos)
 	update_tongue_visuals()
+	_play_extend_sfx()
 	trigger_haptic(15)
+	_animate_tip_extend()
+
+func retract_tongue_one_step() -> void:
+	if tongue_path.size() <= 1:
+		return
+	tongue_path.pop_back()
+	update_tongue_visuals()
+	_play_retract_sfx()
+	trigger_haptic(12)
+	_animate_tip_retract()
+
+func _trigger_blocked_feedback(blocked_pos: Vector2, direction: Vector2, reason: String) -> void:
+	if reason == "wall":
+		_play_bonk_sfx()
+		trigger_haptic(28)
+		shake_strength = 3.5
+		_spawn_bonk_puff(blocked_pos, direction)
+	else:
+		_play_blocked_sfx()
+		trigger_haptic(20)
+		shake_strength = 2.0
+		
+	# Rubbery recoil animation on tongue tip or frog
+	if tongue_tip and tongue_tip.visible:
+		var original_tip_pos := tongue_tip.global_position
+		var bump_offset := direction * 14.0
+		var tw := create_tween()
+		tw.tween_property(tongue_tip, "global_position", original_tip_pos + bump_offset, 0.04).set_trans(Tween.TRANS_QUAD)
+		tw.tween_property(tongue_tip, "global_position", original_tip_pos, 0.1).set_trans(Tween.TRANS_BACK)
+	else:
+		var original_pos := sprite.position
+		var bump_offset := direction * 10.0
+		var tw := create_tween()
+		tw.tween_property(sprite, "position", original_pos + bump_offset, 0.04).set_trans(Tween.TRANS_QUAD)
+		tw.tween_property(sprite, "position", original_pos, 0.1).set_trans(Tween.TRANS_BACK)
+
+func _animate_tip_extend() -> void:
+	if tongue_tip and tongue_tip.visible:
+		tongue_tip.scale = Vector2(1.3, 1.3)
+		var tw := create_tween()
+		tw.tween_property(tongue_tip, "scale", Vector2.ONE, 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+func _animate_tip_retract() -> void:
+	if tongue_tip and tongue_tip.visible:
+		tongue_tip.scale = Vector2(0.75, 0.75)
+		var tw := create_tween()
+		tw.tween_property(tongue_tip, "scale", Vector2.ONE, 0.1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+func _spawn_bonk_puff(blocked_pos: Vector2, direction: Vector2) -> void:
+	var last_pt: Vector2 = tongue_path.back() if not tongue_path.is_empty() else position
+	var contact_pos: Vector2 = (last_pt + blocked_pos) * 0.5
+	var parent_node := get_parent() if get_parent() else self
+	var particles := CPUParticles2D.new()
+	particles.top_level = true
+	particles.z_index = 10
+	particles.global_position = contact_pos
+	particles.emitting = true
+	particles.one_shot = true
+	particles.explosiveness = 1.0
+	particles.amount = 6
+	particles.lifetime = 0.22
+	particles.direction = -direction
+	particles.spread = 55.0
+	particles.initial_velocity_min = 35.0
+	particles.initial_velocity_max = 75.0
+	particles.gravity = Vector2.ZERO
+	particles.scale_amount_min = 2.5
+	particles.scale_amount_max = 5.0
+	particles.color = Color(1.0, 0.88, 0.45, 0.9)
+	parent_node.add_child(particles)
+	
+	var tw := create_tween()
+	tw.tween_interval(0.3)
+	tw.tween_callback(particles.queue_free)
 
 func push_tile_box(box_world_pos: Vector2, direction: Vector2) -> void:
 	var next_world_pos := box_world_pos + (direction * TILE_SIZE)
@@ -233,6 +398,8 @@ func push_tile_box(box_world_pos: Vector2, direction: Vector2) -> void:
 	if next_tile_type == "wall" or next_tile_type == "pushable_box":
 		shake_strength = 10.0
 		trigger_haptic(25)
+		_play_bonk_sfx(0.8)
+		_trigger_blocked_feedback(box_world_pos, direction, "wall")
 		return
 		
 	var map_pos := tilemap_layer.local_to_map(tilemap_layer.to_local(box_world_pos))
@@ -256,6 +423,8 @@ func push_tile_box(box_world_pos: Vector2, direction: Vector2) -> void:
 	if next_tile_type != "":
 		shake_strength = 10.0
 		trigger_haptic(25)
+		_play_bonk_sfx(0.8)
+		_trigger_blocked_feedback(box_world_pos, direction, "wall")
 		return
 		
 	var source_id := tilemap_layer.get_cell_source_id(map_pos)
@@ -263,6 +432,7 @@ func push_tile_box(box_world_pos: Vector2, direction: Vector2) -> void:
 	var alt_tile := tilemap_layer.get_cell_alternative_tile(map_pos)
 	
 	trigger_haptic(25)
+	_play_slide_sfx()
 	spawn_box_slide_dust(next_world_pos, direction)
 	tilemap_layer.erase_cell(map_pos)
 	tilemap_layer.set_cell(next_map_pos, source_id, atlas_coords, alt_tile)
@@ -277,11 +447,88 @@ func push_tile_box(box_world_pos: Vector2, direction: Vector2) -> void:
 		update_tongue_visuals()
 	)
 
+# --- PROCEDURAL AUDIO SYNTHESIZER ---
+
+func _setup_audio() -> void:
+	_sfx_player = AudioStreamPlayer.new()
+	_sfx_player.bus = "Master"
+	add_child(_sfx_player)
+	
+	_snd_extend = _synth_tone(0.065, 520.0, 260.0, 0.45, "sine")
+	_snd_retract = _synth_tone(0.055, 260.0, 600.0, 0.4, "sine")
+	_snd_bonk = _synth_tone(0.09, 150.0, 55.0, 0.6, "square_soft")
+	_snd_blocked = _synth_tone(0.08, 120.0, 80.0, 0.4, "sine")
+	_snd_slide = _synth_tone(0.12, 110.0, 65.0, 0.5, "noise_low")
+
+func _synth_tone(duration: float, freq_start: float, freq_end: float, volume: float, waveform: String) -> AudioStreamWAV:
+	var sample_rate := 22050
+	var num_samples := int(sample_rate * duration)
+	var bytes := PackedByteArray()
+	bytes.resize(num_samples * 2)
+	
+	var phase: float = 0.0
+	for i in range(num_samples):
+		var progress := float(i) / float(num_samples)
+		var current_freq := lerpf(freq_start, freq_end, progress)
+		phase += TAU * current_freq / float(sample_rate)
+		if phase > TAU:
+			phase -= TAU
+			
+		var env := pow(1.0 - progress, 1.5)
+		var sample: float = 0.0
+		
+		if waveform == "sine":
+			sample = sin(phase)
+		elif waveform == "square_soft":
+			sample = clampf(sin(phase) * 2.5, -0.85, 0.85)
+		elif waveform == "noise_low":
+			sample = (sin(phase) * 0.7) + (randf_range(-0.3, 0.3) * (1.0 - progress))
+		else:
+			sample = sin(phase)
+			
+		var val_16 := int(clampf(sample * env * volume, -1.0, 1.0) * 32767.0)
+		bytes.encode_s16(i * 2, val_16)
+		
+	var wav := AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = sample_rate
+	wav.stereo = false
+	wav.data = bytes
+	return wav
+
+func _play_sfx(stream: AudioStream, pitch: float = 1.0, volume_db: float = 0.0) -> void:
+	if not GameManager or not GameManager.sfx_enabled:
+		return
+	if not _sfx_player or not stream:
+		return
+	_sfx_player.stream = stream
+	_sfx_player.pitch_scale = pitch
+	_sfx_player.volume_db = volume_db
+	_sfx_player.play()
+
+func _play_extend_sfx() -> void:
+	var pitch := clampf(1.0 + float(tongue_path.size() - 2) * 0.06, 0.9, 1.6)
+	_play_sfx(_snd_extend, pitch, 0.0)
+
+func _play_retract_sfx(pitch_override: float = -1.0) -> void:
+	var pitch := pitch_override if pitch_override > 0.0 else clampf(1.3 - float(tongue_path.size() - 2) * 0.05, 0.85, 1.4)
+	_play_sfx(_snd_retract, pitch, -1.0)
+
+func _play_bonk_sfx(pitch_scale: float = 1.0) -> void:
+	_play_sfx(_snd_bonk, randf_range(0.95, 1.05) * pitch_scale, 2.0)
+
+func _play_blocked_sfx() -> void:
+	_play_sfx(_snd_blocked, 1.0, 0.0)
+
+func _play_slide_sfx() -> void:
+	_play_sfx(_snd_slide, randf_range(0.95, 1.05), 1.0)
+
 func pull_frog() -> void:
 	if tongue_path.size() > 1:
 		if remaining_pulls <= 0:
 			shake_strength = 15.0
 			trigger_haptic(35)
+			_play_blocked_sfx()
 			if ui_node and ui_node.has_method("trigger_out_of_pulls_effect"):
 				ui_node.trigger_out_of_pulls_effect()
 			return
@@ -399,6 +646,7 @@ func reset_tongue() -> void:
 func hurt_tongue(hazard_pos: Vector2) -> void:
 	trigger_haptic(50)
 	shake_strength = 12.0
+	_play_bonk_sfx(1.25)
 	tongue_path.append(hazard_pos)
 	update_tongue_visuals()
 	tongue_line.modulate = Color.RED
