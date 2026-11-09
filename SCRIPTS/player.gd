@@ -98,7 +98,7 @@ func _process(delta: float) -> void:
 		if camera:
 			camera.offset = Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
 	else:
-		if camera:
+		if camera and not (ui_node and ui_node.get("is_inspecting") == true):
 			camera.offset = Vector2.ZERO
 
 	# Idle breathing and eye blinking

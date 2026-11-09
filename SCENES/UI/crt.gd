@@ -53,6 +53,8 @@ var is_inspecting := false
 var inspect_offset := Vector2.ZERO
 var is_inspect_dragging := false
 var inspect_drag_last_pos := Vector2.ZERO
+var inspect_touch_start_pos := Vector2.ZERO
+var inspect_touch_has_dragged := false
 var inspect_tween: Tween = null
 var overview_tween: Tween = null
 
@@ -306,6 +308,7 @@ func _enter_inspect_mode() -> void:
 		overview_tween.kill()
 	is_inspecting = true
 	is_inspect_dragging = false
+	inspect_touch_has_dragged = false
 	inspect_offset = Vector2.ZERO
 	if inspect_btn:
 		inspect_btn.text = "✕"
@@ -381,45 +384,59 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not cam:
 		return
 
-	# 1. Touch Drag on mobile
+	# 1. Touch Drag & Tap on mobile
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			is_inspect_dragging = true
+			inspect_touch_start_pos = event.position
 			inspect_drag_last_pos = event.position
+			inspect_touch_has_dragged = false
 		else:
 			is_inspect_dragging = false
+			# Single tap release without drag -> exit inspect mode and snap to frog!
+			if not inspect_touch_has_dragged:
+				_exit_inspect_mode()
 		get_viewport().set_input_as_handled()
 		return
 
 	if event is InputEventScreenDrag:
 		if is_inspect_dragging:
-			var delta_drag: Vector2 = event.relative
-			inspect_offset -= delta_drag / cam.zoom
+			if (event.position - inspect_touch_start_pos).length() > 20.0:
+				inspect_touch_has_dragged = true
+			var delta_drag: Vector2 = event.relative * 0.65
+			inspect_offset -= delta_drag
 			_clamp_inspect_offset(cam)
 			cam.offset = inspect_offset
 		get_viewport().set_input_as_handled()
 		return
 
-	# 2. Mouse Drag on PC
+	# 2. Mouse Drag & Click on PC
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			is_inspect_dragging = true
+			inspect_touch_start_pos = event.position
 			inspect_drag_last_pos = event.position
+			inspect_touch_has_dragged = false
 		else:
 			is_inspect_dragging = false
+			# Click release without drag -> exit inspect mode and snap to frog!
+			if not inspect_touch_has_dragged:
+				_exit_inspect_mode()
 		get_viewport().set_input_as_handled()
 		return
 
 	if event is InputEventMouseMotion and is_inspect_dragging:
-		var delta_drag: Vector2 = event.relative
-		inspect_offset -= delta_drag / cam.zoom
+		if (event.position - inspect_touch_start_pos).length() > 20.0:
+			inspect_touch_has_dragged = true
+		var delta_drag: Vector2 = event.relative * 0.65
+		inspect_offset -= delta_drag
 		_clamp_inspect_offset(cam)
 		cam.offset = inspect_offset
 		get_viewport().set_input_as_handled()
 		return
 
-	# Absorb all touch events during inspection so frog is completely untouched
-	if event is InputEventScreenTouch or event is InputEventScreenDrag:
+	# Absorb all touch/mouse events during inspection so frog is completely untouched
+	if event is InputEventScreenTouch or event is InputEventScreenDrag or event is InputEventMouseButton:
 		get_viewport().set_input_as_handled()
 
 func _clamp_inspect_offset(cam: Camera2D) -> void:
