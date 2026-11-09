@@ -133,7 +133,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			GameManager.restart_level()
 			return
 
-	if ui_node and ui_node.get("is_paused") == true:
+	if ui_node and (ui_node.get("is_paused") == true or ui_node.get("is_inspecting") == true):
 		return
 
 	if is_latching or is_dead:

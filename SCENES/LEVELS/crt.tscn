@@ -4,6 +4,7 @@
 [ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="2_t1itu"]
 [ext_resource type="Shader" uid="uid://dgdexrca6ram3" path="res://SCRIPTS/SHADERS/CRT.gdshader" id="3_1tjdh"]
 [ext_resource type="Texture2D" uid="uid://buq313i42uq61" path="res://ASSETS/UI/buttons/btn.png" id="4_btn"]
+[ext_resource type="Texture2D" uid="uid://8aeti0te0iig" path="res://ASSETS/UI/buttons/Pi7_eye-test.png" id="4_i1lxr"]
 [ext_resource type="Texture2D" uid="uid://c18m8cw2vyx4u" path="res://ASSETS/UI/panels/wood_badge.svg" id="5_wood_badge"]
 [ext_resource type="Texture2D" uid="uid://b5qgj67gloq4x" path="res://ASSETS/UI/panels/bg.png" id="6_modal_bg"]
 [ext_resource type="Texture2D" uid="uid://df0gekcm0q0s8" path="res://ASSETS/UI/panels/table.png" id="7_table"]
@@ -188,6 +189,37 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_icon_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_icon_btn_hover")
 text = "↺"
 
+[node name="InspectBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204918]
+custom_minimum_size = Vector2(90, 58)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_icon_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_icon_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_icon_btn_hover")
+expand_icon = true
+
+[node name="TextureRect" type="TextureRect" parent="UI/TopLeftBar/InspectBtn" unique_id=2145976991]
+modulate = Color(1, 1, 0.47058824, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21111111
+anchor_top = 0.16666667
+anchor_right = 0.80611116
+anchor_bottom = 0.7616667
+offset_right = 36.449997
+offset_bottom = 36.449997
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.595, 0.595)
+texture = ExtResource("4_i1lxr")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="MenuBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204912]
 custom_minimum_size = Vector2(104.3, 58)
 layout_mode = 2
@@ -298,6 +330,33 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
 text = "PULL"
 metadata/_edit_use_anchors_ = true
 
+[node name="SnapBtn" type="Button" parent="UI" unique_id=1849204919]
+visible = false
+custom_minimum_size = Vector2(280, 64)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.88
+anchor_right = 0.5
+anchor_bottom = 0.88
+offset_left = -140.0
+offset_top = -32.0
+offset_right = 140.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 0.95, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.35, 0.05, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "🐸 SNAP TO FROG"
+metadata/_edit_use_anchors_ = true
+
 [node name="WinModal" type="Control" parent="UI" unique_id=1849204916]
 visible = false
 layout_mode = 1
@@ -316,7 +375,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.02, 0.05, 0.04, 0.76)
 
-[node name="CenterContainer" type="CenterContainer" parent="UI/WinModal" unique_id=1849204918]
+[node name="CenterContainer" type="CenterContainer" parent="UI/WinModal" unique_id=114318607]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -324,7 +383,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="UI/WinModal/CenterContainer" unique_id=1849204919]
+[node name="PanelContainer" type="PanelContainer" parent="UI/WinModal/CenterContainer" unique_id=909319767]
 custom_minimum_size = Vector2(620, 490)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")

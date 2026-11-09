@@ -15,8 +15,10 @@ var _sfx_player: AudioStreamPlayer
 @onready var level_badge: Control = $UI.get_node_or_null("TopLeftBar/LevelBadge")
 @onready var level_label: Label = $UI.get_node_or_null("TopLeftBar/LevelBadge/LevelLabel")
 @onready var restart_btn: Button = $UI.get_node_or_null("TopLeftBar/RestartBtn")
+@onready var inspect_btn: Button = $UI.get_node_or_null("TopLeftBar/InspectBtn")
 @onready var menu_btn: Button = $UI.get_node_or_null("TopLeftBar/MenuBtn")
 @onready var big_pull_btn: Button = $UI.get_node_or_null("BigPullBtn")
+@onready var snap_btn: Button = $UI.get_node_or_null("SnapBtn")
 
 # Win modal elements
 @onready var win_modal: Control = $UI.get_node_or_null("WinModal")
@@ -47,6 +49,12 @@ var shake_timer := 0.0
 var base_pulls_pos: Vector2
 var is_win_active := false
 var is_paused := false
+var is_inspecting := false
+var inspect_offset := Vector2.ZERO
+var is_inspect_dragging := false
+var inspect_drag_last_pos := Vector2.ZERO
+var inspect_tween: Tween = null
+var overview_tween: Tween = null
 
 # Final level congratulation modal state
 var congrat_modal: Control = null
@@ -90,11 +98,20 @@ func _ready() -> void:
 			if not is_win_active and not is_paused:
 				GameManager.restart_level()
 		)
+	if inspect_btn:
+		_attach_btn_feedback(inspect_btn)
+		inspect_btn.pressed.connect(toggle_inspect)
 	if menu_btn:
 		_attach_btn_feedback(menu_btn)
 		menu_btn.pressed.connect(func():
 			if not is_win_active:
 				toggle_pause()
+		)
+	if snap_btn:
+		_attach_btn_feedback(snap_btn, 1.05, 0.94)
+		snap_btn.pressed.connect(func():
+			if is_inspecting:
+				toggle_inspect()
 		)
 	if big_pull_btn:
 		_attach_btn_feedback(big_pull_btn, 1.05, 0.92)
@@ -218,6 +235,8 @@ func toggle_pause(paused: Variant = null) -> void:
 	if pause_modal:
 		pause_modal.visible = is_paused
 		if is_paused:
+			if is_inspecting:
+				_exit_inspect_mode(true)
 			_update_settings_ui()
 			var panel = pause_panel if pause_panel else pause_modal.get_node_or_null("CenterContainer/PanelContainer")
 			if panel:
@@ -241,6 +260,8 @@ func setup_player(p: Frog) -> void:
 	player.ui_node = self
 	is_win_active = false
 	is_paused = false
+	if is_inspecting:
+		_exit_inspect_mode(true)
 	if win_modal:
 		win_modal.visible = false
 	if pause_modal:
@@ -250,10 +271,13 @@ func setup_player(p: Frog) -> void:
 	congrat_confetti_particles.clear()
 	update_level_label(GameManager.current_level_index)
 	_bind_player(player)
+	_play_level_start_overview()
 
 func _on_level_changed(new_index: int) -> void:
 	is_win_active = false
 	is_paused = false
+	if is_inspecting:
+		_exit_inspect_mode(true)
 	if win_modal:
 		win_modal.visible = false
 	if pause_modal:
@@ -262,6 +286,164 @@ func _on_level_changed(new_index: int) -> void:
 		congrat_modal.visible = false
 	congrat_confetti_particles.clear()
 	update_level_label(new_index)
+	_play_level_start_overview()
+
+# --- Inspect Mode & Camera Controls ---
+
+func toggle_inspect() -> void:
+	if is_win_active or is_paused:
+		return
+	if is_inspecting:
+		_exit_inspect_mode()
+	else:
+		_enter_inspect_mode()
+
+func _enter_inspect_mode() -> void:
+	var cam := _get_camera()
+	if not cam:
+		return
+	if overview_tween and overview_tween.is_valid():
+		overview_tween.kill()
+	is_inspecting = true
+	is_inspect_dragging = false
+	inspect_offset = Vector2.ZERO
+	if inspect_btn:
+		inspect_btn.text = "✕"
+	if snap_btn:
+		snap_btn.text = tr("🐸 SNAP TO FROG")
+		snap_btn.visible = true
+		snap_btn.modulate.a = 0.0
+		var tw := create_tween()
+		tw.tween_property(snap_btn, "modulate:a", 1.0, 0.2)
+
+	if inspect_tween and inspect_tween.is_valid():
+		inspect_tween.kill()
+	inspect_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	inspect_tween.tween_property(cam, "zoom", Vector2(0.72, 0.72), 0.3)
+
+func _exit_inspect_mode(instant: bool = false) -> void:
+	var cam := _get_camera()
+	is_inspecting = false
+	is_inspect_dragging = false
+	if inspect_btn:
+		inspect_btn.text = "🔍"
+	if snap_btn:
+		if instant:
+			snap_btn.visible = false
+			snap_btn.modulate.a = 0.0
+		else:
+			var tw := create_tween()
+			tw.tween_property(snap_btn, "modulate:a", 0.0, 0.2)
+			tw.tween_callback(func(): snap_btn.visible = false)
+
+	if cam:
+		if inspect_tween and inspect_tween.is_valid():
+			inspect_tween.kill()
+		if instant:
+			cam.offset = Vector2.ZERO
+			cam.zoom = Vector2.ONE
+		else:
+			inspect_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+			inspect_tween.tween_property(cam, "offset", Vector2.ZERO, 0.35)
+			inspect_tween.tween_property(cam, "zoom", Vector2.ONE, 0.35)
+
+func _get_camera() -> Camera2D:
+	if player and player.camera:
+		return player.camera
+	if get_viewport():
+		return get_viewport().get_camera_2d()
+	return null
+
+func _play_level_start_overview() -> void:
+	var cam := _get_camera()
+	if not cam:
+		return
+	if overview_tween and overview_tween.is_valid():
+		overview_tween.kill()
+	cam.zoom = Vector2(0.8, 0.8)
+	overview_tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	overview_tween.tween_interval(0.65)
+	overview_tween.tween_property(cam, "zoom", Vector2.ONE, 0.45)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_inspecting:
+		# If level start overview is easing and player taps screen, immediately snap to 1.0
+		if overview_tween and overview_tween.is_valid():
+			if event is InputEventScreenTouch or (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT):
+				if event.pressed:
+					overview_tween.kill()
+					var cam := _get_camera()
+					if cam:
+						cam.zoom = Vector2.ONE
+		return
+
+	var cam := _get_camera()
+	if not cam:
+		return
+
+	# 1. Touch Drag on mobile
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			is_inspect_dragging = true
+			inspect_drag_last_pos = event.position
+		else:
+			is_inspect_dragging = false
+		get_viewport().set_input_as_handled()
+		return
+
+	if event is InputEventScreenDrag:
+		if is_inspect_dragging:
+			var delta_drag: Vector2 = event.relative
+			inspect_offset -= delta_drag / cam.zoom
+			_clamp_inspect_offset(cam)
+			cam.offset = inspect_offset
+		get_viewport().set_input_as_handled()
+		return
+
+	# 2. Mouse Drag on PC
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			is_inspect_dragging = true
+			inspect_drag_last_pos = event.position
+		else:
+			is_inspect_dragging = false
+		get_viewport().set_input_as_handled()
+		return
+
+	if event is InputEventMouseMotion and is_inspect_dragging:
+		var delta_drag: Vector2 = event.relative
+		inspect_offset -= delta_drag / cam.zoom
+		_clamp_inspect_offset(cam)
+		cam.offset = inspect_offset
+		get_viewport().set_input_as_handled()
+		return
+
+	# Absorb all touch events during inspection so frog is completely untouched
+	if event is InputEventScreenTouch or event is InputEventScreenDrag:
+		get_viewport().set_input_as_handled()
+
+func _clamp_inspect_offset(cam: Camera2D) -> void:
+	var max_pan_x := 1800.0
+	var max_pan_y := 1200.0
+	if player:
+		if cam.limit_right > 0:
+			var p_x: float = player.global_position.x
+			var p_y: float = player.global_position.y
+			var min_x = (cam.limit_left - p_x) + 400.0
+			var max_x = (cam.limit_right - p_x) - 400.0
+			var min_y = (cam.limit_top - p_y) + 300.0
+			var max_y = (cam.limit_bottom - p_y) - 300.0
+			if min_x < max_x:
+				inspect_offset.x = clampf(inspect_offset.x, min_x, max_x)
+			else:
+				inspect_offset.x = clampf(inspect_offset.x, -max_pan_x, max_pan_x)
+			if min_y < max_y:
+				inspect_offset.y = clampf(inspect_offset.y, min_y, max_y)
+			else:
+				inspect_offset.y = clampf(inspect_offset.y, -max_pan_y, max_pan_y)
+			return
+	inspect_offset.x = clampf(inspect_offset.x, -max_pan_x, max_pan_x)
+	inspect_offset.y = clampf(inspect_offset.y, -max_pan_y, max_pan_y)
 
 func update_level_label(idx: int) -> void:
 	if level_label:
