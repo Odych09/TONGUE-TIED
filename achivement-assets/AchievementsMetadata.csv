@@ -1,0 +1,12 @@
+First Leap,Complete Level 1 and begin your swamp journey.,False,,Revealed,10,1
+Lily Pad Hopper,Successfully clear Level 5.,False,,Revealed,25,2
+Swamp Navigator,Conquer Level 10 and survive the deeper swamp hazards.,False,,Revealed,50,3
+Tongue Master,Complete all 15 handcrafted levels.,False,,Revealed,150,4
+Beyond the Pond,Complete your first ASCII bonus level.,False,,Revealed,75,5
+Stargazer,Collect a total of 15 stars across your adventures.,False,,Revealed,25,6
+Superstar Frog,Collect a total of 30 stars across your adventures.,False,,Revealed,50,7
+Perfectionist,Earn a perfect 3-star rating on all 15 levels.,False,,Revealed,150,8
+Bug Buffet,Munch on 50 tasty bugs across your adventures.,True,50,Revealed,75,9
+Frog Gourmet,Catch 100 bugs with your tongue.,True,100,Revealed,125,10
+Clutch Pull,Clear a level with exactly your final pull remaining.,False,,Revealed,50,11
+Bonk!,Stretch your tongue straight into a wall. Ouch!,False,,Hidden,15,12

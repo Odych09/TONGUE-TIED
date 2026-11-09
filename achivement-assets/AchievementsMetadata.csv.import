@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bfcpmd3bsc3cp"
+
+[deps]
+
+files=["res://achivement-assets/AchievementsMetadata.Complete Level 1 and begin your swamp journey..translation", "res://achivement-assets/AchievementsMetadata.False.translation", "res://achivement-assets/AchievementsMetadata.Revealed.translation", "res://achivement-assets/AchievementsMetadata.10.translation", "res://achivement-assets/AchievementsMetadata.1.translation"]
+
+source_file="res://achivement-assets/AchievementsMetadata.csv"
+dest_files=["res://achivement-assets/AchievementsMetadata.Complete Level 1 and begin your swamp journey..translation", "res://achivement-assets/AchievementsMetadata.False.translation", "res://achivement-assets/AchievementsMetadata.Revealed.translation", "res://achivement-assets/AchievementsMetadata.10.translation", "res://achivement-assets/AchievementsMetadata.1.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

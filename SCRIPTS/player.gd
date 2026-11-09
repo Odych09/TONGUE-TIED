@@ -333,6 +333,8 @@ func _trigger_blocked_feedback(blocked_pos: Vector2, direction: Vector2, reason:
 		trigger_haptic(28)
 		shake_strength = 3.5
 		_spawn_bonk_puff(blocked_pos, direction)
+		if has_node("/root/AchievementManager"):
+			AchievementManager.on_wall_bonked()
 	else:
 		_play_blocked_sfx()
 		trigger_haptic(20)
@@ -582,6 +584,8 @@ func traverse_tongue() -> void:
 			collected_bugs += 1
 			tilemap_layer.erase_cell(current_tile_pos)
 			spawn_bug_eat_effect(position)
+			if has_node("/root/AchievementManager"):
+				AchievementManager.on_bug_collected()
 		
 		if current_tile_type == "water" and tongue_path.size() <= 1:
 			kill_frog(position)
@@ -696,6 +700,8 @@ func trigger_win() -> void:
 		stars = 1
 		
 	GameManager.complete_level(GameManager.current_level_index, stars)
+	if has_node("/root/AchievementManager"):
+		AchievementManager.on_level_finished(remaining_pulls)
 	
 	var tween := create_tween()
 	tween.tween_property(sprite, "scale", Vector2(1.5, 1.5), 0.2).set_trans(Tween.TRANS_BACK)

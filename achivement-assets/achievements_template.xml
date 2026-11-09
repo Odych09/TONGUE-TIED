@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  Google Play Games Services Achievement Resource
+  App ID: 56043225188
+  Package: com.akurainteractive.tonguetwisterfrog
+-->
+<resources>
+    <string name="app_id">56043225188</string>
+    <string name="package_name">com.akurainteractive.tonguetwisterfrog</string>
+
+    <!-- Standard Achievements -->
+    <string name="achievement_first_leap">CgkI5IC_49ABEAIQDA</string>
+    <string name="achievement_lily_pad_hopper">CgkI5IC_49ABEAIQDQ</string>
+    <string name="achievement_swamp_navigator">CgkI5IC_49ABEAIQBg</string>
+    <string name="achievement_tongue_master">CgkI5IC_49ABEAIQBQ</string>
+    <string name="achievement_beyond_the_pond">CgkI5IC_49ABEAIQCg</string>
+    <string name="achievement_stargazer">CgkI5IC_49ABEAIQDg</string>
+    <string name="achievement_superstar_frog">CgkI5IC_49ABEAIQBw</string>
+    <string name="achievement_perfectionist">CgkI5IC_49ABEAIQCw</string>
+    <string name="achievement_clutch_pull">CgkI5IC_49ABEAIQCA</string>
+    <string name="achievement_bonk">CgkI5IC_49ABEAIQBA</string>
+
+    <!-- Incremental Achievements -->
+    <string name="achievement_bug_buffet">CgkI5IC_49ABEAIQCQ</string>
+    <string name="achievement_frog_gourmet">CgkI5IC_49ABEAIQAw</string>
+</resources>

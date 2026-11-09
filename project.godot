@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="FROG_GAME"
+config/name="Tongue Twister: Frog Puzzle"
 config/version="1.0.1"
 run/main_scene="uid://bjdglxl4fb47s"
 config/features=PackedStringArray("4.7", "Mobile")
@@ -30,6 +30,8 @@ SaveManager="*uid://pw7yhdisfwif"
 LootLockerSDK="*uid://c5nk2ub7xngnd"
 LootLockerManager="*res://SCRIPTS/LootLockerManager.gd"
 LeaderboardsClient="*uid://cag33jnv6nkas"
+AchievementsClient="*res://addons/GodotPlayGameServices/scripts/achievements/achievements_client.gd"
+AchievementManager="*res://SCRIPTS/AchievementManager.gd"
 MusicManager="*uid://n6e3iwojfdtt"
 SentryManager="*res://SCRIPTS/SentryManager.gd"
 NetworkManager="*res://SCRIPTS/NetworkManager.gd"
