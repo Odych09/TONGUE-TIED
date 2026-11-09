@@ -772,7 +772,7 @@ func _init_play_games() -> void:
 	play_games_btn.pressed.connect(func():
 		click_sfx.play()
 		if GodotPlayGameServices.is_signed_in:
-			GodotPlayGameServices.show_profile()
+			GodotPlayGameServices.show_achievements()
 		else:
 			GodotPlayGameServices.sign_in()
 	)
