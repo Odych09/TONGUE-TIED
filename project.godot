@@ -18,7 +18,7 @@ run/max_fps=30
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
 boot_splash/use_filter=false
-config/icon="uid://cmfv1gqrg73y4"
+config/icon="uid://duh2jqbkkx1c0"
 
 [autoload]
 
@@ -82,6 +82,10 @@ texture={
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://TRANSLATIONS/translations.en.translation", "res://TRANSLATIONS/translations.es.translation", "res://TRANSLATIONS/translations.ja.translation", "res://TRANSLATIONS/translations.zh_CN.translation")
 
 [mcp_toolkit]
 

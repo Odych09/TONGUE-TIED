@@ -48,6 +48,25 @@ func _setup_font_fallbacks() -> void:
 			print("[GameManager] Registered CJK font fallbacks (JP + SC) on Gorditas-Bold.")
 
 func _init_translations() -> void:
+	# 1. If translations are loaded natively via ProjectSettings [internationalization]:
+	if not TranslationServer.get_loaded_locales().is_empty():
+		print("[GameManager] Translations active via ProjectSettings: ", TranslationServer.get_loaded_locales())
+		return
+
+	# 2. Try loading compiled .translation resources (works inside Android APK/AAB export)
+	var loaded_any := false
+	for loc in SUPPORTED_LANGUAGES:
+		var res_path := "res://TRANSLATIONS/translations.%s.translation" % loc
+		if ResourceLoader.exists(res_path):
+			var tr_res = load(res_path)
+			if tr_res is Translation:
+				TranslationServer.add_translation(tr_res)
+				loaded_any = true
+	if loaded_any:
+		print("[GameManager] Registered translation resources: ", TranslationServer.get_loaded_locales())
+		return
+
+	# 3. Fallback: Parse raw CSV (for development if not yet imported)
 	const CSV_PATH := "res://TRANSLATIONS/translations.csv"
 	if not FileAccess.file_exists(CSV_PATH):
 		return
@@ -82,7 +101,7 @@ func _init_translations() -> void:
 
 	for loc in locales:
 		TranslationServer.add_translation(translations[loc])
-	print("[GameManager] Registered translation locales: ", locales)
+	print("[GameManager] Registered translation locales from CSV: ", locales)
 
 func _init_language() -> void:
 	# If user already picked a language from local save, it gets loaded in load_progress().
