@@ -19,6 +19,7 @@ var _sfx_player: AudioStreamPlayer
 @onready var menu_btn: Button = $UI.get_node_or_null("TopLeftBar/MenuBtn")
 @onready var big_pull_btn: Button = $UI.get_node_or_null("BigPullBtn")
 @onready var snap_btn: Button = $UI.get_node_or_null("SnapBtn")
+@onready var inspect_hint: Label = $UI.get_node_or_null("InspectHint")
 
 # Win modal elements
 @onready var win_modal: Control = $UI.get_node_or_null("WinModal")
@@ -318,6 +319,12 @@ func _enter_inspect_mode() -> void:
 		snap_btn.modulate.a = 0.0
 		var tw := create_tween()
 		tw.tween_property(snap_btn, "modulate:a", 1.0, 0.2)
+	if inspect_hint:
+		inspect_hint.text = tr("SLIDE TO PAN • TAP TO RETURN")
+		inspect_hint.visible = true
+		inspect_hint.modulate.a = 0.0
+		var tw_h := create_tween()
+		tw_h.tween_property(inspect_hint, "modulate:a", 1.0, 0.25)
 
 	if inspect_tween and inspect_tween.is_valid():
 		inspect_tween.kill()
@@ -338,6 +345,14 @@ func _exit_inspect_mode(instant: bool = false) -> void:
 			var tw := create_tween()
 			tw.tween_property(snap_btn, "modulate:a", 0.0, 0.2)
 			tw.tween_callback(func(): snap_btn.visible = false)
+	if inspect_hint:
+		if instant:
+			inspect_hint.visible = false
+			inspect_hint.modulate.a = 0.0
+		else:
+			var tw_h := create_tween()
+			tw_h.tween_property(inspect_hint, "modulate:a", 0.0, 0.2)
+			tw_h.tween_callback(func(): inspect_hint.visible = false)
 
 	if cam:
 		if inspect_tween and inspect_tween.is_valid():

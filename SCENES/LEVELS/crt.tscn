@@ -330,6 +330,29 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
 text = "PULL"
 metadata/_edit_use_anchors_ = true
 
+[node name="InspectHint" type="Label" parent="UI" unique_id=1849204920]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.81
+anchor_right = 0.5
+anchor_bottom = 0.81
+offset_left = -300.0
+offset_top = -20.0
+offset_right = 300.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.1, 0.1, 0.85)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 22
+text = "SLIDE TO PAN • TAP TO RETURN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="SnapBtn" type="Button" parent="UI" unique_id=1849204919]
 visible = false
 custom_minimum_size = Vector2(280, 64)
@@ -400,7 +423,7 @@ theme_override_constants/margin_top = 36
 theme_override_constants/margin_right = 46
 theme_override_constants/margin_bottom = 44
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer" unique_id=1849204920]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer" unique_id=1409920537]
 layout_mode = 2
 theme_override_constants/separation = 22
 
