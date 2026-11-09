@@ -12,6 +12,16 @@
 				"GODOT_MCP_CONFIG_VERSION": "1",
 				"npm_config_prefer_offline": "true"
 			}
+		},
+		"ziva-godot": {
+			"command": "C:\\Users\\Abhiuday\\AppData\\Roaming\\ziva-local\\bin\\zivacode.exe",
+			"args": [
+				"--mcp-bridge",
+				"--godot-bin",
+				"C:/games-godot/godot-system/engine/godots/4.7.2-stable/godot.exe",
+				"--upstream",
+				"http://127.0.0.1:7012/api/mcp"
+			]
 		}
 	}
 }

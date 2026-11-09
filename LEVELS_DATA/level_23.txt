@@ -13,7 +13,7 @@
 # = = Breakable Wall (Push box into it to smash & open path)
 
 name: The Sunken Ruin
-pulls: 6
+pulls: 4
 bugs: 3
 
 ####################

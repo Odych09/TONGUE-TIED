@@ -13,7 +13,7 @@
 # = = Breakable Wall (Push box into it to smash & open path)
 
 name: Twin Jaws
-pulls: 6
+pulls: 3
 bugs: 3
 
 ###################

@@ -13,13 +13,13 @@
 # = = Breakable Wall (Push box into it to smash & open path)
 
 name: Caging the Beast
-pulls: 6
+pulls: 2
 bugs: 2
 
 ##################
 #P..............*#
 #..B....#.......>#
-####.####.######.#
+###=.####.######.#
 #.......#..>....W#
 #.......#.######.#
 #.*.....#........#
