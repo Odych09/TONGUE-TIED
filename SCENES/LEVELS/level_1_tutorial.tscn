@@ -1,0 +1,46 @@
+[gd_scene format=4 uid="uid://c7t8say1u2v3w"]
+
+[ext_resource type="Script" uid="uid://d3m4n5p6q7r8s" path="res://SCENES/LEVELS/level_1_tutorial.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://d1h2a3n4d5p6g" path="res://ASSETS/UI/tutorial_hand.png" id="2_hand"]
+[ext_resource type="FontFile" uid="uid://bb0q7d6u66x5a" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="3_font"]
+
+[sub_resource type="Curve" id="Curve_arrow"]
+_data = [Vector2(0, 0.4), 0.0, 1.2, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="TutorialHint" type="Node2D" unique_id=9812401]
+z_index = 100
+script = ExtResource("1_script")
+
+[node name="ArrowLine" type="Line2D" parent="." unique_id=9812402]
+points = PackedVector2Array(20, 0, 220, 0)
+width = 8.0
+width_curve = SubResource("Curve_arrow")
+default_color = Color(0.25, 0.88, 1, 0.75)
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Hand" type="Sprite2D" parent="." unique_id=9812403]
+texture = ExtResource("2_hand")
+
+[node name="Label" type="Label" parent="." unique_id=9812404]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -105.0
+offset_right = 200.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.14, 0.24, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 28
+text = "SWIPE TO STRETCH"
+horizontal_alignment = 1
+vertical_alignment = 1

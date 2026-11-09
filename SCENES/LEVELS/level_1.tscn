@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://xypbvukvvkec" path="res://ASSETS/TILES/water2.png" id="2_i2y11"]
 [ext_resource type="TileSet" uid="uid://521ckdcudgjm" path="res://ASSETS/TILES/tileset_main.tres" id="2_ofpmj"]
 [ext_resource type="PackedScene" uid="uid://dbdxb7wvjtna1" path="res://SCENES/Player.tscn" id="5_player"]
+[ext_resource type="PackedScene" path="res://SCENES/LEVELS/level_1_tutorial.tscn" id="6_tutorial"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i2y11"]
 texture = ExtResource("2_i2y11")
@@ -37,3 +38,5 @@ limit_left = -6
 limit_top = -23
 limit_right = 1944
 limit_bottom = 913
+
+[node name="TutorialHint" parent="." instance=ExtResource("6_tutorial")]
