@@ -36,6 +36,8 @@ extends Control
 @onready var fullscreen_check: CheckBox = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow/FullscreenCheck
 @onready var play_games_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PlayGamesButton
 @onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PGLabel
+@onready var language_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow/LanguageButton
+@onready var language_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow/LanguageLabel
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
 
 # Leaderboard Modal
@@ -192,6 +194,9 @@ func _ready() -> void:
 	settings_back_btn.pressed.connect(_on_settings_back_pressed)
 	_hook_btn_animations(settings_back_btn)
 	_hook_btn_animations(play_games_btn)
+	if is_instance_valid(language_btn):
+		language_btn.pressed.connect(_on_language_pressed)
+		_hook_btn_animations(language_btn)
 	volume_slider.value_changed.connect(_on_volume_changed)
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
 
@@ -594,13 +599,13 @@ func _update_hud_counters() -> void:
 	for i in range(GameManager.levels.size()):
 		total_stars += GameManager.get_level_stars(i)
 	var max_stars: int = GameManager.levels.size() * 3
-	stars_label.text = "STARS %d / %d" % [total_stars, max_stars]
+	stars_label.text = "%s %d / %d" % [tr("STARS"), total_stars, max_stars]
 
 	# 3. Quick Play button text
 	var next_lvl := GameManager.unlocked_level + 1
 	if next_lvl > GameManager.levels.size():
 		next_lvl = GameManager.levels.size()
-	quick_play_btn.text = "    ▶  PLAY LEVEL %d" % next_lvl
+	quick_play_btn.text = "    ▶  %s" % (tr("PLAY LEVEL %d") % next_lvl)
 
 # --- Level Modal Dialog ---
 
@@ -610,7 +615,7 @@ func _open_level_modal(level_idx: int) -> void:
 		print("Unlocked-LEVEL",GameManager.unlocked_level + 1)
 		return
 	selected_level_index = level_idx
-	modal_title.text = "LEVEL %d" % (level_idx + 1)
+	modal_title.text = tr("LEVEL %d") % (level_idx + 1)
 	# Check for ASCII level title
 	var txt_path := "res://LEVELS_DATA/level_%d.txt" % (level_idx + 1)
 	if FileAccess.file_exists(txt_path):
@@ -621,7 +626,7 @@ func _open_level_modal(level_idx: int) -> void:
 				if l.to_lower().begins_with("name:"):
 					var lvl_name := l.substr(5).strip_edges()
 					if lvl_name != "":
-						modal_title.text = "LVL %d: %s" % [level_idx + 1, lvl_name]
+						modal_title.text = (tr("LVL %d: %s") if tr("LVL %d: %s") != "LVL %d: %s" else "LVL %d: %s") % [level_idx + 1, lvl_name]
 					break
 				if l == "" or (l.begins_with("#") and not l.to_lower().begins_with("# name:")):
 					continue
@@ -638,13 +643,13 @@ func _open_level_modal(level_idx: int) -> void:
 				star_lbl.modulate = Color(0.25, 0.35, 0.3, 0.45)
 
 	if stars >= 3:
-		modal_status_label.text = "Mastered! (3 Stars)"
+		modal_status_label.text = tr("Mastered! (3 Stars)")
 		modal_status_label.modulate = Color(0.18, 0.58, 0.16)
 	elif stars > 0:
-		modal_status_label.text = "Completed (%d Stars)" % stars
+		modal_status_label.text = tr("Completed (%d Stars)") % stars
 		modal_status_label.modulate = Color(0.68, 0.44, 0.08)
 	else:
-		modal_status_label.text = "Ready to leap!"
+		modal_status_label.text = tr("Ready to leap!")
 		modal_status_label.modulate = Color(0.32, 0.2, 0.1)
 
 	level_modal.visible = true
@@ -750,6 +755,15 @@ func _init_settings_values() -> void:
 
 	var is_fullscreen := (DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN)
 	fullscreen_check.button_pressed = is_fullscreen
+	if is_instance_valid(language_btn):
+		language_btn.text = GameManager.get_language_display_name()
+
+func _on_language_pressed() -> void:
+	click_sfx.play()
+	var new_lang := GameManager.cycle_language()
+	if is_instance_valid(language_btn):
+		language_btn.text = GameManager.get_language_display_name(new_lang)
+	_update_hud_counters()
 	
 func _init_play_games() -> void:
 	if not is_instance_valid(play_games_btn):
@@ -778,19 +792,19 @@ func _init_play_games() -> void:
 	)
 	GodotPlayGameServices.user_authenticated.connect(func(authenticated: bool):
 		if authenticated:
-			play_games_btn.text = "PROFILE"
-			play_games_label.text = "GOOGLE PLAY: SIGNED IN"
+			play_games_btn.text = tr("PROFILE")
+			play_games_label.text = tr("GOOGLE PLAY: SIGNED IN")
 		else:
-			play_games_btn.text = "SIGN IN"
-			play_games_label.text = "GOOGLE PLAY GAMES"
+			play_games_btn.text = tr("SIGN IN")
+			play_games_label.text = tr("GOOGLE PLAY GAMES")
 	)
 	GodotPlayGameServices.current_player_loaded.connect(func(player: PlayGamesPlayer):
 		if player:
 			play_games_label.text = "PLAY: %s" % player.display_name
 	)
 	if GodotPlayGameServices.is_signed_in:
-		play_games_btn.text = "PROFILE"
-		play_games_label.text = "GOOGLE PLAY: SIGNED IN"
+		play_games_btn.text = tr("PROFILE")
+		play_games_label.text = tr("GOOGLE PLAY: SIGNED IN")
 	if "current_player" in GodotPlayGameServices and GodotPlayGameServices.current_player:
 		play_games_label.text = "PLAY: %s" % GodotPlayGameServices.current_player.display_name
 

@@ -99,13 +99,17 @@ expand_margin_right = 25.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_mnmd0"]
 font = ExtResource("4_cvoun")
-font_size = 55
+font_size = 67
 font_color = Color(0.9882353, 0.9882353, 0.18039216, 1)
 shadow_size = 12
 shadow_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_agr0f"]
-font_size = 20
+font_size = 35
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_u0fo5"]
+font_size = 34
 font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mnmd0"]
@@ -132,7 +136,7 @@ corner_radius_bottom_left = 6
 
 [sub_resource type="LabelSettings" id="LabelSettings_saqwy"]
 font = ExtResource("4_cvoun")
-font_size = 21
+font_size = 35
 font_color = Color(1, 1, 0.23137255, 1)
 outline_size = 7
 outline_color = Color(0, 0, 0, 1)
@@ -365,6 +369,7 @@ theme_override_colors/font_outline_color = Color(0.08, 0.14, 0.24, 1)
 theme_override_constants/outline_size = 14
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 104
+auto_translate = false
 text = "Tongue Twister"
 label_settings = SubResource("LabelSettings_maxjq")
 horizontal_alignment = 1
@@ -541,7 +546,6 @@ mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="SettingsModal" type="Control" parent="." unique_id=1687080484]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -568,7 +572,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="SettingsModal/CenterContainer" unique_id=2010856946]
-custom_minimum_size = Vector2(620, 520)
+custom_minimum_size = Vector2(854.145, 709.915)
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_agr0f")
@@ -623,10 +627,11 @@ theme_override_colors/font_color = Color(0.35, 0.85, 0.95, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 22
 text = "100%"
+label_settings = SubResource("LabelSettings_u0fo5")
 horizontal_alignment = 2
 
 [node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow" unique_id=343102086]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 59.165)
 layout_mode = 2
 theme_override_icons/grabber = ExtResource("18_slider_knob")
 theme_override_icons/grabber_highlight = ExtResource("19_slider_knob_hl")
@@ -703,12 +708,38 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1oolv")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_1oolv")
 text = "SIGN IN"
 
+[node name="LanguageRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=741029185]
+layout_mode = 2
+
+[node name="LanguageLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow" unique_id=741029186]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 22
+text = "LANGUAGE"
+label_settings = SubResource("LabelSettings_saqwy")
+
+[node name="LanguageButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow" unique_id=741029187]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxTexture_u0fo5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1oolv")
+theme_override_styles/hover = SubResource("StyleBoxTexture_1oolv")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1oolv")
+text = "ENGLISH"
+
 [node name="Spacer" type="Control" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1863393753]
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="SettingsBackButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=856551263]
-custom_minimum_size = Vector2(180, 60)
+custom_minimum_size = Vector2(222.9, 90.585)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)

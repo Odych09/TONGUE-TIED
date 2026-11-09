@@ -80,7 +80,7 @@ func load_leaderboard(is_refresh: bool = false) -> void:
 	for child in leaderboard_list.get_children():
 		child.queue_free()
 
-	loading_label.text = "Loading top frogs..."
+	loading_label.text = tr("Loading top frogs...")
 	loading_label.visible = true
 
 	# Calculate local star count
@@ -94,20 +94,20 @@ func load_leaderboard(is_refresh: bool = false) -> void:
 		return
 		
 	if !LootLockerManager.is_authenticated and not GodotPlayGameServices.is_signed_in:
-		loading_label.text = "Sign in to Google Play Games\nin Settings to view Leaderboards!"
-		my_rank_label.text = "YOUR RANK: UNRANKED"
+		loading_label.text = tr("Sign in to Google Play Games\nin Settings to view Leaderboards!")
+		my_rank_label.text = tr("YOUR RANK: UNRANKED")
 		my_score_label.text = "%d ⭐" % local_stars
 		return
 	elif not res.get("success", false):
-		loading_label.text = "Could not load leaderboard.\nCheck connection and tap Refresh."
+		loading_label.text = tr("Could not load leaderboard.\nCheck connection and tap Refresh.")
 		loading_label.visible = true
-		my_rank_label.text = "YOUR RANK: UNRANKED"
+		my_rank_label.text = tr("YOUR RANK: UNRANKED")
 		my_score_label.text = "%d ⭐" % local_stars
 		return
 
 	var items: Array = res.get("items", [])
 	if items.is_empty():
-		loading_label.text = "No scores submitted yet!\nComplete levels to claim #1!"
+		loading_label.text = tr("No scores submitted yet!\nComplete levels to claim #1!")
 		loading_label.visible = true
 	else:
 		loading_label.visible = false
@@ -120,13 +120,13 @@ func load_leaderboard(is_refresh: bool = false) -> void:
 	var my_score: int = res.get("my_score", 0)
 	var display_name: String = LootLockerManager.get_effective_player_name()
 	if display_name == "":
-		display_name = "YOU"
+		display_name = tr("YOU")
 
 	if my_rank > 0:
-		my_rank_label.text = "YOUR RANK: #%d  (%s)" % [my_rank, display_name]
+		my_rank_label.text = "%s: #%d  (%s)" % [tr("YOUR RANK"), my_rank, display_name]
 		my_score_label.text = "%d ⭐" % my_score
 	else:
-		my_rank_label.text = "YOUR RANK: UNRANKED  (%s)" % display_name
+		my_rank_label.text = "%s: %s  (%s)" % [tr("YOUR RANK"), tr("UNRANKED"), display_name]
 		my_score_label.text = "%d ⭐" % local_stars
 
 func _create_leaderboard_row(rank: int, p_name: String, score: int, is_me: bool) -> Control:
@@ -201,7 +201,7 @@ func _create_leaderboard_row(rank: int, p_name: String, score: int, is_me: bool)
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_label.clip_text = true
-	name_label.text = p_name + ("  (YOU)" if is_me else "")
+	name_label.text = p_name + ("  (" + tr("YOU") + ")" if is_me else "")
 	name_label.add_theme_font_override("font", FONT_GORDITAS)
 	name_label.add_theme_font_size_override("font_size", 20)
 

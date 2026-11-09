@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://c83ktestlvl35"]
-
-[ext_resource type="Script" path="res://test_lvl35_die.gd" id="1_test"]
-
-[node name="TestLvl35" type="Node"]
-script = ExtResource("1_test")

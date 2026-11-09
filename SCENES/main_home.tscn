@@ -144,6 +144,10 @@ expand_margin_top = 20.0
 expand_margin_right = 20.0
 expand_margin_bottom = 20.0
 
+[sub_resource type="LabelSettings" id="LabelSettings_tudhu"]
+font_size = 38
+font_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_track"]
 content_margin_top = 6.0
 content_margin_bottom = 6.0
@@ -711,7 +715,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="SettingsModal/CenterContainer" unique_id=145920142]
-custom_minimum_size = Vector2(620, 540)
+custom_minimum_size = Vector2(854.145, 709.915)
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")
@@ -723,10 +727,10 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_modal_inner")
 
 [node name="MarginContainer" type="MarginContainer" parent="SettingsModal/CenterContainer/PanelContainer" unique_id=145920143]
 layout_mode = 2
-theme_override_constants/margin_left = 40
+theme_override_constants/margin_left = 63
 theme_override_constants/margin_top = 36
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 40
+theme_override_constants/margin_right = 74
+theme_override_constants/margin_bottom = 53
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer" unique_id=145920144]
 layout_mode = 2
@@ -738,7 +742,7 @@ theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 44
+theme_override_font_sizes/font_size = 84
 text = "SETTINGS"
 horizontal_alignment = 1
 
@@ -757,7 +761,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
 theme_override_constants/outline_size = 0
 theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 41
 text = "MASTER VOLUME"
 
 [node name="VolumeValue" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow" unique_id=145920150]
@@ -768,6 +772,7 @@ theme_override_constants/outline_size = 0
 theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 22
 text = "100%"
+label_settings = SubResource("LabelSettings_tudhu")
 horizontal_alignment = 2
 
 [node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow" unique_id=145920151]
@@ -791,7 +796,7 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
 theme_override_constants/outline_size = 0
 theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 32
 text = "FULLSCREEN MODE"
 
 [node name="FullscreenCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow" unique_id=145920154]
@@ -810,7 +815,7 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
 theme_override_constants/outline_size = 0
 theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 32
 text = "CRT RETRO SHADER"
 
 [node name="CRTCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow" unique_id=145920157]
@@ -830,7 +835,7 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
 theme_override_constants/outline_size = 0
 theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 32
 text = "GOOGLE PLAY GAMES"
 
 [node name="PlayGamesButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow" unique_id=145920160]
@@ -847,6 +852,31 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed"
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_wood_badge_disabled")
 text = "SIGN IN"
+
+[node name="LanguageRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920163]
+layout_mode = 2
+
+[node name="LanguageLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow" unique_id=145920164]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 32
+text = "LANGUAGE"
+
+[node name="LanguageButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow" unique_id=145920165]
+custom_minimum_size = Vector2(170, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "ENGLISH"
 
 [node name="Spacer" type="Control" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=145920161]
 layout_mode = 2
@@ -868,7 +898,7 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
 text = "BACK"
 
-[node name="Audio" type="Node" parent="." unique_id=145920165]
+[node name="Audio" type="Node" parent="." unique_id=1966203823]
 
 [node name="HoverSFX" type="AudioStreamPlayer" parent="Audio" unique_id=145920166]
 stream = ExtResource("9_hover")

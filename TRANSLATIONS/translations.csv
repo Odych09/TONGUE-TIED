@@ -1,0 +1,81 @@
+keys,en,es,ja,zh_CN
+Tongue Twister,Tongue Twister,Tongue Twister,Tongue Twister,Tongue Twister
+PLAY,PLAY,JUGAR,プレイ,开始游戏
+   PLAY,   PLAY,   JUGAR,   プレイ,   开始游戏
+SETTINGS,SETTINGS,AJUSTES,設定,设置
+QUIT,QUIT,SALIR,終了,退出
+Quit,Quit,Salir,終了,退出
+BACK,BACK,VOLVER,戻る,返回
+MENU,MENU,MENÚ,メニュー,菜单
+←  MENU,←  MENU,←  MENÚ,←  メニュー,←  菜单
+HOME,HOME,INICIO,ホーム,主页
+🏠 MENU,🏠 MENU,🏠 MENÚ,🏠 メニュー,🏠 主菜单
+🏠 HOME MAP,🏠 HOME MAP,🏠 MAPA,🏠 マップ,🏠 主图
+LEVELS,LEVELS,NIVELES,ステージ,关卡
+☰ LEVELS,☰ LEVELS,☰ NIVELES,☰ ステージ,☰ 关卡
+LEVEL,LEVEL,NIVEL,ステージ,关卡
+LEVEL %d,LEVEL %d,NIVEL %d,ステージ %d,第%d关
+LVL %d: %s,LVL %d: %s,NIV %d: %s,ステージ %d: %s,第%d关: %s
+PLAY LEVEL %d,PLAY LEVEL %d,JUGAR NIVEL %d,ステージ%dをプレイ,游玩第%d关
+	▶  PLAY LEVEL %d,    ▶  PLAY LEVEL %d,    ▶  JUGAR NIVEL %d,    ▶  ステージ%dをプレイ,    ▶  游玩第%d关
+STARS,STARS,ESTRELLAS,スター,星星
+STARS %d / %d,STARS %d / %d,ESTRELLAS %d / %d,スター %d / %d,星星 %d / %d
+RANKS,RANKS,RANKING,ランキング,排行榜
+GLOBAL LEADERBOARD,GLOBAL LEADERBOARD,CLASIFICACIÓN GLOBAL,グローバルランキング,全球排行榜
+ REFRESH, REFRESH, ACTUALIZAR, 更新, 刷新
+# RANK,# RANK,# PUESTO,# 順位,# 排名
+PLAYER,PLAYER,JUGADOR,プレイヤー,玩家
+MASTER VOLUME,MASTER VOLUME,VOLUMEN MAESTRO,マスター音量,主音量
+FULLSCREEN MODE,FULLSCREEN MODE,PANTALLA COMPLETA,フルスクリーン,全屏模式
+CRT RETRO SHADER,CRT RETRO SHADER,FILTRO RETRO CRT,CRTレトロシェーダー,CRT复古滤镜
+GOOGLE PLAY GAMES,GOOGLE PLAY GAMES,GOOGLE PLAY GAMES,GOOGLE PLAY GAMES,GOOGLE PLAY 游戏
+SIGN IN,SIGN IN,INICIAR SESIÓN,サインイン,登录
+PROFILE,PROFILE,PERFIL,プロフィール,个人资料
+GOOGLE PLAY: SIGNED IN,GOOGLE PLAY: SIGNED IN,GOOGLE PLAY: CONECTADO,GOOGLE PLAY: サインイン中,GOOGLE PLAY: 已登录
+Sign in via Google Play in Settings to view Leaderboards!,Sign in via Google Play in Settings to view Leaderboards!,Inicia sesión en Google Play en Ajustes para ver las clasificaciones.,設定のGoogle Playからサインインしてランキングを表示,在“设置”中登录Google Play查看排行榜！
+Sign in to Google Play Games\nin Settings to view Leaderboards!,Sign in to Google Play Games\nin Settings to view Leaderboards!,Inicia sesión en Google Play Games\nen Ajustes para ver clasificaciones.,設定のGoogle Play Gamesから\nサインインしてランキングを表示,在“设置”中登录Google Play 游戏\n查看排行榜！
+LANGUAGE,LANGUAGE,IDIOMA,言語,语言
+PULL,PULL,TIRAR,引く,拉动
+FLIES,FLIES,MOSCAS,ハエ,苍蝇
+PULLS,PULLS,TIRONES,残り回数,拉动次数
+MUSIC,MUSIC,MÚSICA,音楽,音乐
+SFX,SFX,EFECTOS,効果音,音效
+VIBRATION,VIBRATION,VIBRACIÓN,振動,震动
+ON,ON,SÍ,ON,开启
+OFF,OFF,NO,OFF,关闭
+GAME PAUSED,GAME PAUSED,JUEGO PAUSADO,ポーズ中,游戏暂停
+▶ RESUME,▶ RESUME,▶ CONTINUAR,▶ 再開,▶ 继续
+↺ RETRY,↺ RETRY,↺ REINTENTAR,↺ リトライ,↺ 重试
+↺ REPLAY,↺ REPLAY,↺ REPETIR,↺ もう一度,↺ 重玩
+NEXT ➔,NEXT ➔,SIGUIENTE ➔,つぎへ ➔,下一关 ➔
+★ LEVEL CLEAR! ★,★ LEVEL CLEAR! ★,★ ¡NIVEL COMPLETADO! ★,★ ステージクリア！ ★,★ 关卡完成！ ★
+Pulls Left,Pulls Left,Tirones restantes,残り回数,剩余拉动
+Pulls Left: %d,Pulls Left: %d,Tirones restantes: %d,残り回数: %d,剩余拉动: %d
+Ready to leap!,Ready to leap!,¡Listo para saltar!,ジャンプの準備完了！,准备跳跃！
+Mastered! (3 Stars),Mastered! (3 Stars),¡Dominado! (3 estrellas),パーフェクト！ (★3),完美通关！ (3星)
+Completed (%d Stars),Completed (%d Stars),Completado (%d estrellas),クリア！ (★%d),已通关 (%d星)
+LEAP IN  ▶,LEAP IN  ▶,SALTAR  ▶,スタート  ▶,开始跳跃  ▶
+✕  CLOSE,✕  CLOSE,✕  CERRAR,✕  閉じる,✕  关闭
+SWIPE TO STRETCH,SWIPE TO STRETCH,DESLIZA PARA ESTIRAR,スワイプで伸ばす,滑动拉伸舌头
+TAP TO PULL,TAP TO PULL,TOCA PARA TIRAR,タップで引っ張る,点击拉动青蛙
+Loading top frogs...,Loading top frogs...,Cargando mejores ranas...,ランキング読込中...,正在加载排行榜...
+YOUR RANK: UNRANKED,YOUR RANK: UNRANKED,TU PUESTO: SIN CLASIFICAR,あなたの順位: ランク外,你的排名: 未上榜
+YOUR RANK: %s,YOUR RANK: %s,TU PUESTO: %s,あなたの順位: %s,你的排名: %s
+YOUR RANK,YOUR RANK,TU PUESTO,あなたの順位,你的排名
+UNRANKED,UNRANKED,SIN CLASIFICAR,ランク外,未上榜
+YOU,YOU,TÚ,あなた,你
+Great Job!,Great Job!,¡Gran trabajo!,よくできました！,太棒了！
+★ PERFECT CLEAR! ★,★ PERFECT CLEAR! ★,★ ¡PUNTUACIÓN PERFECTA! ★,★ パーフェクトクリア！ ★,★ 完美通关！ ★
+Nice Stretch!,Nice Stretch!,¡Buen estirón!,ナイスストレッチ！,不错的拉伸！
+FETCHING SAVE DATA...,FETCHING SAVE DATA...,RECUPERANDO DATOS...,セーブデータを取得中...,正在同步存档...
+Syncing with cloud...,Syncing with cloud...,Sincronizando en la nube...,クラウドと同期中...,正在与云端同步...
+✓ Save Data Synchronized!,✓ Save Data Synchronized!,¡Datos guardados sincronizados!,セーブデータが同期されました！,存档同步成功！
+Continuing with local save,Continuing with local save,Continuando con guardado local,ローカルセーブで続行,使用本地存档继续
+CONGRATULATIONS!,CONGRATULATIONS!,¡FELICITACIONES!,おめでとうございます！,恭喜通关！
+★ YOU COMPLETED THE GAME! ★,★ YOU COMPLETED THE GAME! ★,★ ¡HAS COMPLETADO EL JUEGO! ★,★ 全ステージクリア！ ★,★ 你已通关全游戏！ ★
+Could not load leaderboard.\nCheck connection and tap Refresh.,Could not load leaderboard.\nCheck connection and tap Refresh.,No se pudo cargar la clasificación.\nComprueba tu conexión y pulsa Actualizar.,ランキングを読み込めませんでした。\n接続を確認して更新してください。,无法加载排行榜。\n请检查网络并点击刷新。
+No scores submitted yet!\nComplete levels to claim #1!,No scores submitted yet!\nComplete levels to claim #1!,¡Sin puntuaciones aún!\n¡Completa niveles para ser el #1!,まだスコアがありません！\nステージをクリアして1位を目指そう！,暂无得分！\n快去通关成为第一名吧！
+DESKTOP,DESKTOP,ESCRITORIO,PC版,桌面端
+UNAVAILABLE,UNAVAILABLE,NO DISPONIBLE,利用不可,不可用
+🌴 WORLD 1: LAGOON ▾,🌴 WORLD 1: LAGOON ▾,🌴 MUNDO 1: LAGUNA ▾,🌴 ワールド1: ラグーン ▾,🌴 世界 1: 泻湖 ▾
+WORLD 1: LAGOON,WORLD 1: LAGOON,MUNDO 1: LAGUNA,ワールド1: ラグーン,世界 1: 泻湖

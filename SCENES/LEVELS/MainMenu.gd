@@ -34,6 +34,8 @@ extends Control
 @onready var crt_check: CheckBox = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CRTRow/CRTCheck
 @onready var play_games_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PlayGamesButton
 @onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PGLabel
+@onready var language_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow/LanguageButton
+@onready var language_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow/LanguageLabel
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
 
 # Loading Modal
@@ -133,6 +135,12 @@ func _ready() -> void:
 
 	# Hook up modal events
 	settings_back_btn.pressed.connect(_on_settings_back_pressed)
+	if is_instance_valid(language_btn):
+		language_btn.pressed.connect(_on_language_pressed)
+		language_btn.mouse_entered.connect(func():
+			hover_sfx.pitch_scale = 1.05
+			hover_sfx.play()
+		)
 	volume_slider.value_changed.connect(_on_volume_changed)
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
 	crt_check.toggled.connect(_on_crt_toggled)
@@ -170,7 +178,7 @@ func _on_save_data_ready() -> void:
 	if not is_instance_valid(loading_modal) or not loading_modal.visible:
 		return
 	if loading_status:
-		loading_status.text = "✓ Save Data Synchronized!"
+		loading_status.text = tr("✓ Save Data Synchronized!")
 		loading_status.modulate = Color(0.35, 1.0, 0.7)
 	_init_settings_values()
 	var tw := create_tween()
@@ -184,7 +192,7 @@ func _on_save_data_failed() -> void:
 	if not is_instance_valid(loading_modal) or not loading_modal.visible:
 		return
 	if loading_status:
-		loading_status.text = "Continuing with local save"
+		loading_status.text = tr("Continuing with local save")
 		loading_status.modulate = Color(1.0, 0.85, 0.3)
 	_init_settings_values()
 	var tw := create_tween()
@@ -217,11 +225,11 @@ func _init_play_games() -> void:
 	)
 	GodotPlayGameServices.user_authenticated.connect(func(authenticated: bool):
 		if authenticated:
-			play_games_btn.text = "PROFILE"
-			play_games_label.text = "GOOGLE PLAY: SIGNED IN"
+			play_games_btn.text = tr("PROFILE")
+			play_games_label.text = tr("GOOGLE PLAY: SIGNED IN")
 		else:
-			play_games_btn.text = "SIGN IN"
-			play_games_label.text = "GOOGLE PLAY GAMES"
+			play_games_btn.text = tr("SIGN IN")
+			play_games_label.text = tr("GOOGLE PLAY GAMES")
 	)
 	
 	GodotPlayGameServices.current_player_loaded.connect(func(player: PlayGamesPlayer):
@@ -230,8 +238,8 @@ func _init_play_games() -> void:
 	)
 	
 	if GodotPlayGameServices.is_signed_in:
-		play_games_btn.text = "PROFILE"
-		play_games_label.text = "GOOGLE PLAY: SIGNED IN"
+		play_games_btn.text = tr("PROFILE")
+		play_games_label.text = tr("GOOGLE PLAY: SIGNED IN")
 
 func _init_settings_values() -> void:
 	if bgm_player and not has_node("/root/MusicManager"):
@@ -244,6 +252,15 @@ func _init_settings_values() -> void:
 	# Fullscreen
 	var is_fullscreen := (DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN)
 	fullscreen_check.button_pressed = is_fullscreen
+
+	if is_instance_valid(language_btn):
+		language_btn.text = GameManager.get_language_display_name()
+
+func _on_language_pressed() -> void:
+	click_sfx.play()
+	var new_lang := GameManager.cycle_language()
+	if is_instance_valid(language_btn):
+		language_btn.text = GameManager.get_language_display_name(new_lang)
 
 	# CRT effect
 	#crt_overlay.visible = GameManager.crt_enabled

@@ -230,11 +230,11 @@ func _update_settings_ui() -> void:
 	if crt_rect:
 		crt_rect.visible = GameManager.crt_enabled
 	if music_toggle_btn:
-		music_toggle_btn.text = "🎵 MUSIC: " + ("ON" if GameManager.music_enabled else "OFF")
+		music_toggle_btn.text = "🎵 %s: " % tr("MUSIC") + (tr("ON") if GameManager.music_enabled else tr("OFF"))
 	if sfx_toggle_btn:
-		sfx_toggle_btn.text = "🔊 SFX: " + ("ON" if GameManager.sfx_enabled else "OFF")
+		sfx_toggle_btn.text = "🔊 %s: " % tr("SFX") + (tr("ON") if GameManager.sfx_enabled else tr("OFF"))
 	if haptics_toggle_btn:
-		haptics_toggle_btn.text = "📳 VIBRATION: " + ("ON" if GameManager.haptics_enabled else "OFF")
+		haptics_toggle_btn.text = "📳 %s: " % tr("VIBRATION") + (tr("ON") if GameManager.haptics_enabled else tr("OFF"))
 
 func setup_player(p: Frog) -> void:
 	player = p
@@ -265,7 +265,7 @@ func _on_level_changed(new_index: int) -> void:
 
 func update_level_label(idx: int) -> void:
 	if level_label:
-		level_label.text = "LEVEL %d" % (idx + 1)
+		level_label.text = "%s %d" % [tr("LEVEL"), idx + 1]
 
 func _bind_player(p: Frog) -> void:
 	if not p.player_pulled.is_connected(_on_player_pulled):
@@ -283,7 +283,7 @@ func _process(delta: float) -> void:
 		elif player.remaining_pulls <= 0:
 			color_tag = "[color=#ff4d4d]"
 			
-		pulls_label.text = "[center] PULLS: " + color_tag + str(player.remaining_pulls) + "[/color][/center]"
+		pulls_label.text = "[center] " + tr("PULLS") + ": " + color_tag + str(player.remaining_pulls) + "[/color][/center]"
 		
 		var shake_target: Control = pulls_badge if pulls_badge else pulls_label
 		if shake_target:
@@ -303,7 +303,7 @@ func _process(delta: float) -> void:
 		else:
 			bug_color = "[color=#9ef01a]"
 			
-		bugs_label.text = "[center] FLIES: " + bug_color + str(player.collected_bugs) + "/" + str(player.required_bugs) + "[/color][/center]"
+		bugs_label.text = "[center] " + tr("FLIES") + ": " + bug_color + str(player.collected_bugs) + "/" + str(player.required_bugs) + "[/color][/center]"
 
 	# --- Pull Button Active State / Juice ---
 	if big_pull_btn:
@@ -372,16 +372,16 @@ func show_win_modal(stars: int, pulls_remaining: int) -> void:
 
 	# Update stats text
 	if stats_label:
-		var performance_note := "Great Job!"
+		var performance_note := tr("Great Job!")
 		if stars == 3:
-			performance_note = "★ PERFECT CLEAR! ★"
+			performance_note = tr("★ PERFECT CLEAR! ★")
 		elif stars == 2:
-			performance_note = "Nice Stretch!"
-		stats_label.text = "%s\nPulls Left: %d" % [performance_note, pulls_remaining]
+			performance_note = tr("Nice Stretch!")
+		stats_label.text = "%s\n%s: %d" % [performance_note, tr("Pulls Left"), pulls_remaining]
 
 	# Update Next button text on normal levels
 	if next_btn:
-		next_btn.text = "NEXT ➔"
+		next_btn.text = tr("NEXT ➔")
 
 	# Prepare stars (initially dim)
 	var star_nodes: Array[Label] = [star_1, star_2, star_3]
@@ -522,7 +522,7 @@ func _show_congratulation_modal(stars: int, pulls_remaining: int) -> void:
 	vbox.add_child(trophy_label)
 
 	var title_lbl := Label.new()
-	title_lbl.text = "CONGRATULATIONS!"
+	title_lbl.text = tr("CONGRATULATIONS!")
 	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if font_gorditas:
 		title_lbl.add_theme_font_override("font", font_gorditas)
@@ -533,7 +533,7 @@ func _show_congratulation_modal(stars: int, pulls_remaining: int) -> void:
 	vbox.add_child(title_lbl)
 
 	var sub_title := Label.new()
-	sub_title.text = "★ YOU COMPLETED THE GAME! ★"
+	sub_title.text = tr("★ YOU COMPLETED THE GAME! ★")
 	sub_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if font_gorditas:
 		sub_title.add_theme_font_override("font", font_gorditas)
@@ -567,7 +567,7 @@ func _show_congratulation_modal(stars: int, pulls_remaining: int) -> void:
 	# Praise Text
 	var total_levels := GameManager.levels.size() if GameManager else 45
 	var desc_lbl := Label.new()
-	desc_lbl.text = "Froggy conquered all %d levels across every World\nand returned home as the Ultimate Champion!\nPulls Left: %d" % [total_levels, pulls_remaining]
+	desc_lbl.text = (tr("Froggy conquered all %d levels across every World\nand returned home as the Ultimate Champion!\nPulls Left: %d") if tr("Froggy conquered all %d levels across every World\nand returned home as the Ultimate Champion!\nPulls Left: %d") != "Froggy conquered all %d levels across every World\nand returned home as the Ultimate Champion!\nPulls Left: %d" else "Froggy conquered all %d levels across every World\nand returned home as the Ultimate Champion!\nPulls Left: %d") % [total_levels, pulls_remaining]
 	desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if font_gorditas:
 		desc_lbl.add_theme_font_override("font", font_gorditas)
@@ -587,7 +587,7 @@ func _show_congratulation_modal(stars: int, pulls_remaining: int) -> void:
 	var btn_green_tex := load("res://ASSETS/UI/buttons/btn.png") as Texture2D
 
 	var replay_finale_btn := Button.new()
-	replay_finale_btn.text = "↺ REPLAY"
+	replay_finale_btn.text = tr("↺ REPLAY")
 	replay_finale_btn.custom_minimum_size = Vector2(190, 60)
 	if font_gorditas:
 		replay_finale_btn.add_theme_font_override("font", font_gorditas)
@@ -614,7 +614,7 @@ func _show_congratulation_modal(stars: int, pulls_remaining: int) -> void:
 	actions.add_child(replay_finale_btn)
 
 	var home_btn := Button.new()
-	home_btn.text = "🏠 HOME MAP"
+	home_btn.text = tr("🏠 HOME MAP")
 	home_btn.custom_minimum_size = Vector2(210, 60)
 	if font_gorditas:
 		home_btn.add_theme_font_override("font", font_gorditas)

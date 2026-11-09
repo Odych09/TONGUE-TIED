@@ -51,7 +51,7 @@ func _process(delta: float) -> void:
 
 func _start_swipe_tutorial() -> void:
 	current_step = 0
-	label.text = "SWIPE TO STRETCH"
+	label.text = tr("SWIPE TO STRETCH")
 	label.modulate.a = 0.0
 	hand.modulate.a = 0.0
 	arrow_line.modulate.a = 0.0
@@ -126,7 +126,7 @@ func _start_pull_animation() -> void:
 	position = player.position
 	hand.position = Vector2(0, -20)
 	hand.scale = Vector2(0.85, 0.85)
-	label.text = "TAP TO PULL"
+	label.text = tr("TAP TO PULL")
 
 	active_tween = create_tween()
 	

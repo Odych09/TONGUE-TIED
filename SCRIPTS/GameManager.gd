@@ -27,8 +27,98 @@ const HANDCRAFTED_COUNT: int = 15
 const MOBILE_CONTENT_SCALE: float = 1.22
 
 func _ready() -> void:
+	_setup_font_fallbacks()
+	_init_translations()
+	_init_language()
 	_apply_platform_display_scale()
 	scan_ascii_levels()
+
+func _setup_font_fallbacks() -> void:
+	var main_font: FontFile = load("res://ASSETS/FONT/Gorditas-Bold.ttf")
+	if main_font:
+		var jp_font: FontFile = load("res://ASSETS/FONT/other_lang/ZenMaruGothic-Medium.ttf")
+		var cn_font: FontFile = load("res://ASSETS/FONT/other_lang/ZCOOLKuaiLe-Regular.ttf")
+		var fallbacks: Array[Font] = []
+		if jp_font:
+			fallbacks.append(jp_font)
+		if cn_font:
+			fallbacks.append(cn_font)
+		if not fallbacks.is_empty():
+			main_font.fallbacks = fallbacks
+			print("[GameManager] Registered CJK font fallbacks (JP + SC) on Gorditas-Bold.")
+
+func _init_translations() -> void:
+	const CSV_PATH := "res://TRANSLATIONS/translations.csv"
+	if not FileAccess.file_exists(CSV_PATH):
+		return
+	var file := FileAccess.open(CSV_PATH, FileAccess.READ)
+	if not file:
+		return
+	var headers := file.get_csv_line(",")
+	var locales: Array[String] = []
+	var translations: Dictionary = {}
+	for i in range(1, headers.size()):
+		var loc := headers[i].strip_edges()
+		locales.append(loc)
+		var tr_res := Translation.new()
+		tr_res.locale = loc
+		translations[loc] = tr_res
+	
+	while not file.eof_reached():
+		var row := file.get_csv_line(",")
+		if row.size() < headers.size():
+			continue
+		var raw_key := row[0]
+		var key := raw_key.strip_edges()
+		if key.is_empty():
+			continue
+		for i in range(1, headers.size()):
+			var loc := locales[i - 1]
+			var msg := row[i].replace("\\n", "\n")
+			(translations[loc] as Translation).add_message(key, msg)
+			if raw_key != key:
+				(translations[loc] as Translation).add_message(raw_key, msg)
+	file.close()
+
+	for loc in locales:
+		TranslationServer.add_translation(translations[loc])
+	print("[GameManager] Registered translation locales: ", locales)
+
+func _init_language() -> void:
+	# If user already picked a language from local save, it gets loaded in load_progress().
+	# Otherwise, auto-detect device OS language on first launch.
+	if current_language.is_empty() or current_language == "en":
+		var os_lang := OS.get_locale_language().to_lower()
+		if os_lang.begins_with("es"):
+			current_language = "es"
+		elif os_lang.begins_with("ja"):
+			current_language = "ja"
+		elif os_lang.begins_with("zh"):
+			current_language = "zh_CN"
+		else:
+			current_language = "en"
+	set_language(current_language, false)
+
+func set_language(lang_code: String, do_save: bool = true) -> void:
+	if not lang_code in SUPPORTED_LANGUAGES:
+		lang_code = "en"
+	current_language = lang_code
+	TranslationServer.set_locale(lang_code)
+	if do_save:
+		save_progress()
+	settings_changed.emit()
+
+func cycle_language() -> String:
+	var idx := SUPPORTED_LANGUAGES.find(current_language)
+	if idx == -1:
+		idx = 0
+	var next_idx := (idx + 1) % SUPPORTED_LANGUAGES.size()
+	set_language(SUPPORTED_LANGUAGES[next_idx], true)
+	return SUPPORTED_LANGUAGES[next_idx]
+
+func get_language_display_name(lang_code: String = "") -> String:
+	var target := lang_code if not lang_code.is_empty() else current_language
+	return LANGUAGE_DISPLAY_NAMES.get(target, "ENGLISH")
 
 func _apply_platform_display_scale() -> void:
 	if OS.has_feature("mobile") or OS.has_feature("android") or OS.has_feature("ios"):
@@ -64,6 +154,16 @@ var music_enabled: bool = true
 var sfx_enabled: bool = true
 var crt_enabled: bool = true
 var master_volume: float = 1.0
+
+# Localization
+var current_language: String = "en"
+const SUPPORTED_LANGUAGES: Array[String] = ["en", "es", "ja", "zh_CN"]
+const LANGUAGE_DISPLAY_NAMES: Dictionary = {
+	"en": "ENGLISH",
+	"es": "ESPAÑOL",
+	"ja": "日本語",
+	"zh_CN": "简体中文"
+}
 
 signal settings_changed
 
@@ -150,7 +250,8 @@ func save_progress() -> void:
 		"music_enabled": music_enabled,
 		"sfx_enabled": sfx_enabled,
 		"crt_enabled": crt_enabled,
-		"master_volume": master_volume
+		"master_volume": master_volume,
+		"language": current_language
 	}
 	#cloud
 	var bytes = JSON.stringify(data).to_utf8_buffer()
@@ -164,6 +265,16 @@ func save_progress() -> void:
 
 func load_progress() -> void:
 	if !SaveManager.isPrevSnapShot:
+		# Check local save file for saved language
+		if FileAccess.file_exists(SAVE_PATH):
+			var f := FileAccess.open(SAVE_PATH, FileAccess.READ)
+			if f:
+				var parsed = JSON.parse_string(f.get_as_text())
+				if parsed is Dictionary and parsed.has("language"):
+					var l = str(parsed.get("language", ""))
+					if l in SUPPORTED_LANGUAGES:
+						current_language = l
+						TranslationServer.set_locale(current_language)
 		unlocked_level = 0
 		current_level_index = 0
 		progress_updated.emit()
@@ -178,6 +289,11 @@ func load_progress() -> void:
 		sfx_enabled = bool(save_data_bytes.get("sfx_enabled", true))
 		crt_enabled = bool(save_data_bytes.get("crt_enabled", true))
 		master_volume = float(save_data_bytes.get("master_volume", 1.0))
+		if save_data_bytes.has("language"):
+			var saved_lang = str(save_data_bytes.get("language", ""))
+			if saved_lang in SUPPORTED_LANGUAGES:
+				current_language = saved_lang
+				TranslationServer.set_locale(current_language)
 		var db := linear_to_db(master_volume) if master_volume > 0.001 else -80.0
 		AudioServer.set_bus_volume_db(0, db)
 		unlocked_level = clamp(unlocked_level, 0, levels.size() - 1)
