@@ -833,7 +833,7 @@ func spawn_death_effect(world_pos: Vector2) -> void:
 	particles.gravity = Vector2(0, 100)
 	particles.scale_amount_min = 5.0
 	particles.scale_amount_max = 10.0
-	particles.color = Color(0.9, 0.3, 0.3, 0.9)
+	particles.color = Color("#FFDF00")
 	parent_node.add_child(particles)
 	
 	var tw := create_tween()
