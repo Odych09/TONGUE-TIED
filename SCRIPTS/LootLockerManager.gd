@@ -8,12 +8,16 @@ var player_id: int = 0
 var player_name: String = ""
 var public_uid: String = ""
 var player_identifier: String = ""
+var is_leaderboard_opted_out: bool = false
 
 signal auth_status_changed(success: bool)
 signal player_name_changed(new_name: String)
+signal leaderboard_opt_out_changed(opted_out: bool)
 signal score_submitted(success: bool, rank: int, score: int)
 
 func _ready() -> void:
+	is_leaderboard_opted_out = _load_opt_out_status()
+
 	# Load locally cached name if any
 	var saved_name := _load_local_player_name()
 	if saved_name != "":
@@ -41,13 +45,14 @@ func fake_login(g_id : String , g_name : String) -> bool:
 		auth_status_changed.emit(true)
 
 		# Set the player's Google Play gamer tag on LootLocker
-		if g_name != "":
+		if not is_leaderboard_opted_out and g_name != "":
 			await set_player_name(g_name)
 
-		var eff_name := get_effective_player_name()
-		var stars := _get_local_stars()
-		if stars > 0 and eff_name != "":
-			submit_score(stars, eff_name)
+		if not is_leaderboard_opted_out:
+			var eff_name := get_effective_player_name()
+			var stars := _get_local_stars()
+			if stars > 0 and eff_name != "":
+				submit_score(stars, eff_name)
 
 		return true
 	else:
@@ -101,7 +106,7 @@ func _on_network_became_online() -> void:
 				await fake_login(eff_name, eff_name)
 
 	# If authenticated, submit any local stars earned offline
-	if is_authenticated:
+	if is_authenticated and not is_leaderboard_opted_out:
 		var stars := _get_local_stars()
 		var eff_name := get_effective_player_name()
 		if stars > 0 and eff_name != "":
@@ -113,7 +118,7 @@ func _on_google_play_player_loaded(player) -> void:
 		return
 	var g_id: String = player.player_id if "player_id" in player else ""
 	var g_name: String = player.display_name if "display_name" in player else ""
-	if g_name != "":
+	if not is_leaderboard_opted_out and g_name != "":
 		player_name = g_name
 		_save_local_player_name(g_name)
 
@@ -149,13 +154,14 @@ func login_with_google_player_id(g_id: String, g_name: String) -> bool:
 		auth_status_changed.emit(true)
 
 		# Set the player's Google Play gamer tag on LootLocker
-		if g_name != "":
+		if not is_leaderboard_opted_out and g_name != "":
 			await set_player_name(g_name)
 
-		var eff_name := get_effective_player_name()
-		var stars := _get_local_stars()
-		if stars > 0 and eff_name != "":
-			submit_score(stars, eff_name)
+		if not is_leaderboard_opted_out:
+			var eff_name := get_effective_player_name()
+			var stars := _get_local_stars()
+			if stars > 0 and eff_name != "":
+				submit_score(stars, eff_name)
 
 		return true
 	else:
@@ -168,6 +174,12 @@ func get_effective_player_name() -> String:
 	if player_name != "":
 		return player_name
 	
+	if is_leaderboard_opted_out:
+		var local_name := _load_local_player_name()
+		if local_name != "":
+			return local_name
+		return "#frog" + str(randi_range(1000, 9999))
+
 	# Check Google Play profile if signed in
 	var pg = get_node_or_null("/root/GodotPlayGameServices")
 	if pg and "current_player" in pg and pg.current_player:
@@ -210,6 +222,10 @@ func set_player_name(new_name: String) -> bool:
 		return false
 
 func submit_score(score: int, custom_metadata: String = "") -> Dictionary:
+	if is_leaderboard_opted_out:
+		print("[LootLockerManager] User opted out from leaderboard; score submission skipped.")
+		return {"success": false, "error": "Opted out"}
+
 	if not _is_network_available():
 		print("[LootLockerManager] Offline: Score (%d stars) stored locally; will auto-submit when network returns." % score)
 		return {"success": false, "error": "Offline"}
@@ -315,3 +331,38 @@ func _load_local_player_name() -> String:
 			f.close()
 			return s
 	return ""
+
+func opt_out_from_leaderboard() -> void:
+	is_leaderboard_opted_out = true
+	_save_opt_out_status(true)
+
+	var anon_name := "#frog" + str(randi_range(1000, 9999))
+	player_name = anon_name
+	_save_local_player_name(anon_name)
+	player_name_changed.emit(anon_name)
+	leaderboard_opt_out_changed.emit(true)
+
+	if is_authenticated and _is_network_available():
+		await set_player_name(anon_name)
+		var stars := _get_local_stars()
+		var req = LL_Leaderboards.SubmitScore.new(LEADERBOARD_ID, stars, str(player_id), anon_name)
+		var response = await req.send()
+		if response and response.success:
+			print("[LootLockerManager] Opted out: Leaderboard metadata updated to %s" % anon_name)
+	else:
+		print("[LootLockerManager] Opted out: Anon tag set locally to %s" % anon_name)
+
+func _save_opt_out_status(opted_out: bool) -> void:
+	var f = FileAccess.open("user://leaderboard_opt_out.txt", FileAccess.WRITE)
+	if f:
+		f.store_string("1" if opted_out else "0")
+		f.close()
+
+func _load_opt_out_status() -> bool:
+	if FileAccess.file_exists("user://leaderboard_opt_out.txt"):
+		var f = FileAccess.open("user://leaderboard_opt_out.txt", FileAccess.READ)
+		if f:
+			var s = f.get_as_text().strip_edges()
+			f.close()
+			return s
+	return false

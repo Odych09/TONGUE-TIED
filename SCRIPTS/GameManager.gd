@@ -26,6 +26,8 @@ const ASCII_LEVEL_SCENE: PackedScene = preload("res://SCENES/LEVELS/ascii_level.
 const HANDCRAFTED_COUNT: int = 15
 const MOBILE_CONTENT_SCALE: float = 1.22
 
+var is_deeplink_leaderboard_redirect : bool = false;
+
 func _ready() -> void:
 	_setup_font_fallbacks()
 	_init_translations()
@@ -270,7 +272,8 @@ func save_progress() -> void:
 		"sfx_enabled": sfx_enabled,
 		"crt_enabled": crt_enabled,
 		"master_volume": master_volume,
-		"language": current_language
+		"language": current_language,
+		"leaderboard_opted_out": LootLockerManager.is_leaderboard_opted_out if has_node("/root/LootLockerManager") else false
 	}
 	#cloud
 	var bytes = JSON.stringify(data).to_utf8_buffer()
@@ -289,11 +292,16 @@ func load_progress() -> void:
 			var f := FileAccess.open(SAVE_PATH, FileAccess.READ)
 			if f:
 				var parsed = JSON.parse_string(f.get_as_text())
-				if parsed is Dictionary and parsed.has("language"):
-					var l = str(parsed.get("language", ""))
-					if l in SUPPORTED_LANGUAGES:
-						current_language = l
-						TranslationServer.set_locale(current_language)
+				if parsed is Dictionary:
+					if parsed.has("language"):
+						var l = str(parsed.get("language", ""))
+						if l in SUPPORTED_LANGUAGES:
+							current_language = l
+							TranslationServer.set_locale(current_language)
+					if parsed.has("leaderboard_opted_out") and has_node("/root/LootLockerManager"):
+						if bool(parsed.get("leaderboard_opted_out", false)):
+							LootLockerManager.is_leaderboard_opted_out = true
+							LootLockerManager._save_opt_out_status(true)
 		unlocked_level = 0
 		current_level_index = 0
 		progress_updated.emit()
@@ -313,6 +321,10 @@ func load_progress() -> void:
 			if saved_lang in SUPPORTED_LANGUAGES:
 				current_language = saved_lang
 				TranslationServer.set_locale(current_language)
+		if save_data_bytes.has("leaderboard_opted_out") and has_node("/root/LootLockerManager"):
+			if bool(save_data_bytes.get("leaderboard_opted_out", false)):
+				LootLockerManager.is_leaderboard_opted_out = true
+				LootLockerManager._save_opt_out_status(true)
 		var db := linear_to_db(master_volume) if master_volume > 0.001 else -80.0
 		AudioServer.set_bus_volume_db(0, db)
 		unlocked_level = clamp(unlocked_level, 0, levels.size() - 1)

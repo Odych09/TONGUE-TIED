@@ -38,6 +38,8 @@ extends Control
 @onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PGLabel
 @onready var language_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow/LanguageButton
 @onready var language_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow/LanguageLabel
+@onready var leaderboard_opt_out_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LeaderboardRow/LeaderboardOptOutButton
+@onready var delete_data_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/DeleteDataRow/DeleteDataButton
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
 
 # Leaderboard Modal
@@ -158,7 +160,10 @@ func _ready() -> void:
 			add_child(leaderboard_modal)
 	if leaderboard_modal:
 		leaderboard_modal.visible = false
-
+	
+	if GameManager.is_deeplink_leaderboard_redirect:
+		leaderboard_modal.visible = true;
+		GameManager.is_deeplink_leaderboard_redirect = false;
 	# Ensure CRT state
 	#crt_overlay.visible = GameManager.crt_enabled
 
@@ -197,6 +202,12 @@ func _ready() -> void:
 	if is_instance_valid(language_btn):
 		language_btn.pressed.connect(_on_language_pressed)
 		_hook_btn_animations(language_btn)
+	if is_instance_valid(leaderboard_opt_out_btn):
+		leaderboard_opt_out_btn.pressed.connect(_on_leaderboard_opt_out_pressed)
+		_hook_btn_animations(leaderboard_opt_out_btn)
+	if is_instance_valid(delete_data_btn):
+		delete_data_btn.pressed.connect(_on_delete_data_pressed)
+		_hook_btn_animations(delete_data_btn)
 	volume_slider.value_changed.connect(_on_volume_changed)
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
 
@@ -757,6 +768,29 @@ func _init_settings_values() -> void:
 	fullscreen_check.button_pressed = is_fullscreen
 	if is_instance_valid(language_btn):
 		language_btn.text = GameManager.get_language_display_name()
+
+	_update_opt_out_button_ui()
+
+func _update_opt_out_button_ui() -> void:
+	if not is_instance_valid(leaderboard_opt_out_btn):
+		return
+	var is_opted: bool = LootLockerManager.is_leaderboard_opted_out if has_node("/root/LootLockerManager") else false
+	if is_opted:
+		leaderboard_opt_out_btn.text = tr("OPTED OUT")
+		leaderboard_opt_out_btn.disabled = true
+	else:
+		leaderboard_opt_out_btn.text = tr("OPT OUT")
+		leaderboard_opt_out_btn.disabled = false
+
+func _on_leaderboard_opt_out_pressed() -> void:
+	click_sfx.play()
+	if has_node("/root/LootLockerManager"):
+		LootLockerManager.opt_out_from_leaderboard()
+	_update_opt_out_button_ui()
+
+func _on_delete_data_pressed() -> void:
+	click_sfx.play()
+	OS.shell_open("https://akurainteractive.dpdns.org/delete-account")
 
 func _on_language_pressed() -> void:
 	click_sfx.play()

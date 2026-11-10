@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c3u8um8ah7vjn" path="res://SCENES/LEVELS/MainMenu.gd" id="1_5cyo5"]
 [ext_resource type="Texture2D" uid="uid://cpotlr87atgm5" path="res://ASSETS/UI/background/4.png" id="2_05orf"]
+[ext_resource type="Script" uid="uid://ilkxrs5tw20k" path="res://SCRIPTS/deeplink.gd" id="2_hh15h"]
 [ext_resource type="Texture2D" uid="uid://bbfpf3ele10us" path="res://ASSETS/UI/background/3.png" id="2_maxjq"]
 [ext_resource type="Texture2D" uid="uid://cnwkiv4xw75om" path="res://ASSETS/UI/background/6.png" id="2_p0kf6"]
 [ext_resource type="Texture2D" uid="uid://dor4umfekkldy" path="res://ASSETS/UI/background/1.png" id="2_pq8yd"]
@@ -24,6 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://bpfmt1tc6u211" path="res://ASSETS/UI/checkbox_checked.svg" id="17_chk_on"]
 [ext_resource type="Texture2D" uid="uid://e4lmusohesob" path="res://ASSETS/UI/slider_grabber.svg" id="18_slider_knob"]
 [ext_resource type="Texture2D" uid="uid://bip6mg73wueai" path="res://ASSETS/UI/slider_grabber_highlight.svg" id="19_slider_knob_hl"]
+[ext_resource type="Script" uid="uid://ipmp1ive8dfp" path="res://addons/DeeplinkPlugin/Deeplink.gd" id="25_u0fo5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_maxjq"]
 font_size = 136
@@ -212,6 +214,9 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_5cyo5")
 
+[node name="Node" type="Node" parent="." unique_id=1364400181]
+script = ExtResource("2_hh15h")
+
 [node name="BG" type="CanvasLayer" parent="." unique_id=1272671837]
 layer = -1
 
@@ -355,6 +360,7 @@ mouse_filter = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="TitleFront" type="Label" parent="UI/MarginContainer/HBoxContainer/LeftColumn/TitleBox" unique_id=331279438]
+auto_translate_mode = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.01835443
@@ -369,7 +375,6 @@ theme_override_colors/font_outline_color = Color(0.08, 0.14, 0.24, 1)
 theme_override_constants/outline_size = 14
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 104
-auto_translate = false
 text = "Tongue Twister"
 label_settings = SubResource("LabelSettings_maxjq")
 horizontal_alignment = 1
@@ -734,9 +739,61 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_1oolv")
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1oolv")
 text = "ENGLISH"
 
+[node name="LeaderboardRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1355838138]
+layout_mode = 2
+
+[node name="LeaderboardLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LeaderboardRow" unique_id=727951437]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 22
+text = "LEADERBOARD"
+label_settings = SubResource("LabelSettings_saqwy")
+
+[node name="LeaderboardOptOutButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LeaderboardRow" unique_id=1732899136]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxTexture_u0fo5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1oolv")
+theme_override_styles/hover = SubResource("StyleBoxTexture_1oolv")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1oolv")
+text = "OPT OUT"
+
 [node name="Spacer" type="Control" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1863393753]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="DeleteDataRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=151519289]
+layout_mode = 2
+
+[node name="DeleteDataLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/DeleteDataRow" unique_id=1806138611]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 22
+text = "ACCOUNT DATA"
+label_settings = SubResource("LabelSettings_saqwy")
+
+[node name="DeleteDataButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/DeleteDataRow" unique_id=748893058]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_cvoun")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxTexture_u0fo5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1oolv")
+theme_override_styles/hover = SubResource("StyleBoxTexture_1oolv")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1oolv")
+text = "DELETE"
 
 [node name="SettingsBackButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=856551263]
 custom_minimum_size = Vector2(222.9, 90.585)
@@ -854,3 +911,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="Deeplink" type="Node" parent="." unique_id=1593770772]
+script = ExtResource("25_u0fo5")
+host = "akurainteractive.dpdns.org"
+path_prefix = "leaderboards/tongue-twister"
+android_label = "Leaderboard"
+metadata/_custom_type_script = "uid://ipmp1ive8dfp"

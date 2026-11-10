@@ -59,7 +59,7 @@ window/vsync/vsync_mode=0
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GodotPlayGameServices/plugin.cfg", "res://addons/LootLockerSDK/plugin.cfg", "res://addons/godot_mcp_toolkit/plugin.cfg")
+enabled=PackedStringArray("res://addons/DeeplinkPlugin/plugin.cfg", "res://addons/GodotPlayGameServices/plugin.cfg", "res://addons/LootLockerSDK/plugin.cfg", "res://addons/godot_mcp_toolkit/plugin.cfg")
 
 [file_customization]
 

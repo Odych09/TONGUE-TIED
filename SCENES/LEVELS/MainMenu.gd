@@ -36,6 +36,8 @@ extends Control
 @onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PGLabel
 @onready var language_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow/LanguageButton
 @onready var language_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow/LanguageLabel
+@onready var leaderboard_opt_out_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LeaderboardRow/LeaderboardOptOutButton
+@onready var delete_data_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/DeleteDataRow/DeleteDataButton
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
 
 # Loading Modal
@@ -61,6 +63,7 @@ extends Control
 	$"BG/2",
 	$"BG/1"
 ]
+
 const LAYER_WEIGHTS: Array[float] = [
 	0.06,  # 7: Sky & deep background canopy
 	0.14,  # 6: Distant misty woods
@@ -138,6 +141,18 @@ func _ready() -> void:
 	if is_instance_valid(language_btn):
 		language_btn.pressed.connect(_on_language_pressed)
 		language_btn.mouse_entered.connect(func():
+			hover_sfx.pitch_scale = 1.05
+			hover_sfx.play()
+		)
+	if is_instance_valid(leaderboard_opt_out_btn):
+		leaderboard_opt_out_btn.pressed.connect(_on_leaderboard_opt_out_pressed)
+		leaderboard_opt_out_btn.mouse_entered.connect(func():
+			hover_sfx.pitch_scale = 1.05
+			hover_sfx.play()
+		)
+	if is_instance_valid(delete_data_btn):
+		delete_data_btn.pressed.connect(_on_delete_data_pressed)
+		delete_data_btn.mouse_entered.connect(func():
 			hover_sfx.pitch_scale = 1.05
 			hover_sfx.play()
 		)
@@ -255,6 +270,29 @@ func _init_settings_values() -> void:
 
 	if is_instance_valid(language_btn):
 		language_btn.text = GameManager.get_language_display_name()
+
+	_update_opt_out_button_ui()
+
+func _update_opt_out_button_ui() -> void:
+	if not is_instance_valid(leaderboard_opt_out_btn):
+		return
+	var is_opted: bool = LootLockerManager.is_leaderboard_opted_out if has_node("/root/LootLockerManager") else false
+	if is_opted:
+		leaderboard_opt_out_btn.text = tr("OPTED OUT")
+		leaderboard_opt_out_btn.disabled = true
+	else:
+		leaderboard_opt_out_btn.text = tr("OPT OUT")
+		leaderboard_opt_out_btn.disabled = false
+
+func _on_leaderboard_opt_out_pressed() -> void:
+	click_sfx.play()
+	if has_node("/root/LootLockerManager"):
+		LootLockerManager.opt_out_from_leaderboard()
+	_update_opt_out_button_ui()
+
+func _on_delete_data_pressed() -> void:
+	click_sfx.play()
+	OS.shell_open("https://akurainteractive.dpdns.org/delete-account")
 
 func _on_language_pressed() -> void:
 	click_sfx.play()
