@@ -407,7 +407,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="UI/WinModal/CenterContainer" unique_id=909319767]
-custom_minimum_size = Vector2(620, 490)
+custom_minimum_size = Vector2(797.29, 587.18)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")
 
@@ -433,7 +433,7 @@ theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 46
+theme_override_font_sizes/font_size = 65
 text = "★ LEVEL CLEAR! ★"
 horizontal_alignment = 1
 
@@ -448,7 +448,7 @@ theme_override_colors/font_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.3, 0.15, 0.02, 1)
 theme_override_constants/outline_size = 12
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 68
+theme_override_font_sizes/font_size = 105
 text = "★"
 
 [node name="Star2" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=1849204924]
@@ -457,7 +457,7 @@ theme_override_colors/font_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.3, 0.15, 0.02, 1)
 theme_override_constants/outline_size = 12
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 68
+theme_override_font_sizes/font_size = 105
 text = "★"
 
 [node name="Star3" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=1849204925]
@@ -466,7 +466,7 @@ theme_override_colors/font_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.3, 0.15, 0.02, 1)
 theme_override_constants/outline_size = 12
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 68
+theme_override_font_sizes/font_size = 105
 text = "★"
 
 [node name="StatsLabel" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204926]
@@ -475,7 +475,7 @@ theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 51
 text = "Pulls Left: 4"
 horizontal_alignment = 1
 
@@ -489,14 +489,14 @@ theme_override_constants/separation = 16
 alignment = 1
 
 [node name="ReplayBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204929]
-custom_minimum_size = Vector2(160, 58)
+custom_minimum_size = Vector2(210.63, 97.195)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
 theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
@@ -510,7 +510,7 @@ theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 34
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
@@ -524,7 +524,7 @@ theme_override_colors/font_hover_color = Color(1, 0.98, 0.5, 1)
 theme_override_colors/font_outline_color = Color(0.12, 0.35, 0.05, 1)
 theme_override_constants/outline_size = 7
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 39
 theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
@@ -557,7 +557,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="UI/PauseModal/CenterContainer" unique_id=1849204963]
-custom_minimum_size = Vector2(580, 520)
+custom_minimum_size = Vector2(815.895, 657.88)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")
 
@@ -592,42 +592,42 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="MusicToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBox" unique_id=1849204967]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 88.865)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
 theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "🎵 MUSIC: ON"
 
 [node name="SFXToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBox" unique_id=1849204968]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 88.865)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
 theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "🔊 SFX: ON"
 
 [node name="HapticsToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBox" unique_id=1849204969]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 88.865)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
 theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
@@ -642,14 +642,14 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="ResumeBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204972]
-custom_minimum_size = Vector2(0, 56)
+custom_minimum_size = Vector2(0, 102.79)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 0.98, 0.5, 1)
 theme_override_colors/font_outline_color = Color(0.12, 0.35, 0.05, 1)
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 52
 theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
@@ -669,7 +669,7 @@ theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 41
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
@@ -684,7 +684,7 @@ theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 41
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
@@ -699,7 +699,7 @@ theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_t1itu")
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 41
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")

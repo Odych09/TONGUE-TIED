@@ -78,6 +78,7 @@ func _ready() -> void:
 	# Audio setup
 	_sfx_player = AudioStreamPlayer.new()
 	_sfx_player.bus = "Master"
+	_sfx_player.volume_db = 8.0
 	add_child(_sfx_player)
 
 	# Store initial badge position for shake effects

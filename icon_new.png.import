@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://duh2jqbkkx1c0"
-path.s3tc="res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.s3tc.ctex"
-path.etc2="res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.etc2.ctex"
+uid="uid://cmfv1gqrg73y4"
+path.s3tc="res://.godot/imported/icon_new.png-ed891204c0c11f839bf19dc70b914d3e.s3tc.ctex"
+path.etc2="res://.godot/imported/icon_new.png-ed891204c0c11f839bf19dc70b914d3e.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://icon.png"
-dest_files=["res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.s3tc.ctex", "res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.etc2.ctex"]
+source_file="res://icon_new.png"
+dest_files=["res://.godot/imported/icon_new.png-ed891204c0c11f839bf19dc70b914d3e.s3tc.ctex", "res://.godot/imported/icon_new.png-ed891204c0c11f839bf19dc70b914d3e.etc2.ctex"]
 
 [params]
 

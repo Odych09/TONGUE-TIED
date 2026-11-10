@@ -584,6 +584,9 @@ func traverse_tongue() -> void:
 			collected_bugs += 1
 			tilemap_layer.erase_cell(current_tile_pos)
 			spawn_bug_eat_effect(position)
+			var music_mgr := get_node_or_null("/root/MusicManager")
+			if music_mgr and music_mgr.has_method("play_collect_bug_sfx"):
+				music_mgr.play_collect_bug_sfx()
 			if has_node("/root/AchievementManager"):
 				AchievementManager.on_bug_collected()
 		

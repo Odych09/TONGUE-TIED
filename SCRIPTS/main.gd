@@ -8,6 +8,8 @@ func _ready() -> void:
 	if bgm_player and has_node("/root/MusicManager"):
 		bgm_player.stop()
 		bgm_player.stream = null
+	if has_node("/root/MusicManager"):
+		MusicManager.play_game_music()
 	GameManager.level_changed.connect(_on_level_changed)
 	GameManager.settings_changed.connect(_update_audio_settings)
 	_update_audio_settings()

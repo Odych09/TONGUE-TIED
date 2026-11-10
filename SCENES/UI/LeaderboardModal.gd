@@ -26,6 +26,10 @@ const VELOCITY_SAMPLES_MAX: int = 5
 const SCROLL_FRICTION: float = 7.5
 
 func _ready() -> void:
+	if click_sfx:
+		click_sfx.volume_db = 8.0
+	if back_sfx:
+		back_sfx.volume_db = 8.0
 	visible = false
 	back_btn.pressed.connect(close)
 	refresh_btn.pressed.connect(func(): load_leaderboard(true))

@@ -164,11 +164,20 @@ func _ready() -> void:
 	_init_settings_values()
 	_init_play_games()
 
+	# Set UI SFX volume (+8 dB boost)
+	if hover_sfx:
+		hover_sfx.volume_db = 8.0
+	if click_sfx:
+		click_sfx.volume_db = 8.0
+	if back_sfx:
+		back_sfx.volume_db = 8.0
+
 	# Start BGM if not already playing (handled globally by MusicManager if available)
 	if bgm_player:
 		if has_node("/root/MusicManager"):
 			bgm_player.stop()
 			bgm_player.stream = null
+			MusicManager.play_menu_music()
 		elif not bgm_player.playing:
 			bgm_player.play()
 
