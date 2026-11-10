@@ -31,15 +31,16 @@ extends Control
 # Settings Modal
 @onready var settings_modal: Control = $SettingsModal
 @onready var settings_panel: PanelContainer = $SettingsModal/CenterContainer/PanelContainer
-@onready var volume_slider: HSlider = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/VolumeSlider
-@onready var volume_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/VolumeRow/HeaderRow/VolumeValue
-@onready var fullscreen_check: CheckBox = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/FullscreenRow/FullscreenCheck
-@onready var play_games_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PlayGamesButton
-@onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PlayGamesRow/PGLabel
-@onready var language_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow/LanguageButton
-@onready var language_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageRow/LanguageLabel
-@onready var leaderboard_opt_out_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LeaderboardRow/LeaderboardOptOutButton
-@onready var delete_data_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/DeleteDataRow/DeleteDataButton
+@onready var settings_scroll: ScrollContainer = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll
+@onready var volume_slider: HSlider = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow/VolumeSlider
+@onready var volume_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow/HeaderRow/VolumeValue
+@onready var fullscreen_check: CheckBox = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/FullscreenRow/FullscreenCheck
+@onready var play_games_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/PlayGamesRow/PlayGamesButton
+@onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/PlayGamesRow/PGLabel
+@onready var language_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LanguageRow/LanguageButton
+@onready var language_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LanguageRow/LanguageLabel
+@onready var leaderboard_opt_out_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LeaderboardRow/LeaderboardOptOutButton
+@onready var delete_data_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/DeleteDataRow/DeleteDataButton
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
 
 # Leaderboard Modal
@@ -147,6 +148,7 @@ func _ready() -> void:
 	# Hide modals on start
 	level_modal.visible = false
 	settings_modal.visible = false
+	_style_scrollbar(settings_scroll)
 	toast_panel.visible = false
 	toast_panel.modulate.a = 0.0
 	
@@ -865,3 +867,56 @@ func _on_fullscreen_toggled(pressed: bool) -> void:
 func _play_hover() -> void:
 	hover_sfx.pitch_scale = randf_range(0.96, 1.08)
 	hover_sfx.play()
+
+func _style_scrollbar(sc: ScrollContainer) -> void:
+	if not sc:
+		return
+	var vb: VScrollBar = sc.get_v_scroll_bar()
+	if not vb:
+		return
+	
+	# Subtle translucent track
+	var sb_track := StyleBoxFlat.new()
+	sb_track.bg_color = Color(0.02, 0.04, 0.08, 0.35)
+	sb_track.set_corner_radius_all(4)
+	sb_track.content_margin_left = 3.0
+	sb_track.content_margin_right = 3.0
+	sb_track.content_margin_top = 4.0
+	sb_track.content_margin_bottom = 4.0
+	
+	# Golden amber grabber
+	var sb_grabber := StyleBoxFlat.new()
+	sb_grabber.bg_color = Color(0.92, 0.74, 0.22, 0.85)
+	sb_grabber.set_corner_radius_all(4)
+	sb_grabber.border_width_left = 1
+	sb_grabber.border_width_right = 1
+	sb_grabber.border_width_top = 1
+	sb_grabber.border_width_bottom = 1
+	sb_grabber.border_color = Color(1.0, 0.9, 0.45, 0.6)
+	
+	# Hover
+	var sb_grabber_hi := StyleBoxFlat.new()
+	sb_grabber_hi.bg_color = Color(1.0, 0.86, 0.35, 0.95)
+	sb_grabber_hi.set_corner_radius_all(4)
+	sb_grabber_hi.border_width_left = 1
+	sb_grabber_hi.border_width_right = 1
+	sb_grabber_hi.border_width_top = 1
+	sb_grabber_hi.border_width_bottom = 1
+	sb_grabber_hi.border_color = Color(1.0, 1.0, 0.7, 0.9)
+	
+	# Pressed
+	var sb_grabber_pr := StyleBoxFlat.new()
+	sb_grabber_pr.bg_color = Color(0.75, 0.55, 0.14, 1.0)
+	sb_grabber_pr.set_corner_radius_all(4)
+	sb_grabber_pr.border_width_left = 1
+	sb_grabber_pr.border_width_right = 1
+	sb_grabber_pr.border_width_top = 1
+	sb_grabber_pr.border_width_bottom = 1
+	sb_grabber_pr.border_color = Color(0.9, 0.75, 0.25, 0.9)
+	
+	vb.add_theme_stylebox_override("scroll", sb_track)
+	vb.add_theme_stylebox_override("scroll_focus", sb_track)
+	vb.add_theme_stylebox_override("grabber", sb_grabber)
+	vb.add_theme_stylebox_override("grabber_highlight", sb_grabber_hi)
+	vb.add_theme_stylebox_override("grabber_pressed", sb_grabber_pr)
+	vb.custom_minimum_size.x = 8.0
