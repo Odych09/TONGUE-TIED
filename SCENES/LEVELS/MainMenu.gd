@@ -231,7 +231,13 @@ func _on_save_data_failed() -> void:
 func _init_play_games() -> void:
 	if not is_instance_valid(play_games_btn):
 		return
-	
+
+	if OS.has_feature("huawei"):
+		var pg_row = play_games_btn.get_parent()
+		if pg_row:
+			pg_row.visible = false
+		return
+
 	if OS.get_name() != "Android":
 		play_games_btn.text = "DESKTOP"
 		play_games_btn.disabled = true

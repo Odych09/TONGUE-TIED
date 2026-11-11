@@ -10,6 +10,7 @@
 [ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="8_font"]
 [ext_resource type="AudioStream" uid="uid://canah35uobihe" path="res://AUDIO/ui_hover.wav" id="9_hover"]
 [ext_resource type="AudioStream" uid="uid://bsolub8tb4qun" path="res://AUDIO/ui_click.wav" id="10_click"]
+[ext_resource type="Texture2D" uid="uid://twh31ebc7q8p" path="res://ASSETS/UI/buttons/icons8-settings-100.png" id="10_tudhu"]
 [ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="11_back"]
 [ext_resource type="Texture2D" uid="uid://dtxs3i0i7bfvf" path="res://ASSETS/UI/background/home/Decoration1.png" id="13_shrine"]
 [ext_resource type="Texture2D" uid="uid://bh8xij77wax1e" path="res://ASSETS/UI/background/home/Decoration2.png" id="14_waterfall"]
@@ -460,11 +461,28 @@ theme_override_colors/font_hover_color = Color(1, 1, 0.75, 1)
 theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 61
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
-text = "⚙️"
+icon_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="UI/RightBar/SettingsButton" unique_id=419145886]
+modulate = Color(0.9079417, 0.9079417, 0.90794164, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.20511875
+anchor_top = 0.101626016
+anchor_right = 0.7660342
+anchor_bottom = 0.8130081
+offset_right = 12.5
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.875, 0.875)
+texture = ExtResource("10_tudhu")
+stretch_mode = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="BottomBar" type="Control" parent="UI" unique_id=145920120]
 layout_mode = 1
@@ -786,7 +804,7 @@ theme_override_font_sizes/font_size = 37
 theme_override_styles/normal = SubResource("StyleBoxFlat_eystt")
 placeholder_text = "Name"
 alignment = 1
-max_length = 10
+max_length = 18
 emoji_menu_enabled = false
 caret_blink = true
 
@@ -888,19 +906,27 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 follow_focus = true
 
-[node name="SettingsContent" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll" unique_id=242872376]
+[node name="MarginContainer" type="MarginContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll" unique_id=1223747286]
+custom_minimum_size = Vector2(650, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_constants/margin_left = 11
+theme_override_constants/margin_right = 46
+
+[node name="SettingsContent" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer" unique_id=242872376]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 18
 
-[node name="VolumeRow" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=145920147]
+[node name="VolumeRow" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=145920147]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HeaderRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow" unique_id=145920148]
+[node name="HeaderRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/VolumeRow" unique_id=145920148]
 layout_mode = 2
 
-[node name="VolLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow/HeaderRow" unique_id=145920149]
+[node name="VolLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/VolumeRow/HeaderRow" unique_id=145920149]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
 theme_override_constants/outline_size = 0
@@ -908,7 +934,7 @@ theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 41
 text = "MASTER VOLUME"
 
-[node name="VolumeValue" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow/HeaderRow" unique_id=145920150]
+[node name="VolumeValue" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/VolumeRow/HeaderRow" unique_id=145920150]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.2, 0.58, 0.15, 1)
@@ -919,7 +945,7 @@ text = "100%"
 label_settings = SubResource("LabelSettings_tudhu")
 horizontal_alignment = 2
 
-[node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow" unique_id=145920151]
+[node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/VolumeRow" unique_id=145920151]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_icons/grabber = ExtResource("18_slider_knob")
@@ -931,10 +957,10 @@ max_value = 1.0
 step = 0.05
 value = 1.0
 
-[node name="FullscreenRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=145920152]
+[node name="FullscreenRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=145920152]
 layout_mode = 2
 
-[node name="FSLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/FullscreenRow" unique_id=145920153]
+[node name="FSLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/FullscreenRow" unique_id=145920153]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
@@ -943,17 +969,17 @@ theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 32
 text = "FULLSCREEN MODE"
 
-[node name="FullscreenCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/FullscreenRow" unique_id=145920154]
+[node name="FullscreenCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/FullscreenRow" unique_id=145920154]
 layout_mode = 2
 focus_mode = 0
 theme_override_styles/focus = SubResource("StyleBoxEmpty_chk")
 theme_override_icons/checked = ExtResource("17_chk_on")
 theme_override_icons/unchecked = ExtResource("16_chk_off")
 
-[node name="CRTRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=145920155]
+[node name="CRTRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=145920155]
 layout_mode = 2
 
-[node name="CRTLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/CRTRow" unique_id=145920156]
+[node name="CRTLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/CRTRow" unique_id=145920156]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
@@ -962,7 +988,7 @@ theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 32
 text = "CRT RETRO SHADER"
 
-[node name="CRTCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/CRTRow" unique_id=145920157]
+[node name="CRTCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/CRTRow" unique_id=145920157]
 layout_mode = 2
 focus_mode = 0
 theme_override_styles/focus = SubResource("StyleBoxEmpty_chk")
@@ -970,10 +996,10 @@ theme_override_icons/checked = ExtResource("17_chk_on")
 theme_override_icons/unchecked = ExtResource("16_chk_off")
 button_pressed = true
 
-[node name="PlayGamesRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=145920158]
+[node name="PlayGamesRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=145920158]
 layout_mode = 2
 
-[node name="PGLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/PlayGamesRow" unique_id=145920159]
+[node name="PGLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/PlayGamesRow" unique_id=145920159]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
@@ -982,7 +1008,7 @@ theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 32
 text = "GOOGLE PLAY GAMES"
 
-[node name="PlayGamesButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/PlayGamesRow" unique_id=145920160]
+[node name="PlayGamesButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/PlayGamesRow" unique_id=145920160]
 custom_minimum_size = Vector2(170, 48)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
@@ -997,10 +1023,10 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_wood_badge_disabled")
 text = "SIGN IN"
 
-[node name="LanguageRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=145920163]
+[node name="LanguageRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=145920163]
 layout_mode = 2
 
-[node name="LanguageLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LanguageRow" unique_id=145920164]
+[node name="LanguageLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LanguageRow" unique_id=145920164]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
@@ -1009,7 +1035,7 @@ theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 32
 text = "LANGUAGE"
 
-[node name="LanguageButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LanguageRow" unique_id=145920165]
+[node name="LanguageButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LanguageRow" unique_id=145920165]
 custom_minimum_size = Vector2(170, 48)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
@@ -1022,10 +1048,10 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed"
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "ENGLISH"
 
-[node name="LeaderboardRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=1353493862]
+[node name="LeaderboardRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=1353493862]
 layout_mode = 2
 
-[node name="LeaderboardLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LeaderboardRow" unique_id=1403750959]
+[node name="LeaderboardLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LeaderboardRow" unique_id=1403750959]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
@@ -1034,7 +1060,7 @@ theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 32
 text = "LEADERBOARD"
 
-[node name="LeaderboardOptOutButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LeaderboardRow" unique_id=748796537]
+[node name="LeaderboardOptOutButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LeaderboardRow" unique_id=748796537]
 custom_minimum_size = Vector2(170, 48)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
@@ -1047,10 +1073,10 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed"
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "OPT OUT"
 
-[node name="DeleteDataRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=552775900]
+[node name="DeleteDataRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=552775900]
 layout_mode = 2
 
-[node name="DeleteDataLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/DeleteDataRow" unique_id=419553068]
+[node name="DeleteDataLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/DeleteDataRow" unique_id=419553068]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.18, 0.1, 0.04, 1)
@@ -1059,7 +1085,7 @@ theme_override_fonts/font = ExtResource("8_font")
 theme_override_font_sizes/font_size = 32
 text = "ACCOUNT DATA"
 
-[node name="DeleteDataButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/DeleteDataRow" unique_id=1112325321]
+[node name="DeleteDataButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/DeleteDataRow" unique_id=1112325321]
 custom_minimum_size = Vector2(170, 48)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)

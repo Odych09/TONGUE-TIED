@@ -210,6 +210,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_5cyo5")
+metadata/_edit_vertical_guides_ = [-56.0]
 
 [node name="BG" type="CanvasLayer" parent="." unique_id=1272671837]
 layer = -1
@@ -545,6 +546,7 @@ mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="SettingsModal" type="Control" parent="." unique_id=1687080484]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -613,19 +615,27 @@ horizontal_scroll_mode = 0
 scroll_hint_mode = 1
 tile_scroll_hint = true
 
-[node name="SettingsContent" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll" unique_id=737559390]
+[node name="MarginContainer" type="MarginContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll" unique_id=855209399]
+custom_minimum_size = Vector2(650, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_constants/margin_left = 13
+theme_override_constants/margin_right = 10
+
+[node name="SettingsContent" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer" unique_id=737559390]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 18
 
-[node name="VolumeRow" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=1419695499]
+[node name="VolumeRow" type="VBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=1419695499]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HeaderRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow" unique_id=824440439]
+[node name="HeaderRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/VolumeRow" unique_id=824440439]
 layout_mode = 2
 
-[node name="VolLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow/HeaderRow" unique_id=413251507]
+[node name="VolLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/VolumeRow/HeaderRow" unique_id=413251507]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
@@ -633,7 +643,7 @@ theme_override_font_sizes/font_size = 22
 text = "MASTER VOLUME"
 label_settings = SubResource("LabelSettings_agr0f")
 
-[node name="VolumeValue" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow/HeaderRow" unique_id=898003875]
+[node name="VolumeValue" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/VolumeRow/HeaderRow" unique_id=898003875]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.35, 0.85, 0.95, 1)
@@ -643,7 +653,7 @@ text = "100%"
 label_settings = SubResource("LabelSettings_u0fo5")
 horizontal_alignment = 2
 
-[node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow" unique_id=343102086]
+[node name="VolumeSlider" type="HSlider" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/VolumeRow" unique_id=343102086]
 custom_minimum_size = Vector2(0, 59.165)
 layout_mode = 2
 theme_override_icons/grabber = ExtResource("18_slider_knob")
@@ -655,10 +665,10 @@ max_value = 1.0
 step = 0.05
 value = 1.0
 
-[node name="FullscreenRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=627404058]
+[node name="FullscreenRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=627404058]
 layout_mode = 2
 
-[node name="FSLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/FullscreenRow" unique_id=615574493]
+[node name="FSLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/FullscreenRow" unique_id=615574493]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
@@ -667,17 +677,17 @@ theme_override_font_sizes/font_size = 22
 text = "FULLSCREEN MODE"
 label_settings = SubResource("LabelSettings_saqwy")
 
-[node name="FullscreenCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/FullscreenRow" unique_id=2128562276]
+[node name="FullscreenCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/FullscreenRow" unique_id=2128562276]
 layout_mode = 2
 focus_mode = 0
 theme_override_styles/focus = SubResource("StyleBoxEmpty_chk")
 theme_override_icons/checked = ExtResource("17_chk_on")
 theme_override_icons/unchecked = ExtResource("16_chk_off")
 
-[node name="CRTRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=113032936]
+[node name="CRTRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=113032936]
 layout_mode = 2
 
-[node name="CRTLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/CRTRow" unique_id=314165333]
+[node name="CRTLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/CRTRow" unique_id=314165333]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
@@ -686,7 +696,7 @@ theme_override_font_sizes/font_size = 22
 text = "CRT RETRO SHADER"
 label_settings = SubResource("LabelSettings_saqwy")
 
-[node name="CRTCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/CRTRow" unique_id=77347175]
+[node name="CRTCheck" type="CheckBox" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/CRTRow" unique_id=77347175]
 layout_mode = 2
 focus_mode = 0
 theme_override_styles/focus = SubResource("StyleBoxEmpty_chk")
@@ -694,10 +704,10 @@ theme_override_icons/checked = ExtResource("17_chk_on")
 theme_override_icons/unchecked = ExtResource("16_chk_off")
 button_pressed = true
 
-[node name="PlayGamesRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=741029182]
+[node name="PlayGamesRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=741029182]
 layout_mode = 2
 
-[node name="PGLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/PlayGamesRow" unique_id=741029183]
+[node name="PGLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/PlayGamesRow" unique_id=741029183]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
@@ -706,7 +716,7 @@ theme_override_font_sizes/font_size = 22
 text = "GOOGLE PLAY GAMES"
 label_settings = SubResource("LabelSettings_saqwy")
 
-[node name="PlayGamesButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/PlayGamesRow" unique_id=741029184]
+[node name="PlayGamesButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/PlayGamesRow" unique_id=741029184]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -721,10 +731,10 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1oolv")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_1oolv")
 text = "SIGN IN"
 
-[node name="LanguageRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=741029185]
+[node name="LanguageRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=741029185]
 layout_mode = 2
 
-[node name="LanguageLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LanguageRow" unique_id=741029186]
+[node name="LanguageLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LanguageRow" unique_id=741029186]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
@@ -733,7 +743,7 @@ theme_override_font_sizes/font_size = 22
 text = "LANGUAGE"
 label_settings = SubResource("LabelSettings_saqwy")
 
-[node name="LanguageButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LanguageRow" unique_id=741029187]
+[node name="LanguageButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LanguageRow" unique_id=741029187]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -747,10 +757,10 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_1oolv")
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1oolv")
 text = "ENGLISH"
 
-[node name="LeaderboardRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=1355838138]
+[node name="LeaderboardRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=1355838138]
 layout_mode = 2
 
-[node name="LeaderboardLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LeaderboardRow" unique_id=727951437]
+[node name="LeaderboardLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LeaderboardRow" unique_id=727951437]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
@@ -759,7 +769,7 @@ theme_override_font_sizes/font_size = 22
 text = "LEADERBOARD"
 label_settings = SubResource("LabelSettings_saqwy")
 
-[node name="LeaderboardOptOutButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LeaderboardRow" unique_id=1732899136]
+[node name="LeaderboardOptOutButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LeaderboardRow" unique_id=1732899136]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -773,10 +783,10 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_1oolv")
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1oolv")
 text = "OPT OUT"
 
-[node name="DeleteDataRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent" unique_id=151519289]
+[node name="DeleteDataRow" type="HBoxContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent" unique_id=151519289]
 layout_mode = 2
 
-[node name="DeleteDataLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/DeleteDataRow" unique_id=1806138611]
+[node name="DeleteDataLabel" type="Label" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/DeleteDataRow" unique_id=1806138611]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.9, 0.94, 1, 1)
@@ -785,7 +795,7 @@ theme_override_font_sizes/font_size = 22
 text = "ACCOUNT DATA"
 label_settings = SubResource("LabelSettings_saqwy")
 
-[node name="DeleteDataButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/DeleteDataRow" unique_id=748893058]
+[node name="DeleteDataButton" type="Button" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/DeleteDataRow" unique_id=748893058]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)

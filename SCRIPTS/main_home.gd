@@ -333,9 +333,6 @@ func _process(delta: float) -> void:
 # --- Touch & Mouse Inertia Dragging ---
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
-		_launch_level(GameManager.levels.size() - 1)
-		return
 
 	if level_modal.visible or settings_modal.visible or (is_instance_valid(leaderboard_modal) and leaderboard_modal.visible) or (is_instance_valid(enter_name_modal) and enter_name_modal.visible):
 		return
@@ -918,9 +915,12 @@ func _open_enter_name_modal() -> void:
 	if not is_instance_valid(enter_name_modal):
 		return
 	click_sfx.play()
+	enter_name_line_edit.text = ""
 	var current_name: String = LootLockerManager.player_name if has_node("/root/LootLockerManager") else ""
 	if current_name != "":
-		enter_name_line_edit.text = current_name
+		enter_name_line_edit.placeholder_text = current_name
+	else:
+		enter_name_line_edit.placeholder_text = "Name"
 	enter_name_modal.visible = true
 	enter_name_modal.modulate.a = 0.0
 	enter_name_panel.scale = Vector2(0.85, 0.85)
@@ -946,7 +946,10 @@ func _close_enter_name_modal() -> void:
 
 func _on_enter_name_next_pressed() -> void:
 	var entered_name: String = enter_name_line_edit.text.strip_edges()
+	var current_name: String = LootLockerManager.player_name if has_node("/root/LootLockerManager") else ""
 	if entered_name == "":
+		if current_name != "":
+			_close_enter_name_modal()
 		return
 	click_sfx.play()
 	if has_node("/root/LootLockerManager"):
