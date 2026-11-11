@@ -11,7 +11,6 @@
 [ext_resource type="AudioStream" uid="uid://canah35uobihe" path="res://AUDIO/ui_hover.wav" id="9_hover"]
 [ext_resource type="AudioStream" uid="uid://bsolub8tb4qun" path="res://AUDIO/ui_click.wav" id="10_click"]
 [ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="11_back"]
-[ext_resource type="AudioStream" uid="uid://bbiw763y2alxy" path="res://Froggy2(1).mp3" id="12_bgm"]
 [ext_resource type="Texture2D" uid="uid://dtxs3i0i7bfvf" path="res://ASSETS/UI/background/home/Decoration1.png" id="13_shrine"]
 [ext_resource type="Texture2D" uid="uid://bh8xij77wax1e" path="res://ASSETS/UI/background/home/Decoration2.png" id="14_waterfall"]
 [ext_resource type="Texture2D" uid="uid://di1f3nlcll0mk" path="res://ASSETS/UI/background/home/Tiles480x480.png" id="15_tiles"]
@@ -967,4 +966,3 @@ stream = ExtResource("10_click")
 stream = ExtResource("11_back")
 
 [node name="BGMPlayer" type="AudioStreamPlayer" parent="Audio" unique_id=145920169]
-stream = ExtResource("12_bgm")

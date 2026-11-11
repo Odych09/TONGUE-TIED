@@ -16,7 +16,6 @@
 [ext_resource type="AudioStream" uid="uid://canah35uobihe" path="res://AUDIO/ui_hover.wav" id="8_hover"]
 [ext_resource type="AudioStream" uid="uid://bsolub8tb4qun" path="res://AUDIO/ui_click.wav" id="9_click"]
 [ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="10_back"]
-[ext_resource type="AudioStream" uid="uid://bbiw763y2alxy" path="res://Froggy2(1).mp3" id="11_bgm"]
 [ext_resource type="Texture2D" uid="uid://b5qgj67gloq4x" path="res://ASSETS/UI/panels/bg.png" id="14_mnmd0"]
 [ext_resource type="Texture2D" uid="uid://buq313i42uq61" path="res://ASSETS/UI/buttons/btn.png" id="14_r4j5v"]
 [ext_resource type="Texture2D" uid="uid://df0gekcm0q0s8" path="res://ASSETS/UI/panels/table.png" id="15_mnmd0"]
@@ -893,7 +892,6 @@ horizontal_alignment = 1
 [node name="Audio" type="Node" parent="." unique_id=538789814]
 
 [node name="BGMPlayer" type="AudioStreamPlayer" parent="Audio" unique_id=438076007]
-stream = ExtResource("11_bgm")
 autoplay = true
 
 [node name="HoverSFX" type="AudioStreamPlayer" parent="Audio" unique_id=1828140878]

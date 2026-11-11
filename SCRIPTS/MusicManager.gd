@@ -12,14 +12,15 @@ enum PlaylistType {
 }
 
 const MENU_PLAYLIST_PATHS: Array[String] = [
-	"res://AUDIO/backgrounds/main_menu/main_menu_song1.ogg",
-	"res://AUDIO/backgrounds/main_menu/main_menu_song2.ogg"
+	"res://AUDIO/backgrounds/main_menu/new_compressed/main_menu_song1.ogg",
+	"res://AUDIO/backgrounds/main_menu/new_compressed/main_menu_song2.ogg"
 ]
 
 const GAME_PLAYLIST_PATHS: Array[String] = [
-	"res://AUDIO/backgrounds/background_music1.mp3",
-	"res://AUDIO/backgrounds/background_music2.mp3",
-	"res://AUDIO/backgrounds/background_music3.mp3"
+	"res://AUDIO/backgrounds/new_compressed/background_music1.mp3",
+	"res://AUDIO/backgrounds/new_compressed/background_music2.mp3",
+	"res://AUDIO/backgrounds/new_compressed/background_music3.mp3"
+
 ]
 
 const PUSH_SFX_PATH: String = "res://AUDIO/backgrounds/push_sfx.mp3"
