@@ -43,6 +43,14 @@ extends Control
 @onready var delete_data_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/DeleteDataRow/DeleteDataButton
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
 
+# Enter Name Modal (Huawei / Custom Name)
+@onready var enter_name_modal: Control = $EnterNameOutSide
+@onready var enter_name_panel: PanelContainer = $EnterNameOutSide/CenterContainer/PanelContainer
+@onready var enter_name_dimmer: ColorRect = $EnterNameOutSide/Dimmer
+@onready var enter_name_line_edit: LineEdit = $EnterNameOutSide/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LineEdit
+@onready var enter_name_next_btn: Button = $EnterNameOutSide/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/NextButton
+@onready var enter_name_close_btn: Button = $EnterNameOutSide/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/CloseButton
+
 # Leaderboard Modal
 var leaderboard_modal: Control
 
@@ -143,6 +151,7 @@ var active_glow_panel: Panel = null
 var elapsed_time: float = 0.0
 var toast_tween: Tween = null
 var is_transitioning: bool = false
+var _name_modal_opened_from_settings: bool = false
 
 func _ready() -> void:
 	# Hide modals on start
@@ -212,6 +221,24 @@ func _ready() -> void:
 		_hook_btn_animations(delete_data_btn)
 	volume_slider.value_changed.connect(_on_volume_changed)
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
+
+	# Connect Enter Name Modal
+	if is_instance_valid(enter_name_modal):
+		enter_name_modal.visible = false
+		enter_name_next_btn.pressed.connect(_on_enter_name_next_pressed)
+		enter_name_close_btn.pressed.connect(_close_enter_name_modal)
+		enter_name_line_edit.text_submitted.connect(func(_t: String): _on_enter_name_next_pressed())
+		_hook_btn_animations(enter_name_next_btn)
+		_hook_btn_animations(enter_name_close_btn)
+		if enter_name_dimmer:
+			enter_name_dimmer.gui_input.connect(func(event: InputEvent):
+				if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+					_close_enter_name_modal()
+			)
+		if OS.has_feature("huawei"):
+			var saved_name: String = LootLockerManager.player_name if has_node("/root/LootLockerManager") else ""
+			if saved_name == "":
+				call_deferred("_open_enter_name_modal")
 
 
 	# Set UI SFX volume (+8 dB boost)
@@ -310,7 +337,7 @@ func _input(event: InputEvent) -> void:
 		_launch_level(GameManager.levels.size() - 1)
 		return
 
-	if level_modal.visible or settings_modal.visible or (is_instance_valid(leaderboard_modal) and leaderboard_modal.visible):
+	if level_modal.visible or settings_modal.visible or (is_instance_valid(leaderboard_modal) and leaderboard_modal.visible) or (is_instance_valid(enter_name_modal) and enter_name_modal.visible):
 		return
 
 	if event is InputEventMouseButton:
@@ -814,6 +841,10 @@ func _init_play_games() -> void:
 	if not is_instance_valid(play_games_btn):
 		return
 
+	if OS.has_feature("huawei"):
+		_setup_huawei_profile_button()
+		return
+
 	if OS.get_name() != "Android":
 		play_games_btn.text = "DESKTOP"
 		play_games_btn.disabled = true
@@ -852,6 +883,76 @@ func _init_play_games() -> void:
 		play_games_label.text = tr("GOOGLE PLAY: SIGNED IN")
 	if "current_player" in GodotPlayGameServices and GodotPlayGameServices.current_player:
 		play_games_label.text = "PLAY: %s" % GodotPlayGameServices.current_player.display_name
+
+func _setup_huawei_profile_button() -> void:
+	play_games_btn.mouse_entered.connect(func():
+		_play_hover()
+	)
+	play_games_btn.pressed.connect(func():
+		click_sfx.play()
+		_name_modal_opened_from_settings = true
+		settings_modal.visible = false
+		_open_enter_name_modal()
+	)
+	if has_node("/root/LootLockerManager"):
+		LootLockerManager.player_name_changed.connect(func(_new_name: String):
+			_update_huawei_profile_ui()
+		)
+	_update_huawei_profile_ui()
+
+func _update_huawei_profile_ui() -> void:
+	if not is_instance_valid(play_games_btn) or not is_instance_valid(play_games_label):
+		return
+	var current_name: String = LootLockerManager.player_name if has_node("/root/LootLockerManager") else ""
+	if current_name != "":
+		play_games_label.text = tr("PLAYER: %s") % current_name
+		play_games_btn.text = tr("CHANGE")
+	else:
+		play_games_label.text = tr("PLAYER PROFILE")
+		play_games_btn.text = tr("ENTER NAME")
+	play_games_btn.disabled = false
+
+# --- Enter Name Modal (Huawei / Custom Name) ---
+
+func _open_enter_name_modal() -> void:
+	if not is_instance_valid(enter_name_modal):
+		return
+	click_sfx.play()
+	var current_name: String = LootLockerManager.player_name if has_node("/root/LootLockerManager") else ""
+	if current_name != "":
+		enter_name_line_edit.text = current_name
+	enter_name_modal.visible = true
+	enter_name_modal.modulate.a = 0.0
+	enter_name_panel.scale = Vector2(0.85, 0.85)
+	enter_name_panel.pivot_offset = enter_name_panel.size * 0.5
+
+	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(enter_name_modal, "modulate:a", 1.0, 0.22)
+	tw.tween_property(enter_name_panel, "scale", Vector2.ONE, 0.26)
+	enter_name_line_edit.grab_focus()
+
+func _close_enter_name_modal() -> void:
+	if not is_instance_valid(enter_name_modal) or not enter_name_modal.visible:
+		return
+	back_sfx.play()
+	var tw := create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tw.tween_property(enter_name_modal, "modulate:a", 0.0, 0.18)
+	tw.tween_property(enter_name_panel, "scale", Vector2(0.85, 0.85), 0.18)
+	await tw.finished
+	enter_name_modal.visible = false
+	if _name_modal_opened_from_settings:
+		_name_modal_opened_from_settings = false
+		_on_settings_pressed()
+
+func _on_enter_name_next_pressed() -> void:
+	var entered_name: String = enter_name_line_edit.text.strip_edges()
+	if entered_name == "":
+		return
+	click_sfx.play()
+	if has_node("/root/LootLockerManager"):
+		LootLockerManager.login_huawei_guest(entered_name)
+	_update_huawei_profile_ui()
+	_close_enter_name_modal()
 
 func _on_volume_changed(val: float) -> void:
 	GameManager.set_master_volume(val)

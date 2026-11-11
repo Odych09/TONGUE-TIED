@@ -23,9 +23,14 @@ func _ready() -> void:
 	if saved_name != "":
 		player_name = saved_name
 
-	_connect_google_play_listener()
+	if OS.has_feature("huawei"):
+		if saved_name != "":
+			var gid := _get_or_create_guest_id()
+			fake_login(gid, saved_name)
+	else:
+		_connect_google_play_listener()
+
 	_connect_network_listener()
-	#fake_login("63822640","the_CrazyBoy")
 
 func fake_login(g_id : String , g_name : String) -> bool:
 	is_authenticating = true
@@ -41,7 +46,7 @@ func fake_login(g_id : String , g_name : String) -> bool:
 		player_id = response.player_id
 		public_uid = response.public_uid
 		player_identifier = response.player_identifier
-		print("[LootLockerManager] Authenticated via Google Play successfully! Player ID: %d, Name: '%s'" % [player_id, g_name])
+		print("[LootLockerManager] Authenticated successfully! Player ID: %d, Name: '%s'" % [player_id, g_name])
 		auth_status_changed.emit(true)
 
 		# Set the player's Google Play gamer tag on LootLocker
@@ -61,7 +66,28 @@ func fake_login(g_id : String , g_name : String) -> bool:
 		auth_status_changed.emit(false)
 		return false
 
+func login_huawei_guest(chosen_name: String) -> bool:
+	var clean_name := chosen_name.strip_edges()
+	if clean_name == "":
+		return false
+
+	_save_local_player_name(clean_name)
+	player_name = clean_name
+	player_name_changed.emit(clean_name)
+
+	var gid := _get_or_create_guest_id()
+	if is_authenticated:
+		await set_player_name(clean_name)
+		var stars := _get_local_stars()
+		if stars > 0:
+			submit_score(stars, clean_name)
+		return true
+	else:
+		return await fake_login(gid, clean_name)
+
 func _connect_google_play_listener() -> void:
+	if OS.has_feature("huawei"):
+		return
 	var pg = get_node_or_null("/root/GodotPlayGameServices")
 	if not pg:
 		return
@@ -86,6 +112,14 @@ func _is_network_available() -> bool:
 
 func _on_network_became_online() -> void:
 	print("[LootLockerManager] Network connection restored! Re-checking authentication and syncing...")
+
+	if OS.has_feature("huawei"):
+		if not is_authenticated and not is_authenticating:
+			var saved_name := _load_local_player_name()
+			if saved_name != "":
+				var gid := _get_or_create_guest_id()
+				await fake_login(gid, saved_name)
+		return
 
 	# If Google Play is available on Android but not signed in, trigger sign-in
 	var pg = get_node_or_null("/root/GodotPlayGameServices")
@@ -150,7 +184,7 @@ func login_with_google_player_id(g_id: String, g_name: String) -> bool:
 		player_id = response.player_id
 		public_uid = response.public_uid
 		player_identifier = response.player_identifier
-		print("[LootLockerManager] Authenticated via Google Play successfully! Player ID: %d, Name: '%s'" % [player_id, g_name])
+		print("[LootLockerManager] Authenticated successfully! Player ID: %d, Name: '%s'" % [player_id, g_name])
 		auth_status_changed.emit(true)
 
 		# Set the player's Google Play gamer tag on LootLocker
@@ -331,6 +365,23 @@ func _load_local_player_name() -> String:
 			f.close()
 			return s
 	return ""
+
+func _get_or_create_guest_id() -> String:
+	if FileAccess.file_exists("user://lootlocker_guest_id.txt"):
+		var f = FileAccess.open("user://lootlocker_guest_id.txt", FileAccess.READ)
+		if f:
+			var s = f.get_as_text().strip_edges()
+			f.close()
+			if s != "":
+				return s
+
+	# Generate a persistent unique guest ID
+	var new_id := "hw_" + str(randi_range(10000000, 99999999))
+	var f_write = FileAccess.open("user://lootlocker_guest_id.txt", FileAccess.WRITE)
+	if f_write:
+		f_write.store_string(new_id)
+		f_write.close()
+	return new_id
 
 func opt_out_from_leaderboard() -> void:
 	is_leaderboard_opted_out = true

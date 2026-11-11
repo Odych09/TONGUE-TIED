@@ -57,6 +57,10 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/vsync/vsync_mode=0
 
+[editor]
+
+run/main_run_args="--features huawei"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/GodotPlayGameServices/plugin.cfg", "res://addons/LootLockerSDK/plugin.cfg", "res://addons/godot_mcp_toolkit/plugin.cfg")

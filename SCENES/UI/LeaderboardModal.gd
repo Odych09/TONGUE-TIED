@@ -97,8 +97,16 @@ func load_leaderboard(is_refresh: bool = false) -> void:
 	if not is_instance_valid(self) or not visible:
 		return
 		
-	if !LootLockerManager.is_authenticated and not GodotPlayGameServices.is_signed_in:
+	if OS.has_feature("huawei"):
+		if not LootLockerManager.is_authenticated:
+			loading_label.text = tr("Go to Settings to change name\nto see Leaderboard!")
+			loading_label.visible = true
+			my_rank_label.text = tr("YOUR RANK: UNRANKED")
+			my_score_label.text = "%d ⭐" % local_stars
+			return
+	elif !LootLockerManager.is_authenticated and (not GodotPlayGameServices or not GodotPlayGameServices.is_signed_in):
 		loading_label.text = tr("Sign in to Google Play Games\nin Settings to view Leaderboards!")
+		loading_label.visible = true
 		my_rank_label.text = tr("YOUR RANK: UNRANKED")
 		my_score_label.text = "%d ⭐" % local_stars
 		return
