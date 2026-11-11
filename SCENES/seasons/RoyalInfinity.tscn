@@ -1,0 +1,302 @@
+[gd_scene format=3 uid="uid://cmgalqbuwed1s"]
+
+[ext_resource type="Texture2D" uid="uid://cgwur06nx2npv" path="res://ASSETS/Seasons/RoyalInfinity/Backgrounds/sky.png" id="1_27j5t"]
+[ext_resource type="Script" uid="uid://berpylnfsob8c" path="res://SCENES/seasons/Backgrounds.gd" id="1_nhw0v"]
+[ext_resource type="Texture2D" uid="uid://clk8dftdgaas8" path="res://ASSETS/Seasons/RoyalInfinity/Backgrounds/houses&trees_bg.png" id="2_gpq2j"]
+[ext_resource type="Texture2D" uid="uid://cjhetnpqo7ghw" path="res://ASSETS/Seasons/RoyalInfinity/Backgrounds/houses.png" id="3_nhw0v"]
+[ext_resource type="Texture2D" uid="uid://cn5bqutde6e4c" path="res://ASSETS/Seasons/RoyalInfinity/Backgrounds/car_trees_etc.png" id="4_euh6l"]
+[ext_resource type="Texture2D" uid="uid://mruo2ckxfmx4" path="res://ASSETS/Seasons/RoyalInfinity/Backgrounds/fence.png" id="5_3fuii"]
+[ext_resource type="Texture2D" uid="uid://dd3lv2n3wtwaq" path="res://ASSETS/Seasons/RoyalInfinity/Backgrounds/road.png" id="6_54tjb"]
+[ext_resource type="Texture2D" uid="uid://bfeqn73qf4g1s" path="res://ASSETS/Seasons/RoyalInfinity/Backgrounds/bird3.png" id="7_r7b5r"]
+[ext_resource type="Texture2D" uid="uid://bh3ktn1twxkvv" path="res://ASSETS/Seasons/RoyalInfinity/Backgrounds/bird2.png" id="8_gyhbq"]
+[ext_resource type="Texture2D" uid="uid://mj56w4i8x2as" path="res://ASSETS/Seasons/RoyalInfinity/Backgrounds/bird1.png" id="9_db4ge"]
+[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="10_gpq2j"]
+[ext_resource type="Texture2D" uid="uid://buq313i42uq61" path="res://ASSETS/UI/buttons/btn.png" id="11_btn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
+bg_color = Color(0.02, 0.05, 0.08, 0.82)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.82, 0.3, 0.75)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="LabelSettings" id="LabelSettings_badge"]
+font = ExtResource("10_gpq2j")
+font_size = 32
+font_color = Color(1, 0.85, 0.3, 1)
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font = ExtResource("10_gpq2j")
+font_size = 183
+font_color = Color(1, 0.92, 0.35, 1)
+outline_size = 20
+outline_color = Color(0.12, 0.05, 0.02, 1)
+shadow_size = 16
+shadow_color = Color(0, 0, 0, 0.8)
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_subtitle_panel"]
+bg_color = Color(0.02, 0.05, 0.09, 0.76)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.35, 0.45)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 10
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_subtitle"]
+font = ExtResource("10_gpq2j")
+font_size = 46
+font_color = Color(1, 0.96, 0.88, 1)
+outline_size = 8
+outline_color = Color(0.1, 0.05, 0.02, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green"]
+texture = ExtResource("11_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_pressed"]
+texture = ExtResource("11_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(0.78, 0.78, 0.78, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_hover"]
+texture = ExtResource("11_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(1.15, 1.12, 0.85, 1)
+
+[node name="RoyalInfinity" type="Control" unique_id=682516576]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backgrounds" type="Control" parent="." unique_id=576709598]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nhw0v")
+
+[node name="1" type="TextureRect" parent="Backgrounds" unique_id=1550567815]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_27j5t")
+
+[node name="3" type="TextureRect" parent="Backgrounds" unique_id=752386707]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_gpq2j")
+
+[node name="4" type="TextureRect" parent="Backgrounds" unique_id=1621428379]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_nhw0v")
+
+[node name="6" type="TextureRect" parent="Backgrounds" unique_id=1148644548]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_euh6l")
+
+[node name="5" type="TextureRect" parent="Backgrounds" unique_id=1310466377]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_3fuii")
+
+[node name="2" type="TextureRect" parent="Backgrounds" unique_id=1403682624]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_54tjb")
+
+[node name="7" type="TextureRect" parent="Backgrounds" unique_id=41683922]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_r7b5r")
+
+[node name="8" type="TextureRect" parent="Backgrounds" unique_id=406732610]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_gyhbq")
+
+[node name="9" type="TextureRect" parent="Backgrounds" unique_id=94635670]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_db4ge")
+
+[node name="Content" type="Control" parent="." unique_id=1841078272]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HeaderContainer" type="Control" parent="Content" unique_id=1804700635]
+layout_mode = 1
+anchor_left = 0.109375
+anchor_top = 0.050925925
+anchor_right = 0.890625
+anchor_bottom = 0.35462964
+grow_horizontal = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="SeasonBadge" type="PanelContainer" parent="Content/HeaderContainer" unique_id=341278192]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.34466666
+anchor_top = 0.21951222
+anchor_right = 0.65466666
+anchor_bottom = 0.3902439
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
+metadata/_edit_use_anchors_ = true
+
+[node name="BadgeMargin" type="MarginContainer" parent="Content/HeaderContainer/SeasonBadge" unique_id=192847120]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 6
+
+[node name="BadgeLabel" type="Label" parent="Content/HeaderContainer/SeasonBadge/BadgeMargin" unique_id=981247192]
+layout_mode = 2
+text = "SPECIAL SEASON EVENT "
+label_settings = SubResource("LabelSettings_badge")
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Content/HeaderContainer" unique_id=1715525325]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.42682928
+anchor_right = 1.0
+anchor_bottom = 1.1067073
+offset_bottom = -1.5258789e-05
+text = "Royal Infinity"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="SubtitlePanel" type="PanelContainer" parent="Content/HeaderContainer" unique_id=819237102]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.13666667
+anchor_top = 1.2195123
+anchor_right = 0.86333334
+anchor_bottom = 1.4634149
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_subtitle_panel")
+metadata/_edit_use_anchors_ = true
+
+[node name="SubMargin" type="MarginContainer" parent="Content/HeaderContainer/SubtitlePanel" unique_id=102938475]
+layout_mode = 2
+theme_override_constants/margin_left = 34
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 10
+
+[node name="about" type="Label" parent="Content/HeaderContainer/SubtitlePanel/SubMargin" unique_id=878544195]
+layout_mode = 2
+text = "Play & Win Stars  •  Rank Up On Leaderboard"
+label_settings = SubResource("LabelSettings_subtitle")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomAction" type="Control" parent="Content" unique_id=143991523]
+layout_mode = 1
+anchor_left = 0.3828125
+anchor_top = 0.5870369
+anchor_right = 0.6171875
+anchor_bottom = 0.69722223
+offset_top = 6.1035156e-05
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="PlayButton" type="Button" parent="Content/BottomAction" unique_id=1578137094]
+custom_minimum_size = Vector2(430, 106)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.04888889
+anchor_right = 1.0888889
+anchor_bottom = 1.4201673
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 0.94, 0.35, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = ExtResource("10_gpq2j")
+theme_override_font_sizes/font_size = 96
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "PLAY  ▶"
+metadata/_edit_use_anchors_ = true

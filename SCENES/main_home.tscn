@@ -840,6 +840,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "✕  CLOSE"
 
 [node name="SettingsModal" type="Control" parent="." unique_id=145920139]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -905,6 +906,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 follow_focus = true
+horizontal_scroll_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll" unique_id=1223747286]
 custom_minimum_size = Vector2(650, 0)

@@ -32,15 +32,15 @@ extends Control
 @onready var settings_modal: Control = $SettingsModal
 @onready var settings_panel: PanelContainer = $SettingsModal/CenterContainer/PanelContainer
 @onready var settings_scroll: ScrollContainer = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll
-@onready var volume_slider: HSlider = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow/VolumeSlider
-@onready var volume_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/VolumeRow/HeaderRow/VolumeValue
-@onready var fullscreen_check: CheckBox = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/FullscreenRow/FullscreenCheck
-@onready var play_games_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/PlayGamesRow/PlayGamesButton
-@onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/PlayGamesRow/PGLabel
-@onready var language_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LanguageRow/LanguageButton
-@onready var language_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LanguageRow/LanguageLabel
-@onready var leaderboard_opt_out_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/LeaderboardRow/LeaderboardOptOutButton
-@onready var delete_data_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/SettingsContent/DeleteDataRow/DeleteDataButton
+@onready var volume_slider: HSlider = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/VolumeRow/VolumeSlider
+@onready var volume_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/VolumeRow/HeaderRow/VolumeValue
+@onready var fullscreen_check: CheckBox = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/FullscreenRow/FullscreenCheck
+@onready var play_games_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/PlayGamesRow/PlayGamesButton
+@onready var play_games_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/PlayGamesRow/PGLabel
+@onready var language_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LanguageRow/LanguageButton
+@onready var language_label: Label = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LanguageRow/LanguageLabel
+@onready var leaderboard_opt_out_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/LeaderboardRow/LeaderboardOptOutButton
+@onready var delete_data_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsScroll/MarginContainer/SettingsContent/DeleteDataRow/DeleteDataButton
 @onready var settings_back_btn: Button = $SettingsModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBackButton
 
 # Enter Name Modal (Huawei / Custom Name)
