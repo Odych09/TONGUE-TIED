@@ -12,6 +12,33 @@
 [ext_resource type="Texture2D" uid="uid://mj56w4i8x2as" path="res://ASSETS/Seasons/RoyalInfinity/Backgrounds/bird1.png" id="9_db4ge"]
 [ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="10_gpq2j"]
 [ext_resource type="Texture2D" uid="uid://buq313i42uq61" path="res://ASSETS/UI/buttons/btn.png" id="11_btn"]
+[ext_resource type="Script" uid="uid://djkl4ap4dwn07" path="res://SCENES/seasons/RoyalInfinityUI.gd" id="12_ui"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green"]
+texture = ExtResource("11_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_pressed"]
+texture = ExtResource("11_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(0.78, 0.78, 0.78, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_hover"]
+texture = ExtResource("11_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(1.15, 1.12, 0.85, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
 bg_color = Color(0.02, 0.05, 0.08, 0.82)
@@ -63,32 +90,6 @@ font_size = 46
 font_color = Color(1, 0.96, 0.88, 1)
 outline_size = 8
 outline_color = Color(0.1, 0.05, 0.02, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green"]
-texture = ExtResource("11_btn")
-texture_margin_left = 65.0
-texture_margin_top = 18.0
-texture_margin_right = 65.0
-texture_margin_bottom = 22.0
-region_rect = Rect2(0, 0, 308, 107)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_pressed"]
-texture = ExtResource("11_btn")
-texture_margin_left = 65.0
-texture_margin_top = 18.0
-texture_margin_right = 65.0
-texture_margin_bottom = 22.0
-region_rect = Rect2(0, 0, 308, 107)
-modulate_color = Color(0.78, 0.78, 0.78, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_hover"]
-texture = ExtResource("11_btn")
-texture_margin_left = 65.0
-texture_margin_top = 18.0
-texture_margin_right = 65.0
-texture_margin_bottom = 22.0
-region_rect = Rect2(0, 0, 308, 107)
-modulate_color = Color(1.15, 1.12, 0.85, 1)
 
 [node name="RoyalInfinity" type="Control" unique_id=682516576]
 layout_mode = 3
@@ -196,6 +197,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("12_ui")
+
+[node name="TopBar" type="MarginContainer" parent="Content" unique_id=189283741]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 120.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 36
+
+[node name="BackButton" type="Button" parent="Content/TopBar" unique_id=189283742]
+custom_minimum_size = Vector2(260, 72)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 0.94, 0.35, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("10_gpq2j")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "← MENU"
 
 [node name="HeaderContainer" type="Control" parent="Content" unique_id=1804700635]
 layout_mode = 1

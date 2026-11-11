@@ -1,0 +1,34 @@
+# Level 46: Royal Infinity: The Sovereign Gauntlet
+# Legend:
+# # = Wall
+# . = Walkable floor
+# ~ = Water / Lava
+# B = Pushable box
+# * = Bug
+# W = Win (Lily Pad)
+# P = Player Start
+# T = Tongue Trap (spikes on tongue)
+# X = Frog Hazard (spikes on body)
+# > / < / ^ / v = Crocodile Enemy
+# = = Breakable Wall (Push box into it to smash & open path)
+
+name: Royal Infinity: The Sovereign Gauntlet
+pulls: 10
+bugs: 8
+
+########################
+#P.T.*..#...B....####W##
+#..T..T.#...^....##.T=##
+#...*...#..~~~~..##.T.##
+#.T...T.#..~..~..##...##
+#.~~~~#.#..~*.~..##..B##
+#..B..#.#..~~~~..##.v.##
+#..=..#.#........=....##
+#.....#.#>....<..##...##
+#.*...#.#........##.*.##
+#..X..#.#...*....##...##
+#..X..#.#..B..B..##...##
+#.*...#.#........##.T.##
+#..B..=.#........##.T.##
+#...........B........*##
+########################
