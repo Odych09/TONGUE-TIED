@@ -164,14 +164,14 @@ texture = ExtResource("15_mnmd0")
 
 [sub_resource type="LabelSettings" id="LabelSettings_1oolv"]
 font = ExtResource("4_cvoun")
-font_size = 38
+font_size = 55
 font_color = Color(1, 1, 0.26666668, 1)
 outline_size = 11
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_q4b3e"]
 font = ExtResource("4_cvoun")
-font_size = 28
+font_size = 42
 font_color = Color(1, 1, 0.26666668, 1)
 outline_size = 12
 outline_color = Color(0, 0, 0, 1)
@@ -826,7 +826,6 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_hh15h")
 text = "BACK"
 
 [node name="LoadingModal" type="Control" parent="." unique_id=1849204990]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -852,51 +851,73 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Card" type="PanelContainer" parent="LoadingModal/CenterContainer" unique_id=1849204993]
-custom_minimum_size = Vector2(700, 500)
+custom_minimum_size = Vector2(880, 653.585)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_nwwlf")
 
-[node name="MarginContainer" type="MarginContainer" parent="LoadingModal/CenterContainer/Card" unique_id=1849204994]
+[node name="MarginContainer" type="Control" parent="LoadingModal/CenterContainer/Card" unique_id=1779041194]
 layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 25
 
 [node name="Panel" type="Panel" parent="LoadingModal/CenterContainer/Card/MarginContainer" unique_id=708219979]
-layout_mode = 2
+layout_mode = 0
+anchor_left = 0.03409091
+anchor_top = 0.03825057
+anchor_right = 0.96590906
+anchor_bottom = 0.96085435
 theme_override_styles/panel = SubResource("StyleBoxTexture_i5hl5")
+metadata/_edit_use_anchors_ = true
 
-[node name="VBox" type="VBoxContainer" parent="LoadingModal/CenterContainer/Card/MarginContainer" unique_id=1849204995]
-layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
+[node name="VBox" type="Control" parent="LoadingModal/CenterContainer/Card/MarginContainer" unique_id=1092634423]
+anchors_preset = 0
+anchor_left = 0.03409091
+anchor_top = 0.03825057
+anchor_right = 0.96590906
+anchor_bottom = 0.96085435
+metadata/_edit_use_anchors_ = true
 
 [node name="Spinner" type="Label" parent="LoadingModal/CenterContainer/Card/MarginContainer/VBox" unique_id=1849204996]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.35, 0.95, 0.85, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.015853658
+anchor_top = 0.014925373
+anchor_right = 0.98414636
+anchor_bottom = 0.58540624
+offset_bottom = 3.0517578e-05
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
-theme_override_font_sizes/font_size = 54
+theme_override_font_sizes/font_size = 256
 text = "◌"
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Title" type="Label" parent="LoadingModal/CenterContainer/Card/MarginContainer/VBox" unique_id=1849204997]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5572139
+anchor_right = 1.0
+anchor_bottom = 0.6699834
 theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 28
 text = "FETCHING SAVE DATA..."
 label_settings = SubResource("LabelSettings_1oolv")
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Status" type="Label" parent="LoadingModal/CenterContainer/Card/MarginContainer/VBox" unique_id=1849204998]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.71475947
+anchor_right = 1.0
+anchor_bottom = 0.80099505
+offset_top = 3.0517578e-05
 theme_override_colors/font_color = Color(0.5, 0.8, 0.95, 0.85)
 theme_override_fonts/font = ExtResource("4_cvoun")
 theme_override_font_sizes/font_size = 18
 text = "Syncing with cloud..."
 label_settings = SubResource("LabelSettings_q4b3e")
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Audio" type="Node" parent="." unique_id=538789814]
 

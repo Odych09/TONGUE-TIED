@@ -273,13 +273,38 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="SubtitlePanel2" type="PanelContainer" parent="Content/HeaderContainer" unique_id=1712914895]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.36733332
+anchor_top = 1.0945125
+anchor_right = 0.63399994
+anchor_bottom = 1.3384149
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_subtitle_panel")
+metadata/_edit_use_anchors_ = true
+
+[node name="SubMargin" type="MarginContainer" parent="Content/HeaderContainer/SubtitlePanel2" unique_id=914787312]
+layout_mode = 2
+theme_override_constants/margin_left = 34
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 10
+
+[node name="about" type="Label" parent="Content/HeaderContainer/SubtitlePanel2/SubMargin" unique_id=1861590276]
+layout_mode = 2
+text = "Hardest Level"
+label_settings = SubResource("LabelSettings_subtitle")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="SubtitlePanel" type="PanelContainer" parent="Content/HeaderContainer" unique_id=819237102]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.13666667
-anchor_top = 1.2195123
+anchor_top = 1.4634147
 anchor_right = 0.86333334
-anchor_bottom = 1.4634149
+anchor_bottom = 1.7073171
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_subtitle_panel")
 metadata/_edit_use_anchors_ = true
@@ -314,8 +339,9 @@ custom_minimum_size = Vector2(430, 106)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.04888889
+anchor_top = 0.40336114
 anchor_right = 1.0888889
-anchor_bottom = 1.4201673
+anchor_bottom = 1.8235285
 size_flags_horizontal = 4
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 0.94, 0.35, 1)

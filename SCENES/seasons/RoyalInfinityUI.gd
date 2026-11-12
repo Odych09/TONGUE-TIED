@@ -37,15 +37,11 @@ func _on_play_pressed() -> void:
 		tw.tween_property(play_button, "scale", Vector2(0.94, 0.94), 0.08)
 		tw.tween_property(play_button, "scale", Vector2(1.0, 1.0), 0.1)
 
-	# Ensure ASCII levels are scanned and Level 46 (index 45) is targeted
-	GameManager.scan_ascii_levels()
-	GameManager.current_level_index = 45 # Index 45 = Level 46
-
 	var transition_layer := get_node_or_null("/root/TransitionLayer")
 	if transition_layer and transition_layer.has_method("transition_out"):
 		await transition_layer.transition_out()
 
-	get_tree().change_scene_to_file("res://SCENES/LEVELS/main.tscn")
+	get_tree().change_scene_to_file("res://SCENES/seasons/RoyalInfinityGame.tscn")
 
 	if transition_layer and transition_layer.has_method("transition_in"):
 		transition_layer.transition_in()

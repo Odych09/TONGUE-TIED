@@ -23,6 +23,10 @@ const GAME_PLAYLIST_PATHS: Array[String] = [
 
 ]
 
+const RoyalInfinity_PLAYLIST_PATHS : Array[String] = [
+	"res://AUDIO/backgrounds/main_menu/new_compressed/main_menu_song2.ogg"
+]
+
 const PUSH_SFX_PATH: String = "res://AUDIO/backgrounds/push_sfx.mp3"
 const COLLECT_BUG_SFX_PATH: String = "res://AUDIO/backgrounds/main_menu/collectbug_sound,ogg.ogg"
 

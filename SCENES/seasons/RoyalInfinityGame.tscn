@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://ykhee8qfxfng"]
+
+[ext_resource type="Script" uid="uid://bp16xal763k75" path="res://SCENES/seasons/RoyalInfinityGame.gd" id="1_game"]
+[ext_resource type="PackedScene" uid="uid://ch1aj31c4pioj" path="res://SCENES/LEVELS/crt.tscn" id="2_crt"]
+
+[node name="RoyalInfinityGame" type="Node2D" unique_id=565552488]
+script = ExtResource("1_game")
+
+[node name="LevelHolder" type="Node2D" parent="." unique_id=437980390]
+
+[node name="CRT" parent="." unique_id=31235694 instance=ExtResource("2_crt")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1007460843]
+autoplay = true
