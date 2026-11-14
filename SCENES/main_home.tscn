@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://canah35uobihe" path="res://AUDIO/ui_hover.wav" id="9_hover"]
 [ext_resource type="AudioStream" uid="uid://bsolub8tb4qun" path="res://AUDIO/ui_click.wav" id="10_click"]
 [ext_resource type="Texture2D" uid="uid://twh31ebc7q8p" path="res://ASSETS/UI/buttons/icons8-settings-100.png" id="10_tudhu"]
+[ext_resource type="Texture2D" uid="uid://cspxwbh52y6el" path="res://ASSETS/Seasons/RoyalInfinity/icons/royal_infinity_artwork.png" id="11_113sf"]
 [ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="11_back"]
 [ext_resource type="Texture2D" uid="uid://dtxs3i0i7bfvf" path="res://ASSETS/UI/background/home/Decoration1.png" id="13_shrine"]
 [ext_resource type="Texture2D" uid="uid://bh8xij77wax1e" path="res://ASSETS/UI/background/home/Decoration2.png" id="14_waterfall"]
@@ -129,6 +130,16 @@ corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 shadow_color = Color(1, 0.3, 0.6, 0.6)
 shadow_size = 4
+
+[sub_resource type="LabelSettings" id="LabelSettings_113sf"]
+font = ExtResource("8_font")
+font_size = 39
+font_color = Color(1, 0.92, 0.35, 1)
+outline_size = 20
+outline_color = Color(0.12, 0.05, 0.02, 1)
+shadow_size = 16
+shadow_color = Color(0, 0, 0, 0.8)
+shadow_offset = Vector2(0, 8)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal_outer"]
 texture = ExtResource("5_modal_bg")
@@ -556,6 +567,74 @@ anchor_right = 0.12
 anchor_bottom = 0.58
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pip")
+
+[node name="event" type="Control" parent="UI" unique_id=1422727126]
+layout_mode = 1
+anchor_left = 0.022916667
+anchor_top = 0.25555557
+anchor_right = 0.190625
+anchor_bottom = 0.5944444
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="UI/event" unique_id=274355209]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.027950311
+anchor_top = -0.25683075
+anchor_right = 1.0279503
+anchor_bottom = 1.0382513
+color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="UI/event" unique_id=101903155]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.26229507
+anchor_right = 0.9751553
+anchor_bottom = -0.019125683
+text = "Royal Infinity"
+label_settings = SubResource("LabelSettings_113sf")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="image" type="NinePatchRect" parent="UI/event" unique_id=306979212]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_113sf")
+region_rect = Rect2(0, 406.5, 1080, 1513.5)
+
+[node name="QuickPlayButton" type="Button" parent="UI/event" unique_id=976196995]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.09347828
+anchor_top = 1.0746447
+anchor_right = 0.8557142
+anchor_bottom = 1.253579
+offset_left = -86.100006
+offset_top = -21.320007
+offset_right = 84.46002
+offset_bottom = 24.189972
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.59, 0.59)
+pivot_offset = Vector2(210, 52)
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.8, 0.2, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 41
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "PLAY EVENT"
+metadata/_edit_use_anchors_ = true
 
 [node name="ToastPanel" type="PanelContainer" parent="UI" unique_id=145920122]
 visible = false
