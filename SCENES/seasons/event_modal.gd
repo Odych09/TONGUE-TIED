@@ -63,7 +63,7 @@ func _ready() -> void:
 
 	if is_instance_valid(play_button):
 		play_button.pressed.connect(_on_play_pressed)
-		_hook_btn_animations(play_button)
+		play_button.mouse_entered.connect(_play_hover)
 
 	# Connect to parent's eventsButton if present
 	var parent_node := get_parent()
@@ -222,19 +222,20 @@ func _animate_out() -> void:
 func _hook_btn_animations(btn: Control) -> void:
 	if not is_instance_valid(btn):
 		return
+	var default_scale: Vector2 = btn.scale
 	btn.pivot_offset = btn.custom_minimum_size * 0.5 if btn.custom_minimum_size != Vector2.ZERO else btn.size * 0.5
 	btn.mouse_entered.connect(func():
 		_play_hover()
 		if not is_instance_valid(btn):
 			return
 		var tw := btn.create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		tw.tween_property(btn, "scale", Vector2(1.05, 1.05), 0.14)
+		tw.tween_property(btn, "scale", default_scale * 1.05, 0.14)
 	)
 	btn.mouse_exited.connect(func():
 		if not is_instance_valid(btn):
 			return
 		var tw := btn.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		tw.tween_property(btn, "scale", Vector2.ONE, 0.14)
+		tw.tween_property(btn, "scale", default_scale, 0.14)
 	)
 
 func _play_hover() -> void:
