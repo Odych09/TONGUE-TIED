@@ -64,6 +64,11 @@ var leaderboard_modal: Control
 @onready var back_sfx: AudioStreamPlayer = $Audio/BackSFX
 @onready var bgm_player: AudioStreamPlayer = $Audio/BGMPlayer
 
+# eventmodal (royalInfinity)
+@onready var events_button: Button = $UI/RightBar/eventsButton
+@onready var event_modal: Control = $eventModal
+
+
 # Assets
 const FONT_GORDITAS := preload("res://ASSETS/FONT/Gorditas-Bold.ttf")
 const PAD_TEX := preload("res://ASSETS/TILES/pad1.png")
@@ -160,7 +165,7 @@ func _ready() -> void:
 	_style_scrollbar(settings_scroll)
 	toast_panel.visible = false
 	toast_panel.modulate.a = 0.0
-	
+	event_modal.visible = false;
 	# Initialize Leaderboard Modal
 	leaderboard_modal = get_node_or_null("LeaderboardModal")
 	if not leaderboard_modal:
@@ -239,7 +244,9 @@ func _ready() -> void:
 			var saved_name: String = LootLockerManager.player_name if has_node("/root/LootLockerManager") else ""
 			if saved_name == "":
 				call_deferred("_open_enter_name_modal")
-
+	
+	# connect eventbutton
+	events_button.connect("pressed",_on_event_modal_button_pressed)
 
 	# Set UI SFX volume (+8 dB boost)
 	if hover_sfx:
@@ -1024,3 +1031,6 @@ func _style_scrollbar(sc: ScrollContainer) -> void:
 	vb.add_theme_stylebox_override("grabber_highlight", sb_grabber_hi)
 	vb.add_theme_stylebox_override("grabber_pressed", sb_grabber_pr)
 	vb.custom_minimum_size.x = 8.0
+
+func _on_event_modal_button_pressed() -> void:
+	event_modal.visible = true;

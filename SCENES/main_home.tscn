@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://twh31ebc7q8p" path="res://ASSETS/UI/buttons/icons8-settings-100.png" id="10_tudhu"]
 [ext_resource type="Texture2D" uid="uid://cspxwbh52y6el" path="res://ASSETS/Seasons/RoyalInfinity/icons/royal_infinity_artwork.png" id="11_113sf"]
 [ext_resource type="AudioStream" uid="uid://biykxip0stkw0" path="res://AUDIO/ui_back.wav" id="11_back"]
+[ext_resource type="Script" uid="uid://eiwbs5d2ulb2" path="res://SCENES/seasons/event_modal.gd" id="13_gcxex"]
 [ext_resource type="Texture2D" uid="uid://dtxs3i0i7bfvf" path="res://ASSETS/UI/background/home/Decoration1.png" id="13_shrine"]
 [ext_resource type="Texture2D" uid="uid://bh8xij77wax1e" path="res://ASSETS/UI/background/home/Decoration2.png" id="14_waterfall"]
 [ext_resource type="Texture2D" uid="uid://di1f3nlcll0mk" path="res://ASSETS/UI/background/home/Tiles480x480.png" id="15_tiles"]
@@ -131,16 +132,6 @@ corner_radius_bottom_left = 12
 shadow_color = Color(1, 0.3, 0.6, 0.6)
 shadow_size = 4
 
-[sub_resource type="LabelSettings" id="LabelSettings_113sf"]
-font = ExtResource("8_font")
-font_size = 39
-font_color = Color(1, 0.92, 0.35, 1)
-outline_size = 20
-outline_color = Color(0.12, 0.05, 0.02, 1)
-shadow_size = 16
-shadow_color = Color(0, 0, 0, 0.8)
-shadow_offset = Vector2(0, 8)
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal_outer"]
 texture = ExtResource("5_modal_bg")
 expand_margin_left = 25.0
@@ -154,6 +145,70 @@ expand_margin_left = 10.0
 expand_margin_top = 20.0
 expand_margin_right = 20.0
 expand_margin_bottom = 20.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_event_title"]
+font = ExtResource("8_font")
+font_size = 77
+font_color = Color(1, 0.92, 0.35, 1)
+outline_size = 8
+outline_color = Color(0.12, 0.05, 0.02, 1)
+shadow_size = 6
+shadow_color = Color(0, 0, 0, 0.8)
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_113sf"]
+font = ExtResource("8_font")
+font_size = 52
+font_color = Color(1, 0, 0, 1)
+outline_size = 8
+outline_color = Color(0.12, 0.05, 0.02, 1)
+shadow_size = 6
+shadow_color = Color(0, 0, 0, 0.8)
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_art_frame"]
+bg_color = Color(0.03, 0.04, 0.06, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.82, 0.32, 0.55)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_royal_art"]
+atlas = ExtResource("11_113sf")
+region = Rect2(-2.6628418, 763.70184, 1114.3837, 1180.6943)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gcxex"]
+bg_color = Color(0.82, 0.12, 0.18, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.45, 0.5, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldsox"]
+bg_color = Color(0.04, 0.06, 0.1, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.82, 0.32, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eystt"]
 content_margin_left = 4.0
@@ -249,6 +304,7 @@ grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
+metadata/_edit_lock_ = true
 
 [node name="MapCanvas" type="Control" parent="ScrollContainer" unique_id=145920104]
 custom_minimum_size = Vector2(1920, 3500)
@@ -463,6 +519,22 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed"
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "RANKS"
 
+[node name="eventsButton" type="Button" parent="UI/RightBar" unique_id=750322647]
+custom_minimum_size = Vector2(279.7, 122.41)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(1, 0.92, 0.35, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.8, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 57
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "EVENTS"
+
 [node name="SettingsButton" type="Button" parent="UI/RightBar" unique_id=145920119]
 custom_minimum_size = Vector2(155.995, 122.41)
 layout_mode = 2
@@ -567,74 +639,6 @@ anchor_right = 0.12
 anchor_bottom = 0.58
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pip")
-
-[node name="event" type="Control" parent="UI" unique_id=1422727126]
-layout_mode = 1
-anchor_left = 0.022916667
-anchor_top = 0.25555557
-anchor_right = 0.190625
-anchor_bottom = 0.5944444
-metadata/_edit_use_anchors_ = true
-
-[node name="ColorRect" type="ColorRect" parent="UI/event" unique_id=274355209]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.027950311
-anchor_top = -0.25683075
-anchor_right = 1.0279503
-anchor_bottom = 1.0382513
-color = Color(0, 0, 0, 1)
-metadata/_edit_use_anchors_ = true
-
-[node name="Label" type="Label" parent="UI/event" unique_id=101903155]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = -0.26229507
-anchor_right = 0.9751553
-anchor_bottom = -0.019125683
-text = "Royal Infinity"
-label_settings = SubResource("LabelSettings_113sf")
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="image" type="NinePatchRect" parent="UI/event" unique_id=306979212]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("11_113sf")
-region_rect = Rect2(0, 406.5, 1080, 1513.5)
-
-[node name="QuickPlayButton" type="Button" parent="UI/event" unique_id=976196995]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.09347828
-anchor_top = 1.0746447
-anchor_right = 0.8557142
-anchor_bottom = 1.253579
-offset_left = -86.100006
-offset_top = -21.320007
-offset_right = 84.46002
-offset_bottom = 24.189972
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.59, 0.59)
-pivot_offset = Vector2(210, 52)
-theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.8, 0.2, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 12
-theme_override_fonts/font = ExtResource("8_font")
-theme_override_font_sizes/font_size = 41
-theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
-theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
-text = "PLAY EVENT"
-metadata/_edit_use_anchors_ = true
 
 [node name="ToastPanel" type="PanelContainer" parent="UI" unique_id=145920122]
 visible = false
@@ -800,6 +804,212 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "✕  CLOSE"
+
+[node name="eventModal" type="Control" parent="." unique_id=1422727126]
+layout_mode = 1
+anchor_left = 0.01875
+anchor_top = 0.10925926
+anchor_right = 0.19583334
+anchor_bottom = 0.5074074
+pivot_offset = Vector2(170, 215)
+mouse_filter = 1
+script = ExtResource("13_gcxex")
+
+[node name="ColorRect" type="ColorRect" parent="eventModal" unique_id=652587431]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.10882353
+anchor_top = -0.37209302
+anchor_right = 5.5235295
+anchor_bottom = 2.2674417
+offset_bottom = 6.1035156e-05
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.60784316)
+metadata/_edit_use_anchors_ = true
+
+[node name="CardPanel" type="PanelContainer" parent="eventModal" unique_id=274355209]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.6764704
+anchor_top = -0.1418605
+anchor_right = 3.7764707
+anchor_bottom = 1.9953488
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
+metadata/_edit_use_anchors_ = true
+
+[node name="Margin" type="Control" parent="eventModal/CardPanel" unique_id=1667484120]
+layout_mode = 2
+
+[node name="VBox" type="Control" parent="eventModal/CardPanel/Margin" unique_id=275966974]
+layout_mode = 1
+anchor_left = 0.041543026
+anchor_top = 0.021505376
+anchor_right = 0.958457
+anchor_bottom = 0.9749104
+metadata/_edit_use_anchors_ = true
+
+[node name="Title" type="Label" parent="eventModal/CardPanel/Margin/VBox" unique_id=101903155]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.032827865
+anchor_top = -0.008844296
+anchor_right = 1.0541394
+anchor_bottom = 0.1728752
+text = "Royal Infinity"
+label_settings = SubResource("LabelSettings_event_title")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Title2" type="Label" parent="eventModal/CardPanel/Margin/VBox" unique_id=94144410]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.032283463
+anchor_top = 0.06549438
+anchor_right = 1.1192507
+anchor_bottom = 0.24721387
+text = "Hardest Level"
+label_settings = SubResource("LabelSettings_113sf")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="ArtFrame" type="PanelContainer" parent="eventModal/CardPanel/Margin/VBox" unique_id=306979212]
+clip_children = 2
+custom_minimum_size = Vector2(0, 185)
+layout_mode = 0
+anchor_top = 0.19548872
+anchor_right = 1.0
+anchor_bottom = 0.86278194
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_art_frame")
+metadata/_edit_use_anchors_ = true
+
+[node name="Artwork" type="TextureRect" parent="eventModal/CardPanel/Margin/VBox/ArtFrame" unique_id=987110028]
+layout_mode = 2
+texture = SubResource("AtlasTexture_royal_art")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TopBar" type="MarginContainer" parent="eventModal/CardPanel/Margin/VBox/ArtFrame" unique_id=423817663]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+
+[node name="HBox" type="HBoxContainer" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar" unique_id=1224669605]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="LiveBadge" type="PanelContainer" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox" unique_id=165228015]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gcxex")
+
+[node name="Margin" type="MarginContainer" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/LiveBadge" unique_id=2056452971]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 4
+
+[node name="Content" type="HBoxContainer" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/LiveBadge/Margin" unique_id=1874488557]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="LiveDot" type="Label" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/LiveBadge/Margin/Content" unique_id=2104935921]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.2, 0.25, 1)
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 18
+text = "●"
+vertical_alignment = 1
+
+[node name="LiveText" type="Label" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/LiveBadge/Margin/Content" unique_id=572634096]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.02, 0.02, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 20
+text = "LIVE"
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox" unique_id=1736974982]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="TimerBadge" type="PanelContainer" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox" unique_id=32767334]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ldsox")
+
+[node name="Margin" type="MarginContainer" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/TimerBadge" unique_id=2120044897]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 4
+
+[node name="Content" type="HBoxContainer" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/TimerBadge/Margin" unique_id=986049159]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="TimerIcon" type="Label" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/TimerBadge/Margin/Content" unique_id=2015506852]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "⏳"
+vertical_alignment = 1
+
+[node name="TimerLabel" type="Label" parent="eventModal/CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/TimerBadge/Margin/Content" unique_id=1773706617]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.94, 0.45, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 18
+text = "Ends 15 Dec • 30d 14h 22m 10s"
+vertical_alignment = 1
+
+[node name="PlayEventButton" type="Button" parent="eventModal/CardPanel/Margin/VBox" unique_id=976196995]
+custom_minimum_size = Vector2(260, 58)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.106686436
+anchor_top = 0.8869308
+anchor_right = 0.8700028
+anchor_bottom = 1.0098703
+offset_right = 140.07
+offset_bottom = 31.61499
+scale = Vector2(0.77, 0.77)
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.94, 0.35, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 61
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "PLAY EVENT  ▶"
+metadata/_edit_use_anchors_ = true
 
 [node name="EnterNameOutSide" type="Control" parent="." unique_id=1194498987]
 visible = false

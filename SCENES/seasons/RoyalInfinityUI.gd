@@ -18,6 +18,10 @@ func _ready() -> void:
 		back_button.pivot_offset = back_button.size * 0.5
 		back_button.resized.connect(func(): if back_button: back_button.pivot_offset = back_button.size * 0.5)
 
+	var transition_layer := get_node_or_null("/root/TransitionLayer")
+	if transition_layer and transition_layer.has_method("transition_in"):
+		transition_layer.transition_in()
+
 func _on_button_hover(btn: Button) -> void:
 	if not is_instance_valid(btn):
 		return
