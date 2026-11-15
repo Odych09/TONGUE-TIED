@@ -40,6 +40,7 @@ class_name EventModal
 @onready var timer_badge: PanelContainer = get_node_or_null("CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/TimerBadge")
 @onready var timer_label: Label = get_node_or_null("CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/TimerBadge/Margin/Content/TimerLabel")
 @onready var timer_icon: Label = get_node_or_null("CardPanel/Margin/VBox/ArtFrame/TopBar/HBox/TimerBadge/Margin/Content/TimerIcon")
+@onready var back_button: Button = get_node_or_null("CardPanel/Margin/BackButton")
 
 # State & Tweens
 var _float_tween: Tween = null
@@ -65,6 +66,10 @@ func _ready() -> void:
 		play_button.pressed.connect(_on_play_pressed)
 		play_button.mouse_entered.connect(_play_hover)
 
+	if is_instance_valid(back_button):
+		back_button.pressed.connect(_on_back_pressed)
+		_hook_btn_animations(back_button)
+
 	# Connect to parent's eventsButton if present
 	var parent_node := get_parent()
 	if is_instance_valid(parent_node):
@@ -87,6 +92,10 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
+		return
+	if event.is_action_pressed("ui_cancel"):
+		close_modal()
+		get_viewport().set_input_as_handled()
 		return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if is_instance_valid(_events_btn) and _events_btn.get_global_rect().has_point(event.global_position):
@@ -192,6 +201,9 @@ func _on_events_button_pressed() -> void:
 		close_modal()
 	else:
 		open_modal()
+
+func _on_back_pressed() -> void:
+	close_modal()
 
 func _animate_in() -> void:
 	if not is_instance_valid(card_panel):

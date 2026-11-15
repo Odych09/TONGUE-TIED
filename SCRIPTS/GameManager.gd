@@ -166,6 +166,7 @@ const SAVE_PATH := "user://save_data.json"
 var current_level_index: int = 0
 var current_level_instance: Node = null
 var level_container: Node = null
+var custom_restart_handler: Callable = Callable()
 
 var unlocked_level: int = 0
 var level_stars: Dictionary = {} # int -> int (1..3)
@@ -203,9 +204,14 @@ func next_level() -> void:
 	load_level(current_level_index + 1, true)
 
 func restart_level() -> void:
+	if custom_restart_handler.is_valid():
+		custom_restart_handler.call()
+		return
 	load_level(current_level_index, true)
 
 func return_to_menu() -> void:
+	level_container = null
+	current_level_instance = null
 	if TransitionLayer:
 		await TransitionLayer.transition_out()
 	get_tree().change_scene_to_file("res://SCENES/main_home.tscn")
@@ -213,6 +219,8 @@ func return_to_menu() -> void:
 		TransitionLayer.transition_in()
 
 func return_to_title() -> void:
+	level_container = null
+	current_level_instance = null
 	if TransitionLayer:
 		await TransitionLayer.transition_out()
 	get_tree().change_scene_to_file("res://SCENES/LEVELS/MainMenu.tscn")
@@ -238,7 +246,7 @@ func load_level(index: int, use_transition: bool = true) -> void:
 		current_level_instance.queue_free()
 
 	current_level_instance = levels[current_level_index].instantiate()
-	if level_container:
+	if is_instance_valid(level_container):
 		level_container.add_child(current_level_instance)
 
 	emit_signal("level_changed", current_level_index)

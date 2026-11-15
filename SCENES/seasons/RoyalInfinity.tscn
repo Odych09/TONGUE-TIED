@@ -230,9 +230,9 @@ text = "← MENU"
 [node name="HeaderContainer" type="Control" parent="Content" unique_id=1804700635]
 layout_mode = 1
 anchor_left = 0.109375
-anchor_top = 0.050925925
+anchor_top = 0.06574074
 anchor_right = 0.890625
-anchor_bottom = 0.35462964
+anchor_bottom = 0.3694444
 grow_horizontal = 2
 metadata/_edit_use_anchors_ = true
 
@@ -240,9 +240,9 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.34466666
-anchor_top = 0.21951222
+anchor_top = 0.073170744
 anchor_right = 0.65466666
-anchor_bottom = 0.3902439
+anchor_bottom = 0.24390246
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
 metadata/_edit_use_anchors_ = true
@@ -263,9 +263,9 @@ horizontal_alignment = 1
 [node name="Title" type="Label" parent="Content/HeaderContainer" unique_id=1715525325]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.42682928
+anchor_top = 0.28048787
 anchor_right = 1.0
-anchor_bottom = 1.1067073
+anchor_bottom = 0.96036583
 offset_bottom = -1.5258789e-05
 text = "Royal Infinity"
 label_settings = SubResource("LabelSettings_title")
@@ -273,50 +273,50 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="SubtitlePanel2" type="PanelContainer" parent="Content/HeaderContainer" unique_id=1712914895]
+[node name="SubtitlePanel2" type="PanelContainer" parent="Content" unique_id=1712914895]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.36733332
-anchor_top = 1.0945125
-anchor_right = 0.63399994
-anchor_bottom = 1.3384149
+anchor_left = 0.4078125
+anchor_top = 0.41111112
+anchor_right = 0.61302084
+anchor_bottom = 0.5037037
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_subtitle_panel")
 metadata/_edit_use_anchors_ = true
 
-[node name="SubMargin" type="MarginContainer" parent="Content/HeaderContainer/SubtitlePanel2" unique_id=914787312]
+[node name="SubMargin" type="MarginContainer" parent="Content/SubtitlePanel2" unique_id=914787312]
 layout_mode = 2
 theme_override_constants/margin_left = 34
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 34
 theme_override_constants/margin_bottom = 10
 
-[node name="about" type="Label" parent="Content/HeaderContainer/SubtitlePanel2/SubMargin" unique_id=1861590276]
+[node name="about" type="Label" parent="Content/SubtitlePanel2/SubMargin" unique_id=1861590276]
 layout_mode = 2
 text = "Hardest Level"
 label_settings = SubResource("LabelSettings_subtitle")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SubtitlePanel" type="PanelContainer" parent="Content/HeaderContainer" unique_id=819237102]
+[node name="SubtitlePanel" type="PanelContainer" parent="Content" unique_id=819237102]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.13666667
-anchor_top = 1.4634147
-anchor_right = 0.86333334
-anchor_bottom = 1.7073171
+anchor_left = 0.2265625
+anchor_top = 0.55185187
+anchor_right = 0.7942708
+anchor_bottom = 0.64166665
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_subtitle_panel")
 metadata/_edit_use_anchors_ = true
 
-[node name="SubMargin" type="MarginContainer" parent="Content/HeaderContainer/SubtitlePanel" unique_id=102938475]
+[node name="SubMargin" type="MarginContainer" parent="Content/SubtitlePanel" unique_id=102938475]
 layout_mode = 2
 theme_override_constants/margin_left = 34
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 34
 theme_override_constants/margin_bottom = 10
 
-[node name="about" type="Label" parent="Content/HeaderContainer/SubtitlePanel/SubMargin" unique_id=878544195]
+[node name="about" type="Label" parent="Content/SubtitlePanel/SubMargin" unique_id=878544195]
 layout_mode = 2
 text = "Play & Win Stars  •  Rank Up On Leaderboard"
 label_settings = SubResource("LabelSettings_subtitle")
@@ -326,9 +326,9 @@ vertical_alignment = 1
 [node name="BottomAction" type="Control" parent="Content" unique_id=143991523]
 layout_mode = 1
 anchor_left = 0.3828125
-anchor_top = 0.5870369
+anchor_top = 0.63148135
 anchor_right = 0.6171875
-anchor_bottom = 0.69722223
+anchor_bottom = 0.787963
 offset_top = 6.1035156e-05
 grow_horizontal = 2
 grow_vertical = 0
@@ -338,10 +338,14 @@ metadata/_edit_use_anchors_ = true
 custom_minimum_size = Vector2(430, 106)
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.04888889
-anchor_top = 0.40336114
-anchor_right = 1.0888889
-anchor_bottom = 1.8235285
+anchor_left = -0.13777778
+anchor_top = 0.5207099
+anchor_right = 1.1377778
+anchor_bottom = 1.5207096
+offset_left = 31.0
+offset_right = -31.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 0.94, 0.35, 1)

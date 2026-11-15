@@ -806,6 +806,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
 text = "✕  CLOSE"
 
 [node name="eventModal" type="Control" parent="." unique_id=1422727126]
+visible = false
 layout_mode = 1
 anchor_left = 0.01875
 anchor_top = 0.10925926
@@ -831,10 +832,10 @@ metadata/_edit_use_anchors_ = true
 [node name="CardPanel" type="PanelContainer" parent="eventModal" unique_id=274355209]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.6764704
-anchor_top = -0.1418605
+anchor_left = 1.8852941
+anchor_top = -0.20232558
 anchor_right = 3.7764707
-anchor_bottom = 1.9953488
+anchor_bottom = 2.1674418
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
@@ -869,10 +870,10 @@ metadata/_edit_use_anchors_ = true
 [node name="Title2" type="Label" parent="eventModal/CardPanel/Margin/VBox" unique_id=94144410]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.032283463
-anchor_top = 0.06549438
-anchor_right = 1.1192507
-anchor_bottom = 0.24721387
+anchor_left = 0.05231145
+anchor_top = 0.06026571
+anchor_right = 1.139279
+anchor_bottom = 0.24198522
 text = "Hardest Level"
 label_settings = SubResource("LabelSettings_113sf")
 horizontal_alignment = 1
@@ -988,13 +989,13 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(260, 58)
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.106686436
-anchor_top = 0.8869308
-anchor_right = 0.8700028
-anchor_bottom = 1.0098703
-offset_right = 140.07
-offset_bottom = 31.61499
-scale = Vector2(0.77, 0.77)
+anchor_left = 0.15038387
+anchor_top = 0.89529663
+anchor_right = 0.86003
+anchor_bottom = 0.9951369
+offset_right = 219.24005
+offset_bottom = 53.70404
+scale = Vector2(0.64, 0.64)
 size_flags_horizontal = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -1009,6 +1010,29 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
 text = "PLAY EVENT  ▶"
+metadata/_edit_use_anchors_ = true
+
+[node name="BackButton" type="Button" parent="eventModal/CardPanel/Margin" unique_id=1981577388]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7178631
+anchor_top = -0.001994018
+anchor_right = 0.9866444
+anchor_bottom = 0.054835495
+grow_horizontal = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.35, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.8, 0.25, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_font")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "← BACK"
 metadata/_edit_use_anchors_ = true
 
 [node name="EnterNameOutSide" type="Control" parent="." unique_id=1194498987]

@@ -22,6 +22,11 @@ func _ready() -> void:
 	if transition_layer and transition_layer.has_method("transition_in"):
 		transition_layer.transition_in()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		_on_back_pressed()
+		get_viewport().set_input_as_handled()
+
 func _on_button_hover(btn: Button) -> void:
 	if not is_instance_valid(btn):
 		return
