@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ykhee8qfxfng"]
 
 [ext_resource type="Script" uid="uid://bp16xal763k75" path="res://SCENES/seasons/RoyalInfinityGame.gd" id="1_game"]
-[ext_resource type="PackedScene" uid="uid://ch1aj31c4pioj" path="res://SCENES/LEVELS/crt.tscn" id="2_crt"]
+[ext_resource type="PackedScene" path="res://SCENES/seasons/RoyalInfinityCRT.tscn" id="2_crt"]
 
 [node name="RoyalInfinityGame" type="Node2D" unique_id=565552488]
 script = ExtResource("1_game")

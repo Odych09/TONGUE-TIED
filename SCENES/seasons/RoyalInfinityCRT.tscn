@@ -1,0 +1,887 @@
+[gd_scene format=3 uid="uid://cev0h835mypwq"]
+
+[ext_resource type="Script" uid="uid://dk2j7k3ied8s7" path="res://SCENES/seasons/RoyalInfinityCRT.gd" id="1_royal_crt"]
+[ext_resource type="FontFile" uid="uid://tifsktump34i" path="res://ASSETS/FONT/Gorditas-Bold.ttf" id="2_t1itu"]
+[ext_resource type="Texture2D" uid="uid://buq313i42uq61" path="res://ASSETS/UI/buttons/btn.png" id="4_btn"]
+[ext_resource type="Texture2D" uid="uid://8aeti0te0iig" path="res://ASSETS/UI/buttons/Pi7_eye-test.png" id="4_i1lxr"]
+[ext_resource type="Texture2D" uid="uid://c18m8cw2vyx4u" path="res://ASSETS/UI/panels/wood_badge.svg" id="5_wood_badge"]
+[ext_resource type="Texture2D" uid="uid://b5qgj67gloq4x" path="res://ASSETS/UI/panels/bg.png" id="6_modal_bg"]
+[ext_resource type="Texture2D" uid="uid://df0gekcm0q0s8" path="res://ASSETS/UI/panels/table.png" id="7_table"]
+
+[sub_resource type="Shader" id="Shader_ljlto"]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+// Full-screen post-process: reads the already-rendered frame.
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+
+// --- Color controls ---
+uniform float brightness : hint_range(0.0, 2.0) = 1.02;
+uniform float contrast   : hint_range(0.0, 2.0) = 1.08;
+uniform float saturation : hint_range(0.0, 2.0) = 1.10;
+uniform float gamma      : hint_range(0.2, 3.0) = 1.05;
+
+// --- CRT geometry / lens ---
+uniform float curvature     : hint_range(0.0, 0.40) = 0.14;
+uniform float corner_soften : hint_range(0.0, 0.20) = 0.06;
+uniform float vignette      : hint_range(0.0, 1.00) = 0.38;
+
+// --- Scanlines / phosphor ---
+uniform float scanline_strength : hint_range(0.0, 2.0) = 0.95;
+uniform float scanline_density  : hint_range(0.5, 3.0) = 1.15; // 1.0 = native-ish
+uniform float interlace_strength: hint_range(0.0, 1.0) = 0.20;
+
+// Shadow mask (RGB triads). Turn down if you hate the “screen door”.
+uniform float mask_strength : hint_range(0.0, 1.0) = 0.22;
+uniform float mask_scale    : hint_range(0.5, 4.0) = 1.0; // bigger = chunkier triads
+
+// --- VHS/VCR artifacts ---
+uniform float chroma_offset_px : hint_range(0.0, 6.0) = 1.6; // RGB split in pixels
+uniform float luma_smear_px    : hint_range(0.0, 8.0) = 2.2; // horizontal smear
+uniform float jitter_px        : hint_range(0.0, 8.0) = 1.8; // per-line horizontal jitter
+uniform float wobble_px        : hint_range(0.0, 10.0) = 1.5; // slow wave wobble
+
+uniform float tape_noise       : hint_range(0.0, 1.0) = 0.22; // grain + specks
+uniform float tape_lines       : hint_range(0.0, 1.0) = 0.35; // horizontal “tracking” lines
+
+uniform float roll_speed       : hint_range(0.0, 1.5) = 0.10; // vertical roll bar speed
+uniform float roll_strength    : hint_range(0.0, 0.6) = 0.15; // roll bar intensity
+
+// --- Bloom-ish glow (cheap) ---
+uniform float glow_strength  : hint_range(0.0, 2.0) = 0.25;
+uniform float glow_threshold : hint_range(0.0, 1.0) = 0.65;
+
+// TIME is a built-in global in CanvasItem shaders.
+float hash11(float n) {
+	return fract(sin(n) * 43758.5453123);
+}
+
+float hash12(vec2 p) {
+	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+}
+
+vec2 crt_curve(vec2 uv, float k) {
+	// Barrel distortion style curve.
+	vec2 cc = uv * 2.0 - 1.0;
+	vec2 d  = cc * cc;
+	cc *= 1.0 + k * vec2(d.y, d.x);
+	return cc * 0.5 + 0.5;
+}
+
+float inside01(vec2 uv) {
+	return step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);
+}
+
+vec3 apply_color_controls(vec3 c) {
+	c *= brightness;
+	c = mix(vec3(0.5), c, contrast);
+	float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
+	c = mix(vec3(l), c, saturation);
+	c = pow(max(c, vec3(0.0)), vec3(1.0 / max(gamma, 0.0001)));
+	return c;
+}
+
+vec3 triad_mask(vec2 frag_xy) {
+	float x = floor(frag_xy.x / max(mask_scale, 0.0001));
+	float m = mod(x, 3.0);
+	if (m < 1.0) return vec3(1.10, 0.85, 0.85);
+	if (m < 2.0) return vec3(0.85, 1.10, 0.85);
+	return vec3(0.85, 0.85, 1.10);
+}
+
+vec3 sample_screen(vec2 uv) {
+	return textureLod(screen_texture, uv, 0.0).rgb;
+}
+
+void fragment() {
+	vec2 px   = SCREEN_PIXEL_SIZE;
+	vec2 res  = 1.0 / px;
+	float t   = TIME;
+
+	vec2 uv = SCREEN_UV;
+
+	float y_line = floor(uv.y * res.y);
+	float jitter = (hash11(y_line + floor(t * 15.0) * 37.0) - 0.5) * 2.0;
+	uv.x += jitter * (jitter_px * px.x);
+
+	uv.x += sin(uv.y * 8.0 + t * 1.2) * (wobble_px * px.x);
+
+	vec2 cuv = crt_curve(uv, curvature);
+	float in_bounds = inside01(cuv);
+
+	vec2 d = abs(cuv - 0.5) * 2.0;
+	float edge = max(d.x, d.y);
+	float corner_mask = 1.0 - smoothstep(1.0 - corner_soften, 1.0, edge);
+
+	vec2 chroma = vec2(chroma_offset_px * px.x, 0.0);
+	float r = sample_screen(cuv + chroma).r;
+	float g = sample_screen(cuv).g;
+	float b = sample_screen(cuv - chroma).b;
+	vec3 col = vec3(r, g, b);
+
+	float smear = luma_smear_px * px.x;
+	vec3 s1 = sample_screen(cuv + vec2(smear, 0.0));
+	vec3 s2 = sample_screen(cuv - vec2(smear, 0.0));
+	col = mix(col, (col + s1 + s2) / 3.0, 0.35);
+
+	float scan = sin((cuv.y * res.y) * 3.14159 * scanline_density);
+	float scan_mul = 1.0 - scanline_strength * (0.5 - 0.5 * scan);
+	col *= scan_mul;
+
+	float field = mod(floor(FRAGCOORD.y) + floor(t * 60.0), 2.0);
+	col *= 1.0 - interlace_strength * field * 0.10;
+
+	float roll_y = fract(t * max(roll_speed, 0.0001));
+	float dist = abs(cuv.y - roll_y);
+	float bar = smoothstep(0.20, 0.0, dist);
+	col += bar * roll_strength * vec3(0.12, 0.12, 0.12);
+
+	float line_n = hash11(y_line * 0.7 + floor(t * 12.0) * 11.0);
+	float line = smoothstep(0.985, 1.0, line_n) * tape_lines;
+	col += line * vec3(0.18, 0.18, 0.18);
+
+	float n = hash12(FRAGCOORD.xy + vec2(t * 120.0, t * 90.0));
+	float grain = (n - 0.5) * 2.0;
+	col += grain * (tape_noise * 0.06);
+
+	float speck = smoothstep(0.995, 1.0, hash12(FRAGCOORD.xy * 0.73 + t * 40.0));
+	col += speck * (tape_noise * 0.25);
+
+	vec3 c0 = col;
+	vec3 cx1 = sample_screen(cuv + vec2(px.x, 0.0));
+	vec3 cx2 = sample_screen(cuv - vec2(px.x, 0.0));
+	vec3 cy1 = sample_screen(cuv + vec2(0.0, px.y));
+	vec3 cy2 = sample_screen(cuv - vec2(0.0, px.y));
+	vec3 blur = (c0 + cx1 + cx2 + cy1 + cy2) / 5.0;
+	float br = dot(blur, vec3(0.2126, 0.7152, 0.0722));
+	vec3 glow = max(blur - vec3(glow_threshold), vec3(0.0));
+	col += glow * glow_strength * (0.5 + 0.5 * br);
+
+	vec2 v = cuv - 0.5;
+	float vig = smoothstep(0.9, 0.2, dot(v, v) * 2.2);
+	col *= mix(1.0 - vignette, 1.0, vig);
+
+	vec3 mask = triad_mask(FRAGCOORD.xy);
+	col *= mix(vec3(1.0), mask, mask_strength);
+
+	col = apply_color_controls(col);
+	col *= in_bounds * corner_mask;
+
+	COLOR = vec4(col, 1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7iixq"]
+shader = SubResource("Shader_ljlto")
+shader_parameter/brightness = 1.02
+shader_parameter/contrast = 1.710000081225
+shader_parameter/saturation = 1.134000053865
+shader_parameter/gamma = 1.05
+shader_parameter/curvature = 0.0
+shader_parameter/corner_soften = 0.0
+shader_parameter/vignette = 0.58
+shader_parameter/scanline_strength = 0.0
+shader_parameter/scanline_density = 1.15
+shader_parameter/interlace_strength = 0.2
+shader_parameter/mask_strength = 0.22
+shader_parameter/mask_scale = 1.0
+shader_parameter/chroma_offset_px = 1.6
+shader_parameter/luma_smear_px = 2.2
+shader_parameter/jitter_px = 0.0
+shader_parameter/wobble_px = 0.0
+shader_parameter/tape_noise = 0.0
+shader_parameter/tape_lines = 0.0
+shader_parameter/roll_speed = 0.2950000140125
+shader_parameter/roll_strength = 0.15
+shader_parameter/glow_strength = 0.0
+shader_parameter/glow_threshold = 0.8550000406125
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_btn"]
+content_margin_left = 16.0
+content_margin_top = 2.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_btn_pressed"]
+content_margin_left = 16.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(0.8, 0.8, 0.8, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_btn_hover"]
+content_margin_left = 16.0
+content_margin_top = 2.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(1.15, 1.1, 0.85, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green"]
+texture = ExtResource("4_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_pressed"]
+texture = ExtResource("4_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(0.78, 0.78, 0.78, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_green_hover"]
+texture = ExtResource("4_btn")
+texture_margin_left = 65.0
+texture_margin_top = 18.0
+texture_margin_right = 65.0
+texture_margin_bottom = 22.0
+region_rect = Rect2(0, 0, 308, 107)
+modulate_color = Color(1.15, 1.1, 0.85, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal_outer"]
+texture = ExtResource("6_modal_bg")
+expand_margin_left = 25.0
+expand_margin_top = 35.0
+expand_margin_right = 35.0
+expand_margin_bottom = 25.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal_inner"]
+texture = ExtResource("7_table")
+expand_margin_left = 10.0
+expand_margin_top = 20.0
+expand_margin_right = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge_pressed"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(0.8, 0.8, 0.8, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wood_badge_hover"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+texture = ExtResource("5_wood_badge")
+texture_margin_left = 28.0
+texture_margin_top = 12.0
+texture_margin_right = 28.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(0, 0, 160, 64)
+modulate_color = Color(1.15, 1.1, 0.85, 1)
+
+[node name="CRT" type="CanvasLayer" unique_id=510479985]
+layer = 5
+script = ExtResource("1_royal_crt")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=708671421]
+material = SubResource("ShaderMaterial_7iixq")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="UI" type="Control" parent="." unique_id=1760769116]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="TopLeftBar" type="HBoxContainer" parent="UI" unique_id=1849204910]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.014583333
+anchor_top = 0.033333335
+anchor_right = 0.425
+anchor_bottom = 0.11666667
+offset_right = -373.0
+theme_override_constants/separation = 27
+metadata/_edit_use_anchors_ = true
+
+[node name="RestartBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204911]
+custom_minimum_size = Vector2(110.57, 90)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 54
+theme_override_styles/normal = SubResource("StyleBoxTexture_icon_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_icon_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_icon_btn_hover")
+text = "↺"
+
+[node name="InspectBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204918]
+custom_minimum_size = Vector2(90, 58)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_icon_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_icon_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_icon_btn_hover")
+expand_icon = true
+
+[node name="TextureRect" type="TextureRect" parent="UI/TopLeftBar/InspectBtn" unique_id=2145976991]
+modulate = Color(1, 1, 0.47058824, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21111111
+anchor_top = 0.16666667
+anchor_right = 0.80611116
+anchor_bottom = 0.7616667
+offset_right = 36.449997
+offset_bottom = 36.449997
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.595, 0.595)
+texture = ExtResource("4_i1lxr")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MenuBtn" type="Button" parent="UI/TopLeftBar" unique_id=1849204912]
+custom_minimum_size = Vector2(104.3, 58)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 45
+theme_override_styles/normal = SubResource("StyleBoxTexture_icon_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_icon_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_icon_btn_hover")
+text = "☰"
+
+[node name="LevelBadge" type="PanelContainer" parent="UI/TopLeftBar" unique_id=1849204913]
+custom_minimum_size = Vector2(175, 58)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
+
+[node name="LevelLabel" type="Label" parent="UI/TopLeftBar/LevelBadge" unique_id=1849204914]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 31
+text = "⚜ ROYAL INFINITY ⚜"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FliesBadge" type="PanelContainer" parent="UI" unique_id=1849204940]
+custom_minimum_size = Vector2(290, 58)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.45
+anchor_top = 0.03425926
+anchor_right = 0.684375
+anchor_bottom = 0.12314815
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
+metadata/_edit_use_anchors_ = true
+
+[node name="FLIES_LEFT" type="RichTextLabel" parent="UI/FliesBadge" unique_id=952952309]
+custom_minimum_size = Vector2(410, 80)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 0.96, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/normal_font = ExtResource("2_t1itu")
+theme_override_fonts/bold_font = ExtResource("2_t1itu")
+theme_override_font_sizes/normal_font_size = 57
+bbcode_enabled = true
+text = "[center] FLIES: [color=#ffd23f]0/6[/color][/center]"
+scroll_active = false
+
+[node name="PullsBadge" type="PanelContainer" parent="UI" unique_id=1849204941]
+custom_minimum_size = Vector2(243, 58)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8567708
+anchor_top = 0.033333335
+anchor_right = 0.98333335
+anchor_bottom = 0.1574074
+offset_bottom = -38.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_wood_badge")
+metadata/_edit_use_anchors_ = true
+
+[node name="PULLS_LEFT" type="RichTextLabel" parent="UI/PullsBadge" unique_id=259030708]
+custom_minimum_size = Vector2(110, 80)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 0.96, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/normal_font = ExtResource("2_t1itu")
+theme_override_fonts/bold_font = ExtResource("2_t1itu")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[center] PULLS: [color=white]15[/color][/center]"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BigPullBtn" type="Button" parent="UI" unique_id=1849204915]
+custom_minimum_size = Vector2(235, 100)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.859375
+anchor_top = 0.88148147
+anchor_right = 0.9817708
+anchor_bottom = 0.97407407
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 0.95, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.35, 0.05, 1)
+theme_override_constants/outline_size = 9
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 38
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "PULL"
+metadata/_edit_use_anchors_ = true
+
+[node name="InspectHint" type="Label" parent="UI" unique_id=1849204920]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.81
+anchor_right = 0.5
+anchor_bottom = 0.81
+offset_left = -300.0
+offset_top = -20.0
+offset_right = 300.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.1, 0.1, 0.85)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 22
+text = "SLIDE TO PAN • TAP TO RETURN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SnapBtn" type="Button" parent="UI" unique_id=1849204919]
+visible = false
+custom_minimum_size = Vector2(280, 64)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.88
+anchor_right = 0.5
+anchor_bottom = 0.88
+offset_left = -140.0
+offset_top = -32.0
+offset_right = 140.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 0.95, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.35, 0.05, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "🐸 SNAP TO FROG"
+metadata/_edit_use_anchors_ = true
+
+[node name="WinModal" type="Control" parent="UI" unique_id=1849204916]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="UI/WinModal" unique_id=1849204917]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.05, 0.04, 0.76)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/WinModal" unique_id=114318607]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/WinModal/CenterContainer" unique_id=909319767]
+custom_minimum_size = Vector2(797.29, 587.18)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")
+
+[node name="TablePanel" type="Panel" parent="UI/WinModal/CenterContainer/PanelContainer" unique_id=1849204980]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_inner")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/WinModal/CenterContainer/PanelContainer" unique_id=1849204981]
+layout_mode = 2
+theme_override_constants/margin_left = 46
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 46
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer" unique_id=1409920537]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="WinTitle" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204921]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 65
+text = "★ LEVEL CLEAR! ★"
+horizontal_alignment = 1
+
+[node name="StarsRow" type="HBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204922]
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Star1" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=1849204923]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.3, 0.15, 0.02, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 105
+text = "★"
+
+[node name="Star2" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=1849204924]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.3, 0.15, 0.02, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 105
+text = "★"
+
+[node name="Star3" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/StarsRow" unique_id=1849204925]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.3, 0.15, 0.02, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 105
+text = "★"
+
+[node name="StatsLabel" type="Label" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204926]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 51
+text = "Pulls Left: 4"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204927]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ActionsRow" type="HBoxContainer" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204928]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ReplayBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204929]
+custom_minimum_size = Vector2(210.63, 97.195)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "↺ REPLAY"
+
+[node name="LevelsBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204930]
+custom_minimum_size = Vector2(160, 58)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "☰ LEVELS"
+
+[node name="NextBtn" type="Button" parent="UI/WinModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204931]
+custom_minimum_size = Vector2(175, 58)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.35, 0.05, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 39
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "MENU ➔"
+
+[node name="PauseModal" type="Control" parent="UI" unique_id=1849204960]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="UI/PauseModal" unique_id=1849204961]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.05, 0.04, 0.76)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/PauseModal" unique_id=1849204962]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/PauseModal/CenterContainer" unique_id=1849204963]
+custom_minimum_size = Vector2(815.895, 657.88)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_outer")
+
+[node name="TablePanel" type="Panel" parent="UI/PauseModal/CenterContainer/PanelContainer" unique_id=1849204982]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal_inner")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/PauseModal/CenterContainer/PanelContainer" unique_id=1849204983]
+layout_mode = 2
+theme_override_constants/margin_left = 46
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 46
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer" unique_id=1849204964]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="PauseTitle" type="Label" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204965]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.28, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 42
+text = "GAME PAUSED"
+horizontal_alignment = 1
+
+[node name="SettingsBox" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204966]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MusicToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBox" unique_id=1849204967]
+custom_minimum_size = Vector2(0, 88.865)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "🎵 MUSIC: ON"
+
+[node name="SFXToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBox" unique_id=1849204968]
+custom_minimum_size = Vector2(0, 88.865)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "🔊 SFX: ON"
+
+[node name="HapticsToggleBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsBox" unique_id=1849204969]
+custom_minimum_size = Vector2(0, 88.865)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "📳 VIBRATION: ON"
+
+[node name="Spacer" type="Control" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204970]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ActionsRow" type="VBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1849204971]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ResumeBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204972]
+custom_minimum_size = Vector2(0, 102.79)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.98, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.35, 0.05, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 52
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn_green")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_green_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_green_hover")
+text = "▶ RESUME"
+
+[node name="ButtonsRow2" type="HBoxContainer" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1849204973]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="PauseRestartBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204974]
+custom_minimum_size = Vector2(140, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 41
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "↺ RETRY"
+
+[node name="PauseLevelsBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204975]
+custom_minimum_size = Vector2(140, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 41
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "☰ EVENT"
+
+[node name="PauseHomeBtn" type="Button" parent="UI/PauseModal/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ActionsRow/ButtonsRow2" unique_id=1849204976]
+custom_minimum_size = Vector2(140, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_t1itu")
+theme_override_font_sizes/font_size = 41
+theme_override_styles/normal = SubResource("StyleBoxTexture_wood_badge")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wood_badge_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wood_badge_hover")
+text = "🏠 MENU"
+
+[node name="PondAmbience" type="CPUParticles2D" parent="." unique_id=1849204950]
+position = Vector2(960, 540)
+amount = 45
+lifetime = 5.5
+emission_shape = 3
+emission_rect_extents = Vector2(960, 540)
+spread = 120.0
+gravity = Vector2(0, -32)
+initial_velocity_min = 12.0
+initial_velocity_max = 35.0
+scale_amount_min = 2.0
+scale_amount_max = 5.5
+color = Color(1, 0.82, 0.35, 0.75)
